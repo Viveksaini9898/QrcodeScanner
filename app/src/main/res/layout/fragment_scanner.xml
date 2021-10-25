@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    tools:context=".fragment.ScannerFragment">
+
+    <com.qr.scanner.ScannerView
+        android:id="@+id/scannerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:layout_width="@dimen/dimen_250dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/dimen_50dp"
+        android:background="@drawable/circle_button_background"
+        android:backgroundTint="@color/app_default"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:id="@+id/imageLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?selectableItemBackground"
+            android:padding="@dimen/dimen_5dp">
+
+            <ImageView
+                android:layout_width="@dimen/dimen_30dp"
+                android:layout_height="@dimen/dimen_30dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_image_black_24dp"
+                app:tint="@color/white" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:background="@color/white" />
+
+        <RelativeLayout
+            android:id="@+id/flashLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?selectableItemBackground"
+            android:padding="@dimen/dimen_5dp">
+
+            <ImageView
+                android:id="@+id/flash"
+                android:layout_width="@dimen/dimen_30dp"
+                android:layout_height="@dimen/dimen_30dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_flash_on_black_24dp"
+                app:tint="@color/white" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:background="@color/white" />
+
+        <RelativeLayout
+            android:id="@+id/cameraLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?selectableItemBackground"
+            android:padding="@dimen/dimen_5dp">
+
+            <ImageView
+                android:layout_width="@dimen/dimen_30dp"
+                android:layout_height="@dimen/dimen_30dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_flip_camera_black_24dp"
+                app:tint="@color/white" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</RelativeLayout>

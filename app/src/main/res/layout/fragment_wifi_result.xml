@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbars="none"
+    android:orientation="vertical"
+    tools:context=".resultfragment.WifiResultFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/curve"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerInParent="true"
+            android:background="@drawable/big_background"
+            android:orientation="vertical" />
+
+        <RelativeLayout
+            android:id="@+id/rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_50dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginStart="@dimen/dimen_20dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginEnd="@dimen/dimen_20dp"
+                    android:layout_marginBottom="@dimen/dimen_20dp"
+                    android:elevation="@dimen/dimen_8dp"
+                    app:cardCornerRadius="@dimen/dimen_10dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/dimen_10dp">
+
+
+                        <LinearLayout
+                            android:id="@+id/ssidLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dimen_30dp"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/dimen_10dp">
+
+                            <TextView
+                                style="@style/TextStyleResultLeft"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".6"
+                                android:text="@string/ssid" />
+
+                            <TextView
+                                android:id="@+id/ssid"
+                                style="@style/TextStyleResultRight"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/passwordLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/dimen_10dp">
+
+                            <TextView
+                                style="@style/TextStyleResultLeft"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".6"
+                                android:text="@string/password" />
+
+                            <TextView
+                                android:id="@+id/password"
+                                style="@style/TextStyleResultRight"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/hiddenLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/dimen_10dp">
+
+                            <TextView
+                                style="@style/TextStyleResultLeft"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".6"
+                                android:text="@string/hidden" />
+
+                            <TextView
+                                android:id="@+id/hidden"
+                                style="@style/TextStyleResultRight"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/identityLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:visibility="gone">
+
+                            <TextView
+                                style="@style/TextStyleResultLeft"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".6"
+                                android:text="@string/identity" />
+
+                            <TextView
+                                android:id="@+id/identity"
+                                style="@style/TextStyleResultRight"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/anonymousLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/dimen_10dp"
+                            android:visibility="gone">
+
+                            <TextView
+                                style="@style/TextStyleResultLeft"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".6"
+                                android:text="@string/anonymous" />
+
+                            <TextView
+                                android:id="@+id/anonymous"
+                                style="@style/TextStyleResultRight"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/networkEncryptionLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/dimen_10dp">
+
+                            <TextView
+                                style="@style/TextStyleResultLeft"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".6"
+                                android:text="@string/NetworkEncryption" />
+
+                            <TextView
+                                android:id="@+id/networkEncryption"
+                                style="@style/TextStyleResultRight"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/dimen_10dp"
+                            android:visibility="gone">
+
+                            <TextView
+                                style="@style/TextStyleResultLeft"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".6"
+                                android:text="@string/NetworkEncryption" />
+
+                            <TextView
+                                android:id="@+id/eapMethod"
+                                style="@style/TextStyleResultRight"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/dimen_10dp"
+                            android:visibility="gone">
+
+                            <TextView
+                                style="@style/TextStyleResultLeft"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".6"
+                                android:text="@string/NetworkEncryption" />
+
+                            <TextView
+                                android:id="@+id/phase2Method"
+                                style="@style/TextStyleResultRight"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dimen_30dp"
+                            android:paddingTop="@dimen/dimen_5dp"
+                            android:paddingBottom="@dimen/dimen_5dp">
+
+                            <LinearLayout
+                                android:id="@+id/shareLayout"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="?selectableItemBackground"
+                                android:padding="@dimen/dimen_10dp"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:layout_width="@dimen/dimen_50dp"
+                                    android:layout_height="@dimen/dimen_50dp"
+                                    android:layout_gravity="center"
+                                    android:background="@drawable/circle_button_background"
+                                    android:scaleType="centerInside"
+                                    android:src="@drawable/ic_share"
+                                    app:tint="@color/app_default" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/dimen_10dp"
+                                    android:gravity="center"
+                                    android:text="@string/menu_share"
+                                     />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/copyLayout"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="?selectableItemBackground"
+                                android:padding="@dimen/dimen_10dp"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:layout_width="@dimen/dimen_50dp"
+                                    android:layout_height="@dimen/dimen_50dp"
+                                    android:layout_gravity="center"
+                                    android:background="@drawable/circle_button_background"
+                                    android:scaleType="centerInside"
+                                    android:src="@drawable/ic_copy"
+                                    app:tint="@color/app_default" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/dimen_10dp"
+                                    android:gravity="center"
+                                    android:text="@string/copy"
+                                    />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/copyPasswordLayout"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="?selectableItemBackground"
+                                android:orientation="vertical"
+                                android:paddingTop="@dimen/dimen_10dp"
+                                android:paddingBottom="@dimen/dimen_10dp"
+                                >
+
+                                <ImageView
+                                    android:layout_width="@dimen/dimen_50dp"
+                                    android:layout_height="@dimen/dimen_50dp"
+                                    android:layout_gravity="center"
+                                    android:background="@drawable/circle_button_background"
+                                    android:scaleType="centerInside"
+                                    android:src="@drawable/ic_copy_message_black_24dp"
+                                    app:tint="@color/app_default" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/dimen_10dp"
+                                    android:gravity="center"
+                                    android:text="@string/copy_password"/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/connectLayout"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="?selectableItemBackground"
+                                android:orientation="vertical"
+                                android:padding="@dimen/dimen_10dp"
+                                >
+
+                                <ImageView
+                                    android:layout_width="@dimen/dimen_50dp"
+                                    android:layout_height="@dimen/dimen_50dp"
+                                    android:layout_gravity="center"
+                                    android:background="@drawable/circle_button_background"
+                                    android:scaleType="centerInside"
+                                    android:src="@drawable/ic_wifi_black_24dp"
+                                    app:tint="@color/app_default" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/dimen_10dp"
+                                    android:gravity="center"
+                                    android:text="@string/connect"
+                                     />
+                            </LinearLayout>
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/topImage"
+                android:layout_width="50dp"
+                android:layout_height="@dimen/dimen_50dp"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/circle_background"
+                android:padding="@dimen/dimen_10dp"
+                android:src="@drawable/ic_wifi_black_24dp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/viewQrcode"
+            android:layout_width="@dimen/dimen_200dp"
+            android:layout_height="@dimen/dimen_40dp"
+            android:layout_below="@+id/rv"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/dimen_20dp"
+            android:layout_marginBottom="@dimen/dimen_20dp"
+            android:padding="@dimen/dimen_10dp"
+            android:background="@drawable/button_background"
+            android:elevation="@dimen/dimen_8dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:paddingStart="@dimen/dimen_20dp"
+                android:src="@drawable/ic_qr_code_2_black_24dp"
+                app:tint="@color/gray" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:paddingEnd="@dimen/dimen_20dp"
+                android:text="@string/view_qrcode"
+                android:textSize="@dimen/dimen_18dp"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+</ScrollView>
