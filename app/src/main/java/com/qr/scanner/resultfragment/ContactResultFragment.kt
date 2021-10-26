@@ -9,6 +9,7 @@ import com.core.Result
 import com.core.client.result.AddressBookParsedResult
 import com.core.client.result.EmailAddressParsedResult
 import com.qr.scanner.R
+import com.qr.scanner.constant.RESULT
 import com.qr.scanner.preference.UserPreferences
 import com.qr.scanner.result.ResultHandlerFactory
 import com.qr.scanner.utils.*
@@ -103,6 +104,7 @@ class ContactResultFragment : Fragment() {
             view?.tvAddress?.text = contactResult?.addresses[0].replace("\n", " ")
         } else {
             view?.addressLayout?.visibility = View.GONE
+            view?.mapLayout?.visibility = View.GONE
         }
 
         view?.shareLayout?.setOnClickListener {
@@ -130,9 +132,9 @@ class ContactResultFragment : Fragment() {
         }
         view?.addContactLayout?.setOnClickListener {
             if (contactResult != null) {
-                val addresses: Array<String> = contactResult?.addresses
+                val addresses: Array<String>? = contactResult?.addresses
                 val address1 = if (addresses == null || addresses.isEmpty()) null else addresses[0]
-                val addressTypes: Array<String> = contactResult?.addressTypes
+                val addressTypes: Array<String>? = contactResult?.addressTypes
                 val address1Type =
                     if (addressTypes == null || addressTypes.isEmpty()) null else addressTypes[0]
                 resultHandler.addContact(

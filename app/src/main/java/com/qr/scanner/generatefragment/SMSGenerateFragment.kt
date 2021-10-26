@@ -5,30 +5,21 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.addTextChangedListener
+import com.core.BarcodeFormat
+import com.core.Result
 import com.qr.scanner.R
+import com.qr.scanner.constant.SEPARATOR
+import com.qr.scanner.constant.SMS_PREFIX
+import com.qr.scanner.extension.isNotBlank
+import com.qr.scanner.extension.textString
+import com.qr.scanner.utils.viewQrCodeActivity
+import kotlinx.android.synthetic.main.fragment_s_m_s_generate.*
+import kotlinx.android.synthetic.main.fragment_s_m_s_generate.edit_text_message
+import kotlinx.android.synthetic.main.fragment_s_m_s_generate.generateQrcode
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [SMSGenerateFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class SMSGenerateFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,23 +29,37 @@ class SMSGenerateFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_s_m_s_generate, container, false)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment SMSGenerateFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            SMSGenerateFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initTitleEditText()
+        handleTextChanged()
+
+        generateQrcode?.setOnClickListener {
+            val result = Result(toBarcodeText(edit_text_phone?.textString,edit_text_message?.textString), null, null, BarcodeFormat.QR_CODE)
+            viewQrCodeActivity(requireContext(), result)
+        }
+    }
+
+    private fun initTitleEditText() {
+        edit_text_phone.requestFocus()
+    }
+
+    private fun handleTextChanged() {
+        edit_text_phone.addTextChangedListener { toggleCreateBarcodeButton() }
+        edit_text_message.addTextChangedListener { toggleCreateBarcodeButton() }
+    }
+
+    private fun toggleCreateBarcodeButton() {
+        if(edit_text_phone.isNotBlank() || edit_text_message.isNotBlank()){
+            generateQrcode?.background = resources?.getDrawable(R.drawable.button_background_1)
+        } else {
+            generateQrcode?.background = resources?.getDrawable(R.drawable.circle_button_background)
+        }
+    }
+
+    private fun toBarcodeText(phone: String?, message: String?): String {
+        return SMS_PREFIX +
+                phone.orEmpty() +
+                "$SEPARATOR${message.orEmpty()}"
     }
 }

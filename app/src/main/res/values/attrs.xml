@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <attr name="hint" format="string" />
+
+
     <declare-styleable name="BarcodeScannerView">
         <attr name="shouldScaleToFill" format="boolean" />
         <attr name="laserEnabled" format="boolean" />
@@ -14,4 +17,9 @@
         <attr name="borderAlpha" format="float" />
         <attr name="finderOffset" format="dimension" />
     </declare-styleable>
+
+    <declare-styleable name="DateTimePickerButton">
+        <attr name="hint"/>
+    </declare-styleable>
 </resources>
+

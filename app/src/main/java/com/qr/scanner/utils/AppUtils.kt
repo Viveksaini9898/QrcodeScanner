@@ -20,6 +20,8 @@ import com.qr.scanner.activity.ViewQRcodeActivity
 import androidx.core.content.ContextCompat.startActivity
 import androidx.core.content.FileProvider
 import com.qr.scanner.activity.ScanResultActivity
+import com.qr.scanner.constant.RESULT
+import com.qr.scanner.extension.Toast.toast
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
@@ -46,23 +48,6 @@ fun Fragment.loadFragment(activity: AppCompatActivity, layoutId: Int) {
     ft.replace(layoutId, this)
     ft.commitAllowingStateLoss()
 }
-
-const val KEY_DECODE_1D_PRODUCT = "preferences_decode_1D_product"
-const val KEY_DECODE_1D_INDUSTRIAL = "preferences_decode_1D_industrial"
-const val KEY_DECODE_QR = "preferences_decode_QR"
-const val KEY_DECODE_DATA_MATRIX = "preferences_decode_Data_Matrix"
-const val KEY_DECODE_AZTEC = "preferences_decode_Aztec"
-const val KEY_DECODE_PDF417 = "preferences_decode_PDF417"
-
-const val KEY_CUSTOM_PRODUCT_SEARCH = "preferences_custom_product_search"
-
-const val TEXT = "text"
-const val URL = "url"
-const val SMS = "sms"
-const val PHONE = "phone"
-const val EMAIL = "email"
-const val RESULT = "result"
-const val TYPE = "type"
 
 fun copyContent(context: Context?, string: String?) {
     val clipboard =
@@ -130,9 +115,7 @@ fun rawLaunchIntent(context: Context?, intent: Intent?) {
     }
 }
 
-fun toast(context: Context?, charSequence: CharSequence?) {
-    Toast.makeText(context, charSequence, Toast.LENGTH_LONG).show()
-}
+
 
 fun viewQrCodeActivity(context: Context?, result: Result?) {
     val intent = Intent(context, ViewQRcodeActivity::class.java)

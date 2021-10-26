@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
 import com.qr.scanner.R
 import com.qr.scanner.activity.QrGenerateActivity
-import com.qr.scanner.utils.TYPE
+import com.qr.scanner.constant.TYPE
 import kotlinx.android.synthetic.main.fragment_qr_genrate_frgment.*
 import kotlinx.android.synthetic.main.toolbar.*
 

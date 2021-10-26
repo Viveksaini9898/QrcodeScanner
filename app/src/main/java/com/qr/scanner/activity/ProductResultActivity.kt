@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.core.content.ContentProviderCompat.requireContext
 import com.core.Result
 import com.qr.scanner.R
+import com.qr.scanner.constant.RESULT
 import com.qr.scanner.preference.UserPreferences
 import com.qr.scanner.utils.*
 import kotlinx.android.synthetic.main.activity_product_result.*

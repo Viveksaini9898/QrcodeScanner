@@ -10,6 +10,7 @@ import com.core.client.result.EmailAddressParsedResult
 import com.core.client.result.ParsedResultType
 import com.core.client.result.SMSParsedResult
 import com.qr.scanner.R
+import com.qr.scanner.constant.RESULT
 import com.qr.scanner.preference.UserPreferences
 import com.qr.scanner.result.ResultHandlerFactory
 import com.qr.scanner.utils.*

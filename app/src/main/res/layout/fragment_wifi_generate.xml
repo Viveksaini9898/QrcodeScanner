@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/dimen_20dp"
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:text="@string/encryption"
+        android:textColor="@color/edit_text_hint_color"
+        android:textSize="12sp" />
+
+    <Spinner
+        android:id="@+id/spinner_encryption"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/dimen_14dp"
+        android:layout_marginTop="@dimen/dimen_8dp" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/TextInputLayoutStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/dimen_16dp"
+        android:layout_marginTop="@dimen/dimen_14dp">
+
+        <EditText
+            android:id="@+id/edit_text_network_name"
+            style="@style/EditTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start|top"
+            android:hint="@string/network_name"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:lines="1"
+            android:maxLines="1" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/text_input_layout_password"
+        style="@style/TextInputLayoutStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/dimen_16dp"
+        android:layout_marginTop="@dimen/dimen_8dp"
+        app:passwordToggleEnabled="true"
+        app:passwordToggleTint="@color/black">
+
+        <EditText
+            android:id="@+id/edit_text_password"
+            style="@style/EditTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start|top"
+            android:hint="@string/password"
+            android:imeOptions="actionDone"
+            android:inputType="textPassword"
+            android:lines="1"
+            android:maxLines="1" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <CheckBox
+        android:id="@+id/check_box_is_hidden"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/dimen_14dp"
+        android:layout_marginTop="@dimen/dimen_16dp"
+        android:text="@string/hidden"
+        android:textColor="@color/black"
+        android:textSize="@dimen/dimen_16dp" />
+
+    <RelativeLayout
+        android:id="@+id/generateQrcode"
+        android:layout_width="@dimen/dimen_200dp"
+        android:layout_height="@dimen/dimen_40dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/dimen_70dp"
+        android:layout_marginBottom="@dimen/dimen_20dp"
+        android:background="@drawable/circle_button_background"
+        android:elevation="@dimen/dimen_8dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/dimen_10dp"
+            android:src="@drawable/ic_qr_code_2_black_24dp"
+            android:visibility="gone"
+            app:tint="@color/gray" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="@string/generate_qrcode"
+            android:textColor="@color/black"
+            android:textSize="@dimen/dimen_18dp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+</LinearLayout>

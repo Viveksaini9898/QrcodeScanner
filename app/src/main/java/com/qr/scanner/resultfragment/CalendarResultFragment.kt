@@ -12,6 +12,7 @@ import com.core.Result
 import com.core.client.result.CalendarParsedResult
 import com.core.client.result.TextParsedResult
 import com.qr.scanner.R
+import com.qr.scanner.constant.RESULT
 import com.qr.scanner.preference.UserPreferences
 import com.qr.scanner.result.CalendarResultHandler
 import com.qr.scanner.result.ResultHandlerFactory

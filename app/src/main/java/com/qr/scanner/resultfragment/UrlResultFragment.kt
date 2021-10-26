@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import com.core.Result
 import com.core.client.result.URIParsedResult
 import com.qr.scanner.R
+import com.qr.scanner.constant.RESULT
 import com.qr.scanner.preference.UserPreferences
 import com.qr.scanner.result.ResultHandlerFactory
 import com.qr.scanner.utils.*
@@ -50,6 +51,12 @@ class UrlResultFragment : Fragment() {
             view?.text?.text = "None"
         }
 
+        if (urlResult?.title != null && urlResult?.title?.isNotEmpty()!!) {
+            view?.title?.text = urlResult.title
+        }else {
+            view?.title?.visibility = View.GONE
+        }
+
         when {
             isYoutubeUrl(resultData) -> {
                 view?.topImage?.setImageResource(R.drawable.ic_youtube)
@@ -70,11 +77,11 @@ class UrlResultFragment : Fragment() {
 
 
         view?.shareLayout?.setOnClickListener {
-            shareContent(requireContext(), resultData)
+            shareContent(requireContext(), urlResult?.toString())
         }
 
         view?.copyLayout?.setOnClickListener {
-            copyContent(requireContext(), resultData)
+            copyContent(requireContext(), urlResult?.toString())
         }
 
         view?.openLinkLayout?.setOnClickListener {

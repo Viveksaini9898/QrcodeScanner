@@ -83,7 +83,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:gravity="center"
-                android:text="@string/generate_qrcode"
+                android:text="@string/scan"
                 android:textColor="@color/black"
                 android:textSize="@dimen/dimen_16dp"
                 android:textStyle="bold" />

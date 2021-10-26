@@ -51,22 +51,25 @@
                         android:layout_marginTop="@dimen/dimen_30dp"
                         android:padding="@dimen/dimen_10dp">
 
-                        <ImageView
-                            android:id="@+id/image"
-                            android:layout_width="wrap_content"
+                        <TextView
+                            android:id="@+id/title"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_call_black_24dp"
-                            android:visibility="gone"
-                            app:tint="@color/app_default_light" />
+                            android:autoLink="web"
+                            android:text="@string/app_name"
+                            android:gravity="center"
+                            android:textColor="@color/app_default_light"
+                            android:textSize="@dimen/dimen_20dp" />
 
                         <TextView
                             android:id="@+id/text"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_toEndOf="@+id/image"
+                            android:layout_below="@+id/title"
                             android:autoLink="web"
-                            android:paddingStart="@dimen/dimen_10dp"
+                            android:layout_marginTop="@dimen/dimen_10dp"
                             android:text="@string/app_name"
+                            android:gravity="center"
                             android:textColor="@color/app_default_light"
                             android:textSize="@dimen/dimen_18dp" />
 

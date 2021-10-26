@@ -6,6 +6,8 @@ import android.view.MenuItem
 import com.core.Result
 import com.core.client.result.ParsedResultType
 import com.qr.scanner.R
+import com.qr.scanner.constant.RESULT
+import com.qr.scanner.extension.Toast.toast
 import com.qr.scanner.result.ResultHandlerFactory
 import com.qr.scanner.resultfragment.*
 import com.qr.scanner.utils.*

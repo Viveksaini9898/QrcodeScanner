@@ -9,6 +9,7 @@ import com.core.Result
 import com.core.client.result.TelParsedResult
 
 import com.qr.scanner.R
+import com.qr.scanner.constant.RESULT
 import com.qr.scanner.preference.UserPreferences
 import com.qr.scanner.result.ResultHandler
 import com.qr.scanner.result.ResultHandlerFactory

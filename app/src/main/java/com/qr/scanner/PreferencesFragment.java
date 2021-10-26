@@ -16,13 +16,15 @@
 
 package com.qr.scanner;
 
-import static com.qr.scanner.utils.AppUtilsKt.KEY_CUSTOM_PRODUCT_SEARCH;
-import static com.qr.scanner.utils.AppUtilsKt.KEY_DECODE_1D_INDUSTRIAL;
-import static com.qr.scanner.utils.AppUtilsKt.KEY_DECODE_1D_PRODUCT;
-import static com.qr.scanner.utils.AppUtilsKt.KEY_DECODE_AZTEC;
-import static com.qr.scanner.utils.AppUtilsKt.KEY_DECODE_DATA_MATRIX;
-import static com.qr.scanner.utils.AppUtilsKt.KEY_DECODE_PDF417;
-import static com.qr.scanner.utils.AppUtilsKt.KEY_DECODE_QR;
+
+
+import static com.qr.scanner.constant.ConstantKt.KEY_CUSTOM_PRODUCT_SEARCH;
+import static com.qr.scanner.constant.ConstantKt.KEY_DECODE_1D_INDUSTRIAL;
+import static com.qr.scanner.constant.ConstantKt.KEY_DECODE_1D_PRODUCT;
+import static com.qr.scanner.constant.ConstantKt.KEY_DECODE_AZTEC;
+import static com.qr.scanner.constant.ConstantKt.KEY_DECODE_DATA_MATRIX;
+import static com.qr.scanner.constant.ConstantKt.KEY_DECODE_PDF417;
+import static com.qr.scanner.constant.ConstantKt.KEY_DECODE_QR;
 
 import android.app.AlertDialog;
 import android.content.SharedPreferences;

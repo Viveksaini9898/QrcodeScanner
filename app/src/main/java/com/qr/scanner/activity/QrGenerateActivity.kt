@@ -3,11 +3,8 @@ package com.qr.scanner.activity
 import android.os.Bundle
 import android.view.MenuItem
 import com.qr.scanner.R
-import com.qr.scanner.generatefragment.EmailGenerateFragment
-import com.qr.scanner.generatefragment.PhoneGenerateFragment
-import com.qr.scanner.generatefragment.TextGenerateFragment
-import com.qr.scanner.generatefragment.UrlGenerateFragment
-import com.qr.scanner.utils.TYPE
+import com.qr.scanner.constant.TYPE
+import com.qr.scanner.generatefragment.*
 import com.qr.scanner.utils.loadFragment
 import kotlinx.android.synthetic.main.toolbar.*
 
@@ -44,15 +41,15 @@ class QrGenerateActivity : BaseActivity() {
                 UrlGenerateFragment().loadFragment(this, R.id.container)
             }
             "contact" -> {
-                TextGenerateFragment().loadFragment(this, R.id.container)
+                ContactGenerateFragment().loadFragment(this, R.id.container)
                 toolbar?.title = "Contact"
             }
             "event" -> {
-                TextGenerateFragment().loadFragment(this, R.id.container)
+                EventGenerateFragment().loadFragment(this, R.id.container)
                 toolbar?.title = "Event"
             }
             "wifi" -> {
-                TextGenerateFragment().loadFragment(this, R.id.container)
+                WifiGenerateFragment().loadFragment(this, R.id.container)
                 toolbar?.title = "Wifi"
             }
             "call" -> {
@@ -60,7 +57,7 @@ class QrGenerateActivity : BaseActivity() {
                 toolbar?.title = "Call"
             }
             "sms" -> {
-                TextGenerateFragment().loadFragment(this, R.id.container)
+                SMSGenerateFragment().loadFragment(this, R.id.container)
                 toolbar?.title = "Sms"
             }
 

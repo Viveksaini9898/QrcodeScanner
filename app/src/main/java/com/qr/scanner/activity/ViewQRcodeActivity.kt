@@ -22,7 +22,7 @@ import com.core.BarcodeFormat
 import com.core.MultiFormatWriter
 
 import com.core.common.BitMatrix
-import com.qr.scanner.utils.RESULT
+import com.qr.scanner.constant.RESULT
 import com.qr.scanner.utils.saveImageToGallery
 import com.qr.scanner.utils.shareBitmap
 import java.io.File

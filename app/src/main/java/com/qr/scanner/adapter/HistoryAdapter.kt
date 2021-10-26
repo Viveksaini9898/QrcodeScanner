@@ -18,6 +18,7 @@ import com.core.client.result.*
 import com.qr.scanner.R
 import com.qr.scanner.activity.ProductResultActivity
 import com.qr.scanner.activity.ScanResultActivity
+import com.qr.scanner.constant.RESULT
 import com.qr.scanner.history.HistoryItem
 import com.qr.scanner.history.HistoryManager
 import com.qr.scanner.result.ResultHandler

@@ -17,9 +17,9 @@ import com.qr.scanner.R
 import java.io.FileNotFoundException
 import java.io.InputStream
 import androidx.core.app.ActivityCompat.startActivityForResult
+import com.qr.scanner.extension.Toast.toast
 import com.qr.scanner.history.HistoryManager
 import com.qr.scanner.utils.getPath
-import com.qr.scanner.utils.toast
 import kotlinx.android.synthetic.main.activity_image_scanner.*
 import kotlinx.android.synthetic.main.toolbar.*
 import java.lang.Exception

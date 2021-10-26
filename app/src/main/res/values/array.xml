@@ -12,4 +12,10 @@
         <item>AUTO</item>
         <item>OFF</item>
     </string-array>
+
+    <string-array name="encryption_types">
+        <item>WPA/WPA2</item>
+        <item>WEP</item>
+        <item>None</item>
+    </string-array>
 </resources>

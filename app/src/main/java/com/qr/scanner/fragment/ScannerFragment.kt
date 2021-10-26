@@ -27,6 +27,7 @@ import com.qr.scanner.activity.ImageScannerActivity
 import com.qr.scanner.activity.MainActivity
 import com.qr.scanner.activity.ProductResultActivity
 import com.qr.scanner.activity.ScanResultActivity
+import com.qr.scanner.constant.RESULT
 import com.qr.scanner.dialog.CameraSelectorDialogFragment
 import com.qr.scanner.dialog.FormatSelectorDialogFragment
 import com.qr.scanner.history.HistoryItem
@@ -35,8 +36,6 @@ import com.qr.scanner.history.SQLite.ORM.HistoryORM
 import com.qr.scanner.history.entity.History
 import com.qr.scanner.preference.UserPreferences
 import com.qr.scanner.result.ResultHandlerFactory
-import com.qr.scanner.utils.RESULT
-import com.qr.scanner.utils.toast
 import kotlinx.android.synthetic.main.fragment_scanner.view.*
 import java.text.DateFormat
 import java.util.ArrayList

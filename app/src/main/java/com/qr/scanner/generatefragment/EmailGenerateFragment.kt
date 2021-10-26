@@ -23,13 +23,8 @@ import com.qr.scanner.constant.*
 import com.qr.scanner.encode.QRCodeEncoder
 import com.qr.scanner.extension.appendIfNotNullOrBlank
 import com.qr.scanner.extension.textString
-import com.qr.scanner.result.EmailAddressResultHandler
-import com.qr.scanner.result.ResultHandlerFactory
-import com.qr.scanner.utils.RESULT
-import com.qr.scanner.utils.saveImageToGallery
-import com.qr.scanner.utils.shareBitmap
+
 import com.qr.scanner.utils.viewQrCodeActivity
-import kotlinx.android.synthetic.main.activity_view_barcode.*
 
 
 class EmailGenerateFragment : Fragment() {
@@ -77,12 +72,6 @@ class EmailGenerateFragment : Fragment() {
             )
             .append(MATMSG_SEPARATOR)
             .toString()
-    }
-
-    fun loadViewGenerateQrActivity(context: Context?, string: String?) {
-        val intent = Intent(context, ViewGenerateQrActivity::class.java)
-        intent.putExtra("data", string)
-        context?.startActivity(intent)
     }
 
     private fun initTitleEditText() {
