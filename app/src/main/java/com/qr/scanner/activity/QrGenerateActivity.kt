@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.MenuItem
 import com.qr.scanner.R
 import com.qr.scanner.generatefragment.EmailGenerateFragment
+import com.qr.scanner.generatefragment.PhoneGenerateFragment
 import com.qr.scanner.generatefragment.TextGenerateFragment
+import com.qr.scanner.generatefragment.UrlGenerateFragment
 import com.qr.scanner.utils.TYPE
 import com.qr.scanner.utils.loadFragment
 import kotlinx.android.synthetic.main.toolbar.*
@@ -22,6 +24,7 @@ class QrGenerateActivity : BaseActivity() {
         }
 
         if (toolbar != null) {
+            toolbar?.title = "Generate"
             setSupportActionBar(toolbar)
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
         }
@@ -29,16 +32,16 @@ class QrGenerateActivity : BaseActivity() {
         when (type) {
 
             "email" -> {
-                EmailGenerateFragment().loadFragment(this, R.id.container)
                 toolbar?.title = "Email"
+                EmailGenerateFragment().loadFragment(this, R.id.container)
             }
             "text" -> {
-                TextGenerateFragment().loadFragment(this, R.id.container)
                 toolbar?.title = "Text"
+                TextGenerateFragment().loadFragment(this, R.id.container)
             }
             "website" -> {
-                TextGenerateFragment().loadFragment(this, R.id.container)
                 toolbar?.title = "Website"
+                UrlGenerateFragment().loadFragment(this, R.id.container)
             }
             "contact" -> {
                 TextGenerateFragment().loadFragment(this, R.id.container)
@@ -53,7 +56,7 @@ class QrGenerateActivity : BaseActivity() {
                 toolbar?.title = "Wifi"
             }
             "call" -> {
-                TextGenerateFragment().loadFragment(this, R.id.container)
+                PhoneGenerateFragment().loadFragment(this, R.id.container)
                 toolbar?.title = "Call"
             }
             "sms" -> {
