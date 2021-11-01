@@ -1,7 +1,8 @@
 package com.qr.scanner.adapter
 
 import android.app.Activity
-import android.content.*
+import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,15 +20,17 @@ import com.qr.scanner.activity.ScanResultActivity
 import com.qr.scanner.constant.RESULT
 import com.qr.scanner.history.History
 import com.qr.scanner.result.ResultHandlerFactory
-import com.qr.scanner.utils.*
+import com.qr.scanner.utils.isFacebookUrl
+import com.qr.scanner.utils.isInstagramUrl
+import com.qr.scanner.utils.isTwitterUrl
+import com.qr.scanner.utils.isYoutubeUrl
 import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 
-class HistoryAdapter(
-    private var activity: Activity?
+class FavoritesAdapter( private var activity: Activity?
 ) :
-    ListAdapter<History, HistoryAdapter.ViewHolder>(ListAdapterCallBack) {
+ListAdapter<History, FavoritesAdapter.ViewHolder>(ListAdapterCallBack) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v: View? =
@@ -194,7 +197,7 @@ class HistoryAdapter(
         return formatter.format(time_stamp_server)
     }
 
-    private fun confirmDelete(context: Context?,position: Int) {
+    private fun confirmDelete(context: Context?, position: Int) {
         AlertDialog.Builder(activity!!, R.style.DialogAlertTheme)
             .setTitle(activity!!.resources.getQuantityString(R.plurals.delete_alert_title, 1))
             .setMessage(activity!!.resources.getQuantityString(R.plurals.delete_alert_message, 1))
@@ -202,7 +205,7 @@ class HistoryAdapter(
             .setPositiveButton(
                 android.R.string.yes
             ) { _, _ ->
-              //  removeItem(position)
+                //  removeItem(position)
             }
             .setNegativeButton(
                 android.R.string.no

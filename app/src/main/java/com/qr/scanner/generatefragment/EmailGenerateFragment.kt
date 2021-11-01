@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.ViewModelProvider
 import com.qr.scanner.R
 import com.qr.scanner.extension.isNotBlank
 import kotlinx.android.synthetic.main.fragment_email_generate.*
@@ -23,15 +24,18 @@ import com.qr.scanner.constant.*
 import com.qr.scanner.encode.QRCodeEncoder
 import com.qr.scanner.extension.appendIfNotNullOrBlank
 import com.qr.scanner.extension.textString
+import com.qr.scanner.history.History
 
 import com.qr.scanner.utils.viewQrCodeActivity
+import com.qr.scanner.viewmodel.HistoryViewModel
 
 
 class EmailGenerateFragment : Fragment() {
 
 
-    private var email: EmailAddressParsedResult? = null
-
+    private val viewModel by lazy {
+        ViewModelProvider(this).get(HistoryViewModel::class.java)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,6 +52,12 @@ class EmailGenerateFragment : Fragment() {
 
         generateQrcode?.setOnClickListener {
             val result = Result(toBarcodeText(), null, null, BarcodeFormat.QR_CODE)
+            val history = History(0,
+                result?.text!!, result?.barcodeFormat!!, result?.timestamp!!,
+                isGenerated = true,
+                isFavorite = false
+            )
+            viewModel?.insert(history)
             viewQrCodeActivity(requireContext(), result)
         }
     }

@@ -7,10 +7,7 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.qr.scanner.R
-import com.qr.scanner.fragment.HistoryFragment
-import com.qr.scanner.fragment.QrGenerateFragment
-import com.qr.scanner.fragment.ScannerFragment
-import com.qr.scanner.fragment.SettingsFragment
+import com.qr.scanner.fragment.*
 import com.qr.scanner.utils.createDir
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.*
@@ -44,7 +41,7 @@ class MainActivity : BaseActivity() {
                 }
 
                 2 -> {
-                    HistoryFragment().loadFragment(this, R.id.container)
+                    ViewPagerFragment().loadFragment(this, R.id.container)
 
                 }
                 3 -> {

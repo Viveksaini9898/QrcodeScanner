@@ -12,7 +12,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *//*
+
 
 package com.qr.scanner.result.supplement;
 
@@ -23,7 +24,6 @@ import android.widget.TextView;
 import com.qr.scanner.HttpHelper;
 import com.qr.scanner.LocaleManager;
 import com.qr.scanner.R;
-import com.qr.scanner.history.HistoryManager;
 
 
 import java.io.IOException;
@@ -31,6 +31,7 @@ import java.net.URLEncoder;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+*/
 /**
  * <p>Retrieves product information from Google Product search.</p>
  *
@@ -38,7 +39,8 @@ import java.util.regex.Pattern;
  * from Google, and that is not granted to users via this project.</p>
  *
  * @author Sean Owen
- */
+ *//*
+
 final class ProductResultInfoRetriever extends SupplementalInfoRetriever {
 
   private static final Pattern[] PRODUCT_NAME_PRICE_PATTERNS = {
@@ -82,3 +84,4 @@ final class ProductResultInfoRetriever extends SupplementalInfoRetriever {
   }
 
 }
+*/

@@ -6,8 +6,6 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.hardware.Camera
-import android.icu.util.Calendar
-import android.os.Build
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageView
@@ -16,6 +14,7 @@ import android.widget.Toast
 import androidx.core.view.MenuItemCompat
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.core.BarcodeFormat
 import com.core.Result
 import com.core.client.result.ParsedResultType
@@ -24,25 +23,25 @@ import com.qr.scanner.BeepManager
 import com.qr.scanner.R
 import com.qr.scanner.ScannerView
 import com.qr.scanner.activity.ImageScannerActivity
-import com.qr.scanner.activity.MainActivity
 import com.qr.scanner.activity.ProductResultActivity
 import com.qr.scanner.activity.ScanResultActivity
 import com.qr.scanner.constant.RESULT
 import com.qr.scanner.dialog.CameraSelectorDialogFragment
 import com.qr.scanner.dialog.FormatSelectorDialogFragment
-import com.qr.scanner.history.HistoryItem
-import com.qr.scanner.history.HistoryManager
-import com.qr.scanner.history.SQLite.ORM.HistoryORM
-import com.qr.scanner.history.entity.History
+import com.qr.scanner.history.History
 import com.qr.scanner.preference.UserPreferences
 import com.qr.scanner.result.ResultHandlerFactory
+import com.qr.scanner.viewmodel.HistoryViewModel
 import kotlinx.android.synthetic.main.fragment_scanner.view.*
-import java.text.DateFormat
 import java.util.ArrayList
 
 class ScannerFragment : Fragment(),
     ScannerView.ResultHandler, FormatSelectorDialogFragment.FormatSelectorDialogListener,
     CameraSelectorDialogFragment.CameraSelectorDialogListener {
+
+    private val viewModel by lazy {
+        ViewModelProvider(this).get(HistoryViewModel::class.java)
+    }
 
     private var userPreferences: UserPreferences? = null
     private var beepManager: BeepManager? = null
@@ -104,12 +103,6 @@ class ScannerFragment : Fragment(),
         return view
     }
 
-    override fun onCreate(state: Bundle?) {
-        super.onCreate(state)
-
-        // setHasOptionsMenu(true)
-
-    }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater!!)
@@ -193,21 +186,25 @@ class ScannerFragment : Fragment(),
         outState.putInt(CAMERA_ID, mCameraId)
     }
 
-    override fun handleResult(rawResult: Result) {
+    override fun handleResult(result: Result) {
         beepManager?.playBeepSoundAndVibrate()
 
 
-        HistoryManager(requireActivity()).add(requireActivity(),rawResult)
-        val resultHandler = ResultHandlerFactory.makeResultHandler(activity, rawResult)
+        val history = History(0,result.text,result.barcodeFormat,result.timestamp,
+            isGenerated = false,
+            isFavorite = true
+        )
+        viewModel.insert(history)
+        val resultHandler = ResultHandlerFactory.makeResultHandler(activity, result)
         if (resultHandler.type == ParsedResultType.PRODUCT){
             val productResult = resultHandler?.result as ProductParsedResult
             val intent = Intent(context, ProductResultActivity::class.java)
             intent.putExtra("product", productResult.productID)
-            intent.putExtra(RESULT,rawResult)
+            intent.putExtra(RESULT,result)
             startActivity(intent)
         }else {
             val intent = Intent(context, ScanResultActivity::class.java)
-            intent.putExtra(RESULT, rawResult)
+            intent.putExtra(RESULT, result)
             startActivity(intent)
         }
 

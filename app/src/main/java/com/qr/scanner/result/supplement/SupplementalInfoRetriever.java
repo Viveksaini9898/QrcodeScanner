@@ -12,7 +12,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *//*
+
 
 package com.qr.scanner.result.supplement;
 
@@ -38,10 +39,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.RejectedExecutionException;
 
+*/
 /**
  * Superclass of implementations which can asynchronously retrieve more information
  * about a barcode scan.
- */
+ *//*
+
 public abstract class SupplementalInfoRetriever extends AsyncTask<Object,Object,Object> {
 
   private static final String TAG = "SupplementalInfo";
@@ -49,13 +52,11 @@ public abstract class SupplementalInfoRetriever extends AsyncTask<Object,Object,
   static final String[] EMPTY_STR_ARRAY = new String[0];
 
   private final WeakReference<TextView> textViewRef;
-  private final WeakReference<HistoryManager> historyManagerRef;
   private final Collection<Spannable> newContents;
   private final Collection<String[]> newHistories;
 
   public static void maybeInvokeRetrieval(TextView textView,
                                           ParsedResult result,
-                                          HistoryManager historyManager,
                                           Context context) {
     try {
       if (result instanceof URIParsedResult) {
@@ -185,3 +186,4 @@ public abstract class SupplementalInfoRetriever extends AsyncTask<Object,Object,
   }
 
 }
+*/

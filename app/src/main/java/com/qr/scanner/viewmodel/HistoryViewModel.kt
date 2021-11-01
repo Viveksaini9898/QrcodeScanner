@@ -1,30 +1,33 @@
 package com.qr.scanner.viewmodel
 
 import android.app.Application
-import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.qr.scanner.history.entity.History
-import com.qr.scanner.history.SQLite.ORM.HistoryORM
+import com.qr.scanner.history.History
+import com.qr.scanner.history.HistoryRepository
 
 class HistoryViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val context = getApplication<Application>().applicationContext
+    private val repository = HistoryRepository(application)
+    private val allHistory = repository.getAllHistory()
+    private val favorites = repository.getFavorites()
+    private val generate = repository.getGenerate()
+    // val allHistory: LiveData<History> = repository.allHistory.asLiveData()
 
-
-    private val users: MutableLiveData<List<History>> by lazy {
-        MutableLiveData<List<History>>().also {
-            loadUsers(context)
-        }
+    fun insert(history: History?) {
+        repository.insert(history)
     }
 
-    fun getUsers(): LiveData<List<History>> {
-        return users
+    fun getAllHistory(): LiveData<List<History>>? {
+        return allHistory!!
     }
 
-     fun loadUsers(context: Context?) {
-
-        HistoryORM().getAll(context)
+    fun getFavorite(): LiveData<List<History>>? {
+        return favorites!!
     }
+
+    fun getGenerate(): LiveData<List<History>>? {
+        return generate!!
+    }
+
 }

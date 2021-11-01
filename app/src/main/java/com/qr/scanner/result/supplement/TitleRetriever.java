@@ -12,7 +12,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *//*
+
 
 package com.qr.scanner.result.supplement;
 
@@ -28,11 +29,13 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+*/
 /**
  * Retrieves the title of a web page as supplemental info.
  *
  * @author Sean Owen
- */
+ *//*
+
 final class TitleRetriever extends SupplementalInfoRetriever {
 
   private static final Pattern TITLE_PATTERN = Pattern.compile("<title>([^<]+)");
@@ -70,3 +73,4 @@ final class TitleRetriever extends SupplementalInfoRetriever {
   }
 
 }
+*/

@@ -1,31 +1,30 @@
 package com.qr.scanner.activity
 
 import android.content.Intent
-import android.database.Cursor
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.MenuItem
-import android.widget.Toast
-import androidx.core.app.ActivityCompat
 import com.core.*
 import com.core.common.HybridBinarizer
 import com.qr.scanner.R
-import java.io.FileNotFoundException
-import java.io.InputStream
-import androidx.core.app.ActivityCompat.startActivityForResult
+import androidx.lifecycle.ViewModelProvider
 import com.qr.scanner.extension.Toast.toast
-import com.qr.scanner.history.HistoryManager
-import com.qr.scanner.utils.getPath
+import com.qr.scanner.history.History
+import com.qr.scanner.viewmodel.HistoryViewModel
 import kotlinx.android.synthetic.main.activity_image_scanner.*
 import kotlinx.android.synthetic.main.toolbar.*
 import java.lang.Exception
 
 
 class ImageScannerActivity : AppCompatActivity() {
+
+
+    private val viewModel by lazy {
+        ViewModelProvider(this).get(HistoryViewModel::class.java)
+    }
 
     private var bitmap: Bitmap? = null
     private var result: Result? = null
@@ -56,7 +55,13 @@ class ImageScannerActivity : AppCompatActivity() {
                 val intent = Intent(applicationContext, ScanResultActivity::class.java)
                 intent.putExtra("result", result)
                 startActivity(intent)
-                HistoryManager(this).add(applicationContext,result)
+                val history = History(0,
+                    result?.text!!, result?.barcodeFormat!!, result?.timestamp!!,
+                    isGenerated = false,
+                    isFavorite = false
+                )
+                viewModel?.insert(history)
+
             } else {
                 toast(applicationContext, "Qr not found")
             }

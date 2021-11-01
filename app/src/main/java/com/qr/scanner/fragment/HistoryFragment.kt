@@ -1,29 +1,33 @@
 package com.qr.scanner.fragment
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.qr.scanner.R
 import com.qr.scanner.adapter.HistoryAdapter
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.qr.scanner.history.HistoryItem
-import com.qr.scanner.history.HistoryManager
-import kotlinx.android.synthetic.main.fragment_history.view.*
+import com.qr.scanner.App
+import com.qr.scanner.viewmodel.HistoryViewModel
+import kotlinx.android.synthetic.main.fragment_history.*
+import kotlinx.android.synthetic.main.toolbar.*
 
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
 
 class HistoryFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
-    private var v: View? = null
-    private var historyList: List<HistoryItem>? = null
-    private var adapter: HistoryAdapter? = null
     private var param1: String? = null
     private var param2: String? = null
+
+    private val viewModel by lazy {
+        ViewModelProvider(this).get(HistoryViewModel::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,17 +42,7 @@ class HistoryFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
         savedInstanceState: Bundle?
     ): View? {
 
-        v = inflater.inflate(R.layout.fragment_history, container, false)
-
-        val toolbar: Toolbar? = v?.findViewById(R.id.toolbar)
-        if (toolbar != null) {
-            toolbar?.title = "History"
-        }
-        v?.swipeRefreshLayout?.setOnRefreshListener(this)
-        v?.recyclerView?.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        getData()
-        return v
+        return inflater.inflate(R.layout.fragment_history, container, false)
     }
 
     companion object {
@@ -62,15 +56,23 @@ class HistoryFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
             }
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        swipeRefreshLayout?.setOnRefreshListener(this)
+        recyclerView?.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        getData()
+    }
+
     override fun onRefresh() {
         getData()
-        v?.swipeRefreshLayout?.isRefreshing = false
+        swipeRefreshLayout?.isRefreshing = false
     }
 
     private fun getData() {
-        val history = HistoryManager(requireActivity())
-        historyList = history?.getAll(requireActivity())
-        v?.recyclerView?.adapter = HistoryAdapter(historyList!!, requireActivity())
+
+        val adapter = HistoryAdapter(requireActivity())
+        viewModel.getAllHistory()?.observe(this) {  adapter.submitList(it) }
+        recyclerView?.adapter = adapter
 
     }
 

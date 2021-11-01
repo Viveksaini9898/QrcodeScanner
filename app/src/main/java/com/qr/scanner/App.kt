@@ -2,6 +2,7 @@ package com.qr.scanner
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
+import com.facebook.stetho.Stetho
 
 class App : Application() {
 
@@ -10,7 +11,6 @@ class App : Application() {
 
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-
-
+        Stetho.initializeWithDefaults(this)
     }
 }
