@@ -5,8 +5,8 @@ import android.content.*
 import android.database.Cursor
 import android.graphics.Bitmap
 import android.net.Uri
-import android.os.Build
 import android.os.Environment
+import android.provider.ContactsContract
 import android.provider.MediaStore
 import android.util.Patterns
 import android.webkit.URLUtil
@@ -17,11 +17,12 @@ import androidx.fragment.app.FragmentManager
 import com.core.Result
 import com.qr.scanner.Intents
 import com.qr.scanner.activity.ViewQRcodeActivity
-import androidx.core.content.ContextCompat.startActivity
 import androidx.core.content.FileProvider
-import com.qr.scanner.activity.ScanResultActivity
 import com.qr.scanner.constant.RESULT
 import com.qr.scanner.extension.Toast.toast
+import com.qr.scanner.extension.toEmailType
+import com.qr.scanner.extension.toPhoneType
+import com.qr.scanner.result.ParsedResultHandler
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
@@ -183,22 +184,16 @@ fun isYoutubeUrl(url: String?): Boolean {
     return false
 }
 
-fun sendSMS(phoneNumber: String, body: String, context: Context?) {
-    sendSMSFromUri("smsto:$phoneNumber", body, context)
+fun sendSMS(phoneNumber: String, context: Context?) {
+    sendSMSFromUri("smsto:$phoneNumber", context)
 }
 
-private fun sendSMSFromUri(uri: String, body: String, context: Context?) {
+private fun sendSMSFromUri(uri: String, context: Context?) {
     val intent = Intent(Intent.ACTION_SENDTO, Uri.parse(uri))
-    putExtra(intent, "sms_body", body)
     intent.putExtra("compose_mode", true)
     launchIntent(context, intent)
 }
 
-private fun putExtra(intent: Intent, key: String, value: String?) {
-    if (value != null && value.isNotEmpty()) {
-        intent.putExtra(key, value)
-    }
-}
 
 fun saveImageToGallery(context: Context?,bmp: Bitmap?) {
     val appDir = File(storePath())
@@ -260,4 +255,72 @@ fun shareBitmap(activity: Activity?,bitmap: Bitmap?) {
     intent.putExtra(Intent.EXTRA_STREAM, myImageFileUri)
     intent.type = "image/*"
     activity?.startActivity(Intent.createChooser(intent, "Share with"))
+}
+
+fun startActivityIfExists(context: Context?,intent: Intent) {
+    intent.apply {
+        flags = flags or Intent.FLAG_ACTIVITY_NEW_TASK
+    }
+
+    if (intent.resolveActivity(context?.packageManager!!) != null) {
+        context?.startActivity(intent)
+    }
+}
+
+fun addToContacts(context: Context?,barcode: ParsedResultHandler) {
+    val intent = Intent(ContactsContract.Intents.Insert.ACTION).apply {
+        type = ContactsContract.Contacts.CONTENT_TYPE
+
+        val fullName = "${barcode.firstName.orEmpty()} ${barcode.lastName.orEmpty()}"
+        putExtra(ContactsContract.Intents.Insert.NAME, fullName)
+        putExtra(ContactsContract.Intents.Insert.COMPANY, barcode.organization.orEmpty())
+        putExtra(ContactsContract.Intents.Insert.JOB_TITLE, barcode.jobTitle.orEmpty())
+
+        putExtra(ContactsContract.Intents.Insert.PHONE, barcode.phone.orEmpty())
+        putExtra(ContactsContract.Intents.Insert.PHONE_TYPE, barcode.phoneType.orEmpty().toPhoneType())
+
+        putExtra(ContactsContract.Intents.Insert.SECONDARY_PHONE, barcode.secondaryPhone.orEmpty())
+        putExtra(ContactsContract.Intents.Insert.SECONDARY_PHONE_TYPE, barcode.secondaryPhoneType.orEmpty().toPhoneType())
+
+        putExtra(ContactsContract.Intents.Insert.TERTIARY_PHONE, barcode.tertiaryPhone.orEmpty())
+        putExtra(ContactsContract.Intents.Insert.TERTIARY_PHONE_TYPE, barcode.tertiaryPhoneType.orEmpty().toPhoneType())
+
+        putExtra(ContactsContract.Intents.Insert.EMAIL, barcode.email.orEmpty())
+        putExtra(ContactsContract.Intents.Insert.EMAIL_TYPE, barcode.emailType.orEmpty().toEmailType())
+
+        putExtra(ContactsContract.Intents.Insert.SECONDARY_EMAIL, barcode.secondaryEmail.orEmpty())
+        putExtra(ContactsContract.Intents.Insert.SECONDARY_EMAIL_TYPE, barcode.secondaryEmailType.orEmpty().toEmailType())
+
+        putExtra(ContactsContract.Intents.Insert.TERTIARY_EMAIL, barcode.tertiaryEmail.orEmpty())
+        putExtra(ContactsContract.Intents.Insert.TERTIARY_EMAIL_TYPE, barcode.tertiaryEmailType.orEmpty().toEmailType())
+
+        putExtra(ContactsContract.Intents.Insert.NOTES, barcode.note.orEmpty())
+    }
+    startActivityIfExists(context,intent)
+}
+
+fun callPhone(context: Context?,phone: String?) {
+    val phoneUri = "tel:${phone.orEmpty()}"
+    startActivityIfExists(context,Intent.ACTION_DIAL, phoneUri)
+}
+
+fun startActivityIfExists(context: Context?,action: String, uri: String) {
+    val intent = Intent(action, Uri.parse(uri))
+    startActivityIfExists(context,intent)
+}
+
+fun sendEmail(context: Context?,email: String?, subject: String?, body: String?) {
+    val uri = Uri.parse("mailto:${email.orEmpty()}")
+    val intent = Intent(Intent.ACTION_SEND, uri).apply {
+        type = "text/plain"
+        putExtra(Intent.EXTRA_EMAIL, arrayOf(email.orEmpty()))
+        putExtra(Intent.EXTRA_SUBJECT, subject)
+        putExtra(Intent.EXTRA_TEXT, body)
+    }
+    startActivityIfExists(context, intent)
+}
+
+fun searchMap(context: Context?,address: String?) {
+    val intent =Intent(Intent.ACTION_VIEW, Uri.parse("geo:0,0?q=" + Uri.encode(address)))
+    startActivityIfExists(context,intent)
 }

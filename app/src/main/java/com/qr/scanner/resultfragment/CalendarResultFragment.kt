@@ -1,34 +1,36 @@
 package com.qr.scanner.resultfragment
 
-import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
+import android.provider.CalendarContract
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.core.Result
-import com.core.client.result.CalendarParsedResult
-import com.core.client.result.TextParsedResult
 import com.qr.scanner.R
-import com.qr.scanner.constant.RESULT
+import com.qr.scanner.activity.ViewQRcodeActivity
+import com.qr.scanner.constant.PARSE_RESULT
+import com.qr.scanner.extension.unsafeLazy
 import com.qr.scanner.preference.UserPreferences
-import com.qr.scanner.result.CalendarResultHandler
-import com.qr.scanner.result.ResultHandlerFactory
+import com.qr.scanner.result.ParsedResultHandler
 import com.qr.scanner.utils.*
+import kotlinx.android.synthetic.main.fragment_calendar_result.*
 import kotlinx.android.synthetic.main.fragment_calendar_result.view.*
+import java.text.SimpleDateFormat
 
 
 class CalendarResultFragment : Fragment() {
 
     private var userPreferences: UserPreferences? = null
-    private var result: Result? = null
+    private var result: com.qr.scanner.model.Result? = null
+    private val barcode by unsafeLazy {
+        ParsedResultHandler(result!!)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            result = it.getParcelable(RESULT)
+            result = it.getSerializable(PARSE_RESULT) as com.qr.scanner.model.Result?
         }
     }
 
@@ -36,118 +38,96 @@ class CalendarResultFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view: View? = inflater.inflate(R.layout.fragment_calendar_result, container, false)
+        return inflater.inflate(R.layout.fragment_calendar_result, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         userPreferences = UserPreferences(requireContext())
 
-        val resultHandler = ResultHandlerFactory.makeResultHandler(activity, result)
-
-        val calenderResult = resultHandler?.result as CalendarParsedResult
 
         if (userPreferences?.autoCopy!!){
-            copyContent(requireContext(),calenderResult.toString())
+            copyContent(requireContext(),barcode.text)
         }
 
-        if (calenderResult?.summary != null && calenderResult?.summary?.isNotEmpty()!!) {
-            view?.tvTitle?.text = calenderResult?.summary
+        if (barcode.eventSummary.isNullOrEmpty().not()) {
+            tvTitle?.text = barcode.eventSummary
         } else {
-            view?.titleLayout?.visibility = View.GONE
+            titleLayout?.visibility = View.GONE
         }
-        if (calenderResult?.location != null && calenderResult?.location?.isNotEmpty()!!) {
-            view?.tvLocation?.text = calenderResult?.location
+        if (barcode?.eventLocation.isNullOrEmpty().not()) {
+            tvLocation?.text = barcode.eventLocation
         } else {
-            view?.locationLayout?.visibility = View.GONE
+            locationLayout?.visibility = View.GONE
+            searchLocationLayout?.visibility = View.GONE
         }
-        if (calenderResult?.start != null) {
-            view?.tvStartTime?.text = calenderResult?.start.toString()
+        if (barcode.eventStartDate != null) {
+            tvStartTime?.text = getDate(barcode?.eventStartDate!!)
         } else {
-            view?.startTimeLayout?.visibility = View.GONE
+            startTimeLayout?.visibility = View.GONE
         }
-        if (calenderResult?.end != null) {
-            view?.tvEndTime?.text = calenderResult?.end.toString()
+        if (barcode.eventEndDate != null) {
+            tvEndTime?.text = getDate(barcode.eventEndDate!!)
         } else {
-            view?.endTimeLayout?.visibility = View.GONE
+            endTimeLayout?.visibility = View.GONE
         }
-        if (calenderResult?.organizer != null && calenderResult?.organizer?.isNotEmpty()!!) {
-            view?.tvOrganizer?.text = calenderResult?.organizer
+        if (barcode.eventOrganizer.isNullOrEmpty().not()) {
+            tvOrganizer?.text = barcode.eventOrganizer
         } else {
-            view?.organizerLayout?.visibility = View.GONE
+            organizerLayout?.visibility = View.GONE
         }
 
-        if (calenderResult?.description != null && calenderResult?.description?.isNotEmpty()!!) {
-            view?.tvDescription?.text = calenderResult?.description
+        if (barcode.eventDescription.isNullOrEmpty().not()) {
+            tvDescription?.text = barcode.eventDescription
         } else {
-            view?.descriptionLayout?.visibility = View.GONE
+            descriptionLayout?.visibility = View.GONE
         }
 
 
-        view?.copyLayout?.setOnClickListener {
-            copyContent(requireContext(), calenderResult.toString())
+        copyLayout?.setOnClickListener {
+            copyContent(requireContext(), barcode.text)
         }
 
-        view?.viewQrCode?.setOnClickListener {
-            viewQrCodeActivity(requireContext(), result)
+        viewQrCode?.setOnClickListener {
+            ViewQRcodeActivity.start(requireContext(), result!!)
         }
-        view?.shareLayout?.setOnClickListener {
-            shareContent(requireContext(), calenderResult.toString())
+        shareLayout?.setOnClickListener {
+            shareContent(requireContext(), barcode.text)
         }
-        view?.searchLocationLayout?.setOnClickListener {
-            resultHandler?.searchMap(calenderResult?.location)
+        searchLocationLayout?.setOnClickListener {
+            searchMap(requireContext(),barcode.eventLocation)
         }
 
-        view?.addEventLayout?.setOnClickListener {
-            addCalendarEvent(calenderResult?.summary,calenderResult?.startTimestamp,calenderResult?.isStartAllDay,calenderResult?.endTimestamp,calenderResult?.location,calenderResult?.description,calenderResult?.attendees)
+        addEventLayout?.setOnClickListener {
+            addToCalendar()
         }
-        return view
     }
 
+    private fun addToCalendar() {
+        val intent = Intent(Intent.ACTION_INSERT).apply {
+            data = CalendarContract.Events.CONTENT_URI
+            putExtra(CalendarContract.Events.TITLE, barcode.eventSummary)
+            putExtra(CalendarContract.Events.DESCRIPTION, barcode.eventDescription)
+            putExtra(CalendarContract.Events.EVENT_LOCATION, barcode.eventLocation)
+            putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, barcode.eventStartDate)
+            putExtra(CalendarContract.EXTRA_EVENT_END_TIME, barcode.eventEndDate)
+        }
+        startActivityIfExists(requireContext(),intent)
+    }
 
-    private fun addCalendarEvent(
-        summary: String?,
-        start: Long,
-        allDay: Boolean,
-        end: Long,
-        location: String?,
-        description: String?,
-        attendees: Array<String?>?
-    ) {
-        var end = end
-        val intent = Intent(Intent.ACTION_INSERT)
-        intent.type = "vnd.android.cursor.item/event"
-        intent.putExtra("beginTime", start)
-        if (allDay) {
-            intent.putExtra("allDay", true)
-        }
-        if (end < 0L) {
-            end = if (allDay) {
-                // + 1 day
-                start + 24 * 60 * 60 * 1000
-            } else {
-                start
-            }
-        }
-        intent.putExtra("endTime", end)
-        intent.putExtra("title", summary)
-        intent.putExtra("eventLocation", location)
-        intent.putExtra("description", description)
-        if (attendees != null) {
-            intent.putExtra(Intent.EXTRA_EMAIL, attendees)
-        }
-        try {
-            rawLaunchIntent(requireContext(),intent)
-        } catch (anfe: ActivityNotFoundException) {
-            intent.action = Intent.ACTION_EDIT
-            launchIntent(requireContext(),intent)
-        }
+    private fun getDate(time_stamp_server: Long): String? {
+        val formatter = SimpleDateFormat("dd-mm-yyyy HH:mm")
+        return formatter.format(time_stamp_server)
     }
 
 
     companion object {
         @JvmStatic
-        fun newInstance(result: Result?) =
+        fun newInstance(result: com.qr.scanner.model.Result) =
             CalendarResultFragment().apply {
                 arguments = Bundle().apply {
-                    putParcelable(RESULT, result)
+                    putSerializable(PARSE_RESULT, result)
                 }
             }
     }

@@ -1,30 +1,42 @@
 package com.qr.scanner.activity
 
+import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
-import com.core.Result
-import com.core.client.result.ParsedResultType
 import com.qr.scanner.R
-import com.qr.scanner.constant.RESULT
-import com.qr.scanner.extension.Toast.toast
-import com.qr.scanner.history.History
-import com.qr.scanner.result.ResultHandlerFactory
+import com.qr.scanner.constant.PARSE_RESULT
+import com.qr.scanner.extension.unsafeLazy
+import com.qr.scanner.model.ParsedResultType
 import com.qr.scanner.resultfragment.*
 import com.qr.scanner.utils.*
 import com.qr.scanner.viewmodel.HistoryViewModel
 import kotlinx.android.synthetic.main.toolbar.*
+import com.qr.scanner.model.Result
 
 class ScanResultActivity : AppCompatActivity() {
+
+
+    companion object {
+        fun start(context: Context?, result: Result?) {
+            val intent = Intent(context, ScanResultActivity::class.java).apply {
+                putExtra(PARSE_RESULT, result)
+            }
+            context?.startActivity(intent)
+        }
+    }
 
     private val viewModel by lazy {
         ViewModelProvider(this).get(HistoryViewModel::class.java)
     }
 
-    private var result: Result? = null
+    private val result by unsafeLazy {
+        intent?.getSerializableExtra(PARSE_RESULT) as? Result ?: throw IllegalArgumentException("No result passed")
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,20 +49,12 @@ class ScanResultActivity : AppCompatActivity() {
         }
 
 
-        if (intent.extras != null) {
-            result = intent.getParcelableExtra(RESULT) as Result?
-        }
-
-        val resultHandler = ResultHandlerFactory.makeResultHandler(this, result)
-        toast(applicationContext, resultHandler.type.toString())
-
-
-        when (resultHandler.type) {
+        when (result.parse) {
             ParsedResultType.WIFI -> {
                 WifiResultFragment.newInstance(result!!).loadFragment(this, R.id.container)
                 toolbar?.title = "Wifi"
             }
-            ParsedResultType.TEXT -> {
+            ParsedResultType.OTHER -> {
                 TextResultFragment.newInstance(result).loadFragment(this, R.id.container)
                 toolbar?.title = "Text"
             }
@@ -59,25 +63,25 @@ class ScanResultActivity : AppCompatActivity() {
                 toolbar?.title = "SMS"
 
             }
-            ParsedResultType.TEL -> {
+            ParsedResultType.PHONE -> {
                 PhoneResultFragment.newInstance(result).loadFragment(this, R.id.container)
                 toolbar?.title = "Phone"
 
             }
-            ParsedResultType.URI -> {
+            ParsedResultType.URL -> {
                 UrlResultFragment.newInstance(result).loadFragment(this, R.id.container)
                 toolbar?.title = "Website"
 
             }
-            ParsedResultType.EMAIL_ADDRESS -> {
+            ParsedResultType.EMAIL -> {
                 EmailResultFragment.newInstance(result).loadFragment(this, R.id.container)
                 toolbar?.title = "Email"
             }
-            ParsedResultType.ADDRESSBOOK -> {
+            ParsedResultType.VCARD -> {
                 ContactResultFragment.newInstance(result).loadFragment(this, R.id.container)
                 toolbar?.title = "Contact"
             }
-            ParsedResultType.CALENDAR -> {
+            ParsedResultType.VEVENT -> {
                 CalendarResultFragment.newInstance(result).loadFragment(this, R.id.container)
                 toolbar?.title = "Event"
             }
@@ -86,22 +90,14 @@ class ScanResultActivity : AppCompatActivity() {
     }
 
 
-   /* private fun toggleIsFavorite() {
-        if (result?.isFavorite!!) {
-            updateHistory(result,false)
-        }else {
-            updateHistory(result,true)
-        }
-    }*/
+    private fun toggleIsFavorite() {
+        result?.isFavorite = result?.isFavorite.not()
+        viewModel?.update(result)
+        updateHistory(result.isFavorite)
+    }
 
-    private fun updateHistory(result: Result?,favorite: Boolean) {
-       /* val history = History(0,
-            result?.text!!, result?.barcodeFormat!!, result?.timestamp!!,
-            isGenerated = false,
-            favorite
-        )
-        viewModel?.update(history)
-        */showIsFavorite(favorite)
+    private fun updateHistory(favorite: Boolean) {
+        showIsFavorite(favorite)
     }
 
     private fun showIsFavorite(isFavorite :Boolean) {
@@ -114,10 +110,9 @@ class ScanResultActivity : AppCompatActivity() {
 
     }
 
-
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.qr_menu,menu)
+        updateHistory(result.isFavorite)
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -128,7 +123,7 @@ class ScanResultActivity : AppCompatActivity() {
                 true
             }
             R.id.item_add_to_favorites ->{
-            //    toggleIsFavorite()
+                toggleIsFavorite()
             }
         }
         return super.onOptionsItemSelected(item)

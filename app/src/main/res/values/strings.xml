@@ -206,6 +206,7 @@
     <string name="organization">Organization</string>
     <string name="job_">Job</string>
     <string name="favorite">Favorite</string>
+    <string name="scan_image">Scan Image</string>
 
     <plurals name="delete_alert_title">
         <item quantity="zero">Delete item?</item>

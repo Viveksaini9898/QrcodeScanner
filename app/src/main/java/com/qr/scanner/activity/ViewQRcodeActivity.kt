@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.os.Environment
 import android.view.MenuItem
 import com.core.Result
-import com.core.client.result.ParsedResultType
 import com.qr.scanner.R
 import com.qr.scanner.result.ResultHandlerFactory
 import kotlinx.android.synthetic.main.toolbar.*
@@ -22,7 +21,10 @@ import com.core.BarcodeFormat
 import com.core.MultiFormatWriter
 
 import com.core.common.BitMatrix
+import com.qr.scanner.constant.PARSE_RESULT
 import com.qr.scanner.constant.RESULT
+import com.qr.scanner.extension.unsafeLazy
+import com.qr.scanner.model.ParsedResultType
 import com.qr.scanner.utils.saveImageToGallery
 import com.qr.scanner.utils.shareBitmap
 import java.io.File
@@ -33,7 +35,20 @@ import java.lang.NullPointerException
 
 
 class ViewQRcodeActivity : AppCompatActivity() {
-    private var result: Result? = null
+
+    companion object {
+        fun start(context: Context, result: com.qr.scanner.model.Result?) {
+            val intent = Intent(context, ViewQRcodeActivity::class.java).apply {
+                putExtra(PARSE_RESULT, result)
+            }
+            context.startActivity(intent)
+        }
+    }
+
+    private val result by unsafeLazy {
+        intent?.getSerializableExtra(PARSE_RESULT) as? com.qr.scanner.model.Result ?: throw IllegalArgumentException("No result passed")
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,35 +59,30 @@ class ViewQRcodeActivity : AppCompatActivity() {
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
         }
 
-        if (intent.extras != null) {
-            result = intent.getParcelableExtra(RESULT) as Result?
-        }
 
-        val resultHandler = ResultHandlerFactory.makeResultHandler(this, result)
-
-        when (resultHandler.type) {
+        when (result.parse) {
             ParsedResultType.WIFI -> {
                 toolbar?.title = "Wifi"
             }
             ParsedResultType.SMS -> {
                 toolbar?.title = "SMS"
             }
-            ParsedResultType.URI -> {
+            ParsedResultType.URL -> {
                 toolbar?.title = "Website"
             }
-            ParsedResultType.TEL -> {
+            ParsedResultType.PHONE -> {
                 toolbar?.title = "Phone"
             }
-            ParsedResultType.EMAIL_ADDRESS -> {
+            ParsedResultType.EMAIL -> {
                 toolbar?.title = "Email"
             }
-            ParsedResultType.ADDRESSBOOK -> {
+            ParsedResultType.VCARD -> {
                 toolbar?.title = "Contact"
             }
-            ParsedResultType.CALENDAR -> {
+            ParsedResultType.VEVENT -> {
                 toolbar?.title = "Calender"
             }
-            ParsedResultType.TEXT -> {
+            ParsedResultType.OTHER -> {
                 toolbar?.title = "Text"
             }
         }

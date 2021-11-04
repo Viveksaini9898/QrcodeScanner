@@ -46,7 +46,7 @@ class TextGenerateFragment : Fragment() {
                 isGenerated = true,
                 isFavorite = false
             )
-            viewModel?.insert(history)
+          //  viewModel?.insert(history)
             viewQrCodeActivity(requireContext(), result)
         }
     }

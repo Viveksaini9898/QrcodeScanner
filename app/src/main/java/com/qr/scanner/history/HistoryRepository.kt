@@ -3,12 +3,13 @@ package com.qr.scanner.history
 import android.app.Application
 import androidx.lifecycle.LiveData
 import com.qr.scanner.utils.subscribeOnBackground
+import com.qr.scanner.model.Result
 
 class HistoryRepository(application: Application) {
 
-    private var allHistory: LiveData<List<History>>? = null
-    private var favorites: LiveData<List<History>>? = null
-    private var generate: LiveData<List<History>>? = null
+    private var allHistory: LiveData<List<Result>>? = null
+    private var favorites: LiveData<List<Result>>? = null
+    private var generate: LiveData<List<Result>>? = null
 
     private val historyDao = HistoryDao?.getInstance(application)
 
@@ -18,39 +19,39 @@ class HistoryRepository(application: Application) {
         generate = historyDao.getGenerate()
     }
 
-    fun insert(history: History?) {
+    fun insert(result: Result?) {
         subscribeOnBackground {
-            historyDao.insert(history!!)
+            historyDao.insert(result!!)
         }
     }
 
-    fun delete(history: History?) {
+    fun delete(result: Result?) {
         subscribeOnBackground {
-            historyDao.delete(history!!)
+            historyDao.delete(result!!)
         }
     }
 
-    fun deleteAll(history: History?) {
+    fun deleteAll(result: Result?) {
         subscribeOnBackground {
             historyDao.deleteAllHistory()
         }
     }
 
-    fun getAllHistory(): LiveData<List<History>>? {
+    fun getAllHistory(): LiveData<List<Result>>? {
         return allHistory!!
     }
 
-    fun getFavorites(): LiveData<List<History>> {
+    fun getFavorites(): LiveData<List<Result>> {
         return favorites!!
     }
 
-    fun getGenerate(): LiveData<List<History>> {
+    fun getGenerate(): LiveData<List<Result>> {
         return generate!!
     }
 
-    fun update(history: History?) {
+    fun update(result: Result?) {
         subscribeOnBackground {
-            historyDao.update(history!!)
+            historyDao.update(result!!)
         }
     }
 

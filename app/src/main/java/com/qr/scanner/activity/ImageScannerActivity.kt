@@ -1,5 +1,6 @@
 package com.qr.scanner.activity
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
@@ -11,6 +12,7 @@ import com.core.*
 import com.core.common.HybridBinarizer
 import com.qr.scanner.R
 import androidx.lifecycle.ViewModelProvider
+import com.qr.scanner.constant.PARSE_RESULT
 import com.qr.scanner.extension.Toast.toast
 import com.qr.scanner.history.History
 import com.qr.scanner.viewmodel.HistoryViewModel
@@ -21,6 +23,12 @@ import java.lang.Exception
 
 class ImageScannerActivity : AppCompatActivity() {
 
+    companion object {
+        fun start(context: Context) {
+            val intent = Intent(context, ImageScannerActivity::class.java)
+            context.startActivity(intent)
+        }
+    }
 
     private val viewModel by lazy {
         ViewModelProvider(this).get(HistoryViewModel::class.java)
@@ -60,7 +68,7 @@ class ImageScannerActivity : AppCompatActivity() {
                     isGenerated = false,
                     isFavorite = false
                 )
-                viewModel?.insert(history)
+               // viewModel?.insert(history)
 
             } else {
                 toast(applicationContext, "Qr not found")

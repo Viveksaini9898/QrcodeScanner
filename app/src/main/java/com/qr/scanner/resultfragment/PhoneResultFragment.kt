@@ -5,27 +5,34 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.core.Result
-import com.core.client.result.TelParsedResult
 
 import com.qr.scanner.R
-import com.qr.scanner.constant.RESULT
+import com.qr.scanner.activity.ViewQRcodeActivity
+import com.qr.scanner.constant.PARSE_RESULT
+import com.qr.scanner.extension.unsafeLazy
 import com.qr.scanner.preference.UserPreferences
-import com.qr.scanner.result.ResultHandler
-import com.qr.scanner.result.ResultHandlerFactory
-import com.qr.scanner.utils.*
+import com.qr.scanner.result.ParsedResultHandler
+import com.qr.scanner.utils.addToContacts
+import com.qr.scanner.utils.copyContent
+import com.qr.scanner.utils.dialPhone
+import com.qr.scanner.utils.shareContent
+import kotlinx.android.synthetic.main.fragment_phone_result.*
 import kotlinx.android.synthetic.main.fragment_phone_result.view.*
 
 
 class PhoneResultFragment : Fragment() {
 
     private var userPreferences: UserPreferences? = null
-    private var result: Result? = null
+    private var result: com.qr.scanner.model.Result? = null
+
+    private val barcode by unsafeLazy {
+        ParsedResultHandler(result!!)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            result = it.getParcelable(RESULT)
+            result = it.getSerializable(PARSE_RESULT) as com.qr.scanner.model.Result?
         }
     }
 
@@ -33,57 +40,60 @@ class PhoneResultFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view: View? = inflater.inflate(R.layout.fragment_phone_result, container, false)
+        return inflater.inflate(R.layout.fragment_phone_result, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         userPreferences = UserPreferences(requireContext())
 
-        val resultHandler = ResultHandlerFactory.makeResultHandler(activity, result)
 
-        val telResult = resultHandler?.result as TelParsedResult?
 
         if (userPreferences?.autoCopy!!){
-            copyContent(requireContext(),telResult.toString())
+            copyContent(requireContext(),barcode.phone)
         }
 
-        if (telResult?.number != null && telResult?.number?.isNotEmpty()!!) {
-            view?.tvNumber?.text = telResult?.number
+        if (barcode.phone != null) {
+            tvNumber?.text = barcode.phone
         } else {
-            view?.tvNumber?.visibility = View.GONE
+            tvNumber?.visibility = View.GONE
         }
 
-        view?.shareLayout?.setOnClickListener {
-            shareContent(requireContext(), telResult.toString())
+        shareLayout?.setOnClickListener {
+            shareContent(requireContext(), barcode.phone)
         }
 
-        view?.copyLayout?.setOnClickListener {
-            copyContent(requireContext(), telResult.toString())
+        copyLayout?.setOnClickListener {
+            copyContent(requireContext(), barcode.phone)
         }
 
-        view?.callLayout?.setOnClickListener {
-            if (telResult?.number != null && telResult?.number?.isNotEmpty()!!) {
-                dialPhone(telResult?.number, requireContext())
+        callLayout?.setOnClickListener {
+            if (barcode.phone != null && barcode.phone.isNullOrEmpty()) {
+                dialPhone(barcode.phone, requireContext())
             }
         }
-        view?.addContactLayout?.setOnClickListener {
-            if (telResult?.number != null && telResult?.number?.isNotEmpty()!!) {
-                resultHandler.addPhoneOnlyContact(arrayOf(telResult.number),null)
-            }
+        addContactLayout?.setOnClickListener {
+            addToContacts(requireContext(),barcode)
         }
 
-        view?.viewQrcode?.setOnClickListener {
-            viewQrCodeActivity(requireContext(), result)
+        viewQrcode?.setOnClickListener {
+            ViewQRcodeActivity.start(requireContext(), result!!)
         }
 
-        return view
     }
 
     companion object {
         @JvmStatic
-        fun newInstance(result: Result?) =
+        fun newInstance(result: com.qr.scanner.model.Result) =
             PhoneResultFragment().apply {
                 arguments = Bundle().apply {
-                    putParcelable(RESULT, result)
+                    putSerializable(PARSE_RESULT, result)
                 }
             }
     }
+
+
+
+
 }

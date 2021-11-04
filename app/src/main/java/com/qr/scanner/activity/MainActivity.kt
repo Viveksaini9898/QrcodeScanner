@@ -20,7 +20,6 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setWindowColors()
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
             != PackageManager.PERMISSION_GRANTED
@@ -88,6 +87,6 @@ class MainActivity : BaseActivity() {
     }
 
     private fun loadScannerFragment() {
-        ScannerFragment().loadFragment(this, R.id.container)
+        ScanBarcodeFromCameraFragment().loadFragment(this, R.id.container)
     }
 }

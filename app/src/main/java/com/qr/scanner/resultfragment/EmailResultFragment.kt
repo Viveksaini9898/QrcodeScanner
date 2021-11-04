@@ -5,27 +5,31 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.core.Result
-import com.core.client.result.EmailAddressParsedResult
-import com.core.client.result.ParsedResultType
-import com.core.client.result.SMSParsedResult
 import com.qr.scanner.R
-import com.qr.scanner.constant.RESULT
+import com.qr.scanner.activity.ViewQRcodeActivity
+import com.qr.scanner.constant.PARSE_RESULT
+import com.qr.scanner.extension.unsafeLazy
 import com.qr.scanner.preference.UserPreferences
-import com.qr.scanner.result.ResultHandlerFactory
-import com.qr.scanner.utils.*
+import com.qr.scanner.result.ParsedResultHandler
+import com.qr.scanner.utils.copyContent
+import com.qr.scanner.utils.sendEmail
+import com.qr.scanner.utils.shareContent
+import kotlinx.android.synthetic.main.fragment_email_result.*
 import kotlinx.android.synthetic.main.fragment_email_result.view.*
 
 class EmailResultFragment : Fragment() {
 
     private var userPreferences: UserPreferences? = null
-    private var result: Result? = null
+    private var result: com.qr.scanner.model.Result? = null
 
+    private val barcode by unsafeLazy {
+        ParsedResultHandler(result!!)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            result = it.getParcelable(RESULT)
+            result = it.getSerializable(PARSE_RESULT) as com.qr.scanner.model.Result?
         }
     }
 
@@ -33,67 +37,62 @@ class EmailResultFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view: View? = inflater.inflate(R.layout.fragment_email_result, container, false)
+        
+        return inflater.inflate(R.layout.fragment_email_result, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         userPreferences = UserPreferences(requireContext())
 
-        val resultHandler = ResultHandlerFactory.makeResultHandler(activity, result)
 
-        val emailResult = resultHandler.result as EmailAddressParsedResult?
-
-        if (userPreferences?.autoCopy!!){
-            copyContent(requireContext(),emailResult.toString())
+        if (userPreferences?.autoCopy!!) {
+            copyContent(requireContext(), barcode.text)
         }
-        if (emailResult?.emailAddress != null && emailResult?.emailAddress?.isNotEmpty()!!) {
-            view?.tvEmail?.text = emailResult?.emailAddress
+        if (barcode.email != null && barcode.email.isNullOrEmpty()) {
+            tvEmail?.text = barcode.email
         } else {
-            view?.tvEmail?.visibility = View.GONE
+            tvEmail?.visibility = View.GONE
         }
-        if (emailResult?.body != null && emailResult?.body?.isNotEmpty()!!) {
-            view?.tvBody?.text = emailResult?.body
+        if (barcode.emailBody != null && barcode.emailBody.isNullOrEmpty()) {
+            tvBody?.text = barcode.emailBody
         } else {
-            view?.tvBody?.visibility = View.GONE
+            tvBody?.visibility = View.GONE
         }
-        if (emailResult?.subject != null && emailResult?.subject?.isNotEmpty()!!) {
-            view?.tvSubject?.text = emailResult?.subject
+        if (barcode?.emailSubject != null && barcode?.emailSubject.isNullOrEmpty()) {
+            tvSubject?.text = barcode?.emailSubject
         } else {
-            view?.tvSubject?.visibility = View.GONE
+            tvSubject?.visibility = View.GONE
         }
 
-        view?.sendLayout?.setOnClickListener {
-            resultHandler?.sendEmail(
-                arrayOf(emailResult?.emailAddress),
-                null,
-                null,
-                emailResult?.subject,
-                emailResult?.body
-            )
+        sendLayout?.setOnClickListener {
+            sendEmail(requireContext(),barcode.email,barcode.emailSubject.orEmpty(),barcode.emailBody.orEmpty())
         }
 
-        view?.shareLayout?.setOnClickListener {
-            shareContent(requireContext(), emailResult.toString())
+        shareLayout?.setOnClickListener {
+            shareContent(requireContext(), barcode.text)
         }
 
-        view?.copyLayout?.setOnClickListener {
-            copyContent(requireContext(), emailResult.toString())
+        copyLayout?.setOnClickListener {
+            copyContent(requireContext(), barcode.text)
         }
-        view?.copyMessageLayout?.setOnClickListener {
-            copyContent(requireContext(), emailResult?.body)
-        }
-
-        view?.viewQrcode?.setOnClickListener {
-            viewQrCodeActivity(requireContext(), result)
+        copyMessageLayout?.setOnClickListener {
+            copyContent(requireContext(), barcode?.emailBody)
         }
 
-        return view
+        viewQrcode?.setOnClickListener {
+            ViewQRcodeActivity.start(requireContext(), result!!)
+        }
+
     }
 
     companion object {
         @JvmStatic
-        fun newInstance(result: Result?) =
+        fun newInstance(result: com.qr.scanner.model.Result) =
             EmailResultFragment().apply {
                 arguments = Bundle().apply {
-                    putParcelable(RESULT, result)
+                    putSerializable(PARSE_RESULT, result)
                 }
             }
     }

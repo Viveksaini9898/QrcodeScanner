@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.room.*
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.qr.scanner.model.Result
 
 @Dao
 interface HistoryDao {
@@ -13,10 +14,10 @@ interface HistoryDao {
         private var INSTANCE: HistoryDao? = null
         fun getInstance(context: Context): HistoryDao {
             return INSTANCE ?: Room
-                .databaseBuilder(context.applicationContext, HistoryDataBase::class.java, "history_db")
+                .databaseBuilder(context.applicationContext, HistoryDataBase::class.java, "result_db")
                 .addMigrations(object : Migration(1, 2) {
                     override fun migrate(database: SupportSQLiteDatabase) {
-                        database.execSQL("ALTER TABLE History ADD COLUMN name TEXT")
+                        database.execSQL("ALTER TABLE Result ADD COLUMN name TEXT")
                     }
                 }).allowMainThreadQueries()
                 .build()
@@ -28,24 +29,24 @@ interface HistoryDao {
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(history: History)
+    fun insert(result: Result)
 
     @Update
-    fun update(history: History)
+    fun update(result: Result)
 
     @Delete
-    fun delete(history: History)
+    fun delete(result: Result)
 
-    @Query("delete from History")
+    @Query("delete from results")
     fun deleteAllHistory()
 
-    @Query("select * from History ORDER BY timestamp DESC")
-    fun getAllHistory(): LiveData<List<History>>
+    @Query("select * from results ORDER BY date DESC")
+    fun getAllHistory(): LiveData<List<Result>>
 
-    @Query("SELECT * FROM History WHERE isFavorite = 1 ORDER BY timestamp DESC")
-    fun getFavorites(): LiveData<List<History>>
+    @Query("SELECT * FROM results WHERE isFavorite = 1 ORDER BY date DESC")
+    fun getFavorites(): LiveData<List<Result>>
 
-    @Query("SELECT * FROM History WHERE isGenerated = 1 ORDER BY timestamp DESC")
-    fun getGenerate(): LiveData<List<History>>
+    @Query("SELECT * FROM results WHERE isGenerated = 1 ORDER BY date DESC")
+    fun getGenerate(): LiveData<List<Result>>
 
 }

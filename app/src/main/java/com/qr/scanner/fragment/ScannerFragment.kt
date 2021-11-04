@@ -194,7 +194,7 @@ class ScannerFragment : Fragment(),
             isGenerated = false,
             isFavorite = true
         )
-        viewModel.insert(history)
+       // viewModel.insert(history)
         val resultHandler = ResultHandlerFactory.makeResultHandler(activity, result)
         if (resultHandler.type == ParsedResultType.PRODUCT){
             val productResult = resultHandler?.result as ProductParsedResult

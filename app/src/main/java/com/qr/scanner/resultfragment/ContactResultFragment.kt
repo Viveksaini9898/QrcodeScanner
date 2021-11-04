@@ -5,26 +5,30 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.core.Result
-import com.core.client.result.AddressBookParsedResult
-import com.core.client.result.EmailAddressParsedResult
 import com.qr.scanner.R
-import com.qr.scanner.constant.RESULT
+import com.qr.scanner.activity.ViewQRcodeActivity
+import com.qr.scanner.constant.PARSE_RESULT
+import com.qr.scanner.extension.unsafeLazy
 import com.qr.scanner.preference.UserPreferences
-import com.qr.scanner.result.ResultHandlerFactory
+import com.qr.scanner.result.ParsedResultHandler
 import com.qr.scanner.utils.*
+import kotlinx.android.synthetic.main.fragment_contact_result.*
 import kotlinx.android.synthetic.main.fragment_contact_result.view.*
 
 class ContactResultFragment : Fragment() {
 
 
     private var userPreferences: UserPreferences? = null
-    private var result: Result? = null
+    private var result: com.qr.scanner.model.Result? = null
+
+    private val barcode by unsafeLazy {
+        ParsedResultHandler(result!!)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            result = it.getParcelable(RESULT)
+            result = it.getSerializable(PARSE_RESULT) as com.qr.scanner.model.Result?
         }
     }
 
@@ -32,145 +36,108 @@ class ContactResultFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        return inflater.inflate(R.layout.fragment_contact_result, container, false)
+    }
 
-        val view: View = inflater.inflate(R.layout.fragment_contact_result, container, false)
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         userPreferences = UserPreferences(requireContext())
 
-        val resultHandler = ResultHandlerFactory.makeResultHandler(activity, result)
+        if (userPreferences?.autoCopy!!) {
+            copyContent(requireContext(), barcode.text)
+        }
+        val fullName = "${barcode.firstName.orEmpty()} ${barcode.lastName.orEmpty()}"
 
-        val contactResult = resultHandler.result as AddressBookParsedResult?
+        if (fullName.isNullOrEmpty().not()) {
+            tvName?.text = fullName
+        } else {
+            tvName?.visibility = View.GONE
+        }
+        if ((barcode?.organization.isNullOrEmpty().not()) && (barcode.jobTitle.isNullOrEmpty()
+                .not())
+        ) {
+            tvOrg?.text = "${barcode.organization.orEmpty()} ${barcode.jobTitle.orEmpty()}"
+        } else {
+            tvOrg?.visibility = View.GONE
+        }
+        if (barcode.url.isNullOrEmpty().not()) {
+            tvWebsite?.text = barcode.url
+        } else {
+            websiteLayout?.visibility = View.GONE
+        }
 
-        if (userPreferences?.autoCopy!!){
-            copyContent(requireContext(),contactResult.toString())
-        }
-        if (contactResult?.names != null && contactResult?.names?.isNotEmpty()!!) {
-            view?.tvName?.text = contactResult?.names[0]
+        if (barcode.phone.isNullOrEmpty().not()) {
+            numberLayout?.visibility = View.VISIBLE
+            tvNumber?.text = barcode.phone
         } else {
-            view?.tvName?.visibility = View.GONE
+            tvNumber?.visibility = View.GONE
         }
-        if ((contactResult?.org != null && contactResult?.org?.isNotEmpty()!!) && (contactResult?.title != null && contactResult?.title.isNotEmpty()!!)) {
-            view?.tvOrg?.text = contactResult?.org + " , " + contactResult?.title
+
+        if (barcode.secondaryPhone.isNullOrEmpty().not()) {
+            numberLayout1?.visibility = View.VISIBLE
+            tvNumber1?.text = barcode.secondaryPhone
         } else {
-            view?.tvOrg?.visibility = View.GONE
+            tvNumber1?.visibility = View.GONE
         }
-        if (contactResult?.urLs != null && contactResult?.urLs?.isNotEmpty()!!) {
-            view?.tvWebsite?.text = contactResult?.urLs[0]
+        if (barcode.tertiaryPhone.isNullOrEmpty().not()) {
+            numberLayout2?.visibility = View.VISIBLE
+            tvNumber2?.text = barcode.tertiaryPhone
         } else {
-            view?.websiteLayout?.visibility = View.GONE
+            tvNumber2?.visibility = View.GONE
         }
-        if (contactResult?.phoneNumbers != null && contactResult?.phoneNumbers?.isNotEmpty()!!) {
-            for (number in contactResult?.phoneNumbers.indices) {
-                when (number) {
-                    0 -> {
-                        if (number != null) {
-                            view?.numberLayout?.visibility = View.VISIBLE
-                            view?.tvNumber?.text = contactResult?.phoneNumbers[number]
-                        }
-                    }
-                    1 -> {
-                        if (number != null) {
-                            view?.numberLayout1?.visibility = View.VISIBLE
-                            view?.tvNumber1?.text = contactResult?.phoneNumbers[number]
-                        }
-                    }
-                    2 -> {
-                        if (number != null) {
-                            view?.numberLayout2?.visibility = View.VISIBLE
-                            view?.tvNumber2?.text = contactResult?.phoneNumbers[number]
-                        }
-                    }
-                    3 -> {
-                        if (number != null) {
-                            view?.numberLayout3?.visibility = View.VISIBLE
-                            view?.tvNumber3?.text = contactResult?.phoneNumbers[number]
-                        }
-                    }
-                    4 -> {
-                        if (number != null) {
-                            view?.numberLayout4?.visibility = View.VISIBLE
-                            view?.tvNumber4?.text = contactResult?.phoneNumbers[number]
-                        }
-                    }
-                }
+
+        if (barcode?.email.isNullOrEmpty().not()) {
+            tvEmail?.text = barcode.email
+        } else {
+            emailLayout?.visibility = View.GONE
+            sendEmailLayout?.visibility = View.GONE
+        }
+        if (barcode.address.isNullOrEmpty().not()) {
+            tvAddress?.text = barcode.address
+        } else {
+            addressLayout?.visibility = View.GONE
+            mapLayout?.visibility = View.GONE
+        }
+
+        shareLayout?.setOnClickListener {
+            shareContent(requireContext(), barcode.text)
+        }
+
+        copyLayout?.setOnClickListener {
+            copyContent(requireContext(), barcode.text)
+        }
+
+        callLayout?.setOnClickListener {
+            if (barcode.phone.isNullOrEmpty().not()) {
+                callPhone(requireContext(), barcode.phone)
             }
         }
-        if (contactResult?.emails != null && contactResult?.emails?.isNotEmpty()!!) {
-            view?.tvEmail?.text = contactResult?.emails[0]
-        } else {
-            view?.emailLayout?.visibility = View.GONE
+        sendEmailLayout?.setOnClickListener {
+            sendEmail(requireContext(),barcode.email,null,null)
         }
-        if (contactResult?.addresses != null && contactResult?.addresses?.isNotEmpty()!!) {
-            view?.tvAddress?.text = contactResult?.addresses[0].replace("\n", " ")
-        } else {
-            view?.addressLayout?.visibility = View.GONE
-            view?.mapLayout?.visibility = View.GONE
+        mapLayout?.setOnClickListener {
+            //   resultHandler?.searchMap(contactResult?.addresses!![0])
         }
 
-        view?.shareLayout?.setOnClickListener {
-            shareContent(requireContext(), contactResult.toString())
+        sendMessageLayout?.setOnClickListener {
+            sendSMS(barcode.phone!!, requireContext())
+        }
+        addContactLayout?.setOnClickListener {
+            addToContacts(requireContext(), barcode)
         }
 
-        view?.copyLayout?.setOnClickListener {
-            copyContent(requireContext(), contactResult.toString())
+        viewQrcode?.setOnClickListener {
+            ViewQRcodeActivity.start(requireContext(), result!!)
         }
 
-        view?.callLayout?.setOnClickListener {
-            if (contactResult?.phoneNumbers != null && contactResult?.phoneNumbers?.isNotEmpty()!!) {
-                dialPhone(contactResult?.phoneNumbers[0], requireContext())
-            }
-        }
-        view?.sendEmailLayout?.setOnClickListener {
-            resultHandler?.sendEmail(contactResult?.emails, null, null, null, null)
-        }
-        view?.mapLayout?.setOnClickListener {
-            resultHandler?.searchMap(contactResult?.addresses!![0])
-        }
-
-        view?.sendMessageLayout?.setOnClickListener {
-            resultHandler?.sendSMS(contactResult?.phoneNumbers!![0], null)
-        }
-        view?.addContactLayout?.setOnClickListener {
-            if (contactResult != null) {
-                val addresses: Array<String>? = contactResult?.addresses
-                val address1 = if (addresses == null || addresses.isEmpty()) null else addresses[0]
-                val addressTypes: Array<String>? = contactResult?.addressTypes
-                val address1Type =
-                    if (addressTypes == null || addressTypes.isEmpty()) null else addressTypes[0]
-                resultHandler.addContact(
-                    contactResult?.names,
-                    contactResult?.nicknames,
-                    contactResult?.pronunciation,
-                    contactResult?.phoneNumbers,
-                    contactResult?.phoneTypes,
-                    contactResult?.emails,
-                    contactResult?.emailTypes,
-                    contactResult?.note,
-                    contactResult?.instantMessenger,
-                    address1,
-                    address1Type,
-                    contactResult?.org,
-                    contactResult?.title,
-                    contactResult?.urLs,
-                    contactResult?.birthday,
-                    contactResult?.geo
-                )
-            }
-        }
-
-        view?.viewQrcode?.setOnClickListener {
-            viewQrCodeActivity(requireContext(), result)
-        }
-
-        return view
     }
 
     companion object {
         @JvmStatic
-        fun newInstance(result: Result?) =
+        fun newInstance(result: com.qr.scanner.model.Result) =
             ContactResultFragment().apply {
                 arguments = Bundle().apply {
-                    putParcelable(RESULT, result)
+                    putSerializable(PARSE_RESULT, result)
                 }
             }
     }

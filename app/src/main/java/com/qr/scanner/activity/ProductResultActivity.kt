@@ -38,7 +38,7 @@ class ProductResultActivity : AppCompatActivity() {
             copyContent(applicationContext,product)
         }
 
-        if (product != null && product?.isNotEmpty()!!) {
+        if (product != null && product.isNullOrEmpty()) {
             text?.text = product
         } else {
             text?.text = "Not Found"

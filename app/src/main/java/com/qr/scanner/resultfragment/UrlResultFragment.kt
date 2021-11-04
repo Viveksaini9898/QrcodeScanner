@@ -5,26 +5,30 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.core.Result
-import com.core.client.result.URIParsedResult
 import com.qr.scanner.R
-import com.qr.scanner.constant.RESULT
+import com.qr.scanner.activity.ViewQRcodeActivity
+import com.qr.scanner.constant.PARSE_RESULT
+import com.qr.scanner.extension.unsafeLazy
 import com.qr.scanner.preference.UserPreferences
-import com.qr.scanner.result.ResultHandlerFactory
+import com.qr.scanner.result.ParsedResultHandler
 import com.qr.scanner.utils.*
+import kotlinx.android.synthetic.main.fragment_url_result.*
 import kotlinx.android.synthetic.main.fragment_url_result.view.*
 
 
 class UrlResultFragment : Fragment() {
 
     private var userPreferences: UserPreferences? = null
-    private var resultData: String? = null
-    private var result: Result? = null
+    private var result: com.qr.scanner.model.Result? = null
+
+    private val barcode by unsafeLazy {
+        ParsedResultHandler(result!!)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            result = it.getParcelable(RESULT)
+            result = it.getSerializable(PARSE_RESULT) as com.qr.scanner.model.Result?
         }
     }
 
@@ -32,75 +36,72 @@ class UrlResultFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view: View? = inflater.inflate(R.layout.fragment_url_result, container, false)
+        return inflater.inflate(R.layout.fragment_url_result, container, false)
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         userPreferences = UserPreferences(requireContext())
 
-        val resultHandler = ResultHandlerFactory.makeResultHandler(activity, result)
-
-        val urlResult = resultHandler?.result as URIParsedResult
-
         if (userPreferences?.autoCopy!!){
-            copyContent(requireContext(),urlResult.toString())
-        }
-        view?.openLinkLayout?.visibility = View.VISIBLE
-        if (urlResult?.uri != null && urlResult?.uri?.isNotEmpty()!!) {
-            view?.text?.text = urlResult.uri
-            resultData = urlResult.uri
-        }else {
-            view?.text?.text = "None"
+            copyContent(requireContext(),barcode.url)
         }
 
-        if (urlResult?.title != null && urlResult?.title?.isNotEmpty()!!) {
-            view?.title?.text = urlResult.title
+        if (barcode.url.isNullOrEmpty().not()) {
+            text?.text = barcode.url
         }else {
-            view?.title?.visibility = View.GONE
+            text?.text = "None"
+        }
+
+        if (barcode.bookmarkTitle.isNullOrEmpty().not()) {
+            title?.text = barcode.bookmarkTitle
+        }else {
+            title?.visibility = View.GONE
         }
 
         when {
-            isYoutubeUrl(resultData) -> {
-                view?.topImage?.setImageResource(R.drawable.ic_youtube)
+            isYoutubeUrl(barcode.url) -> {
+                topImage?.setImageResource(R.drawable.ic_youtube)
             }
-            isTwitterUrl(resultData) -> {
-                view?.topImage?.setImageResource(R.drawable.ic_twitter)
+            isTwitterUrl(barcode.url) -> {
+                topImage?.setImageResource(R.drawable.ic_twitter)
             }
-            isFacebookUrl(resultData) -> {
-                view?.topImage?.setImageResource(R.drawable.ic_facebook)
+            isFacebookUrl(barcode.url) -> {
+                topImage?.setImageResource(R.drawable.ic_facebook)
             }
-            isInstagramUrl(resultData) -> {
-                view?.topImage?.setImageResource(R.drawable.ic_instagram)
+            isInstagramUrl(barcode.url) -> {
+                topImage?.setImageResource(R.drawable.ic_instagram)
             }
             else -> {
-                view?.topImage?.setImageResource(R.drawable.ic_link_black_24dp)
+                topImage?.setImageResource(R.drawable.ic_link_black_24dp)
             }
         }
 
 
-        view?.shareLayout?.setOnClickListener {
-            shareContent(requireContext(), urlResult?.toString())
+        shareLayout?.setOnClickListener {
+            shareContent(requireContext(), barcode.text)
         }
 
-        view?.copyLayout?.setOnClickListener {
-            copyContent(requireContext(), urlResult?.toString())
+        copyLayout?.setOnClickListener {
+            copyContent(requireContext(), barcode.text)
         }
 
-        view?.openLinkLayout?.setOnClickListener {
-            searchContent(requireContext(), resultData)
+        openLinkLayout?.setOnClickListener {
+            searchContent(requireContext(), barcode.url)
         }
 
-        view?.viewQrcode?.setOnClickListener {
-            viewQrCodeActivity(requireContext(), result)
+        viewQrcode?.setOnClickListener {
+              ViewQRcodeActivity.start(requireContext(), result!!)
         }
 
-        return view
     }
 
     companion object {
         @JvmStatic
-        fun newInstance(result: Result?) =
+        fun newInstance(result: com.qr.scanner.model.Result) =
             UrlResultFragment().apply {
                 arguments = Bundle().apply {
-                    putParcelable(RESULT, result)
+                    putSerializable(PARSE_RESULT, result)
                 }
             }
     }

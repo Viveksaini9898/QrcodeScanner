@@ -2,35 +2,37 @@ package com.qr.scanner.resultfragment
 
 import android.content.Context
 import android.net.wifi.WifiManager
-import android.os.AsyncTask
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.core.Result
-import com.core.client.result.WifiParsedResult
 import com.qr.scanner.R
+import com.qr.scanner.activity.ViewQRcodeActivity
+import com.qr.scanner.constant.PARSE_RESULT
+import com.qr.scanner.extension.unsafeLazy
 import com.qr.scanner.preference.UserPreferences
-import com.qr.scanner.result.ResultHandlerFactory
+import com.qr.scanner.result.ParsedResultHandler
 import com.qr.scanner.utils.copyContent
 import com.qr.scanner.utils.shareContent
-import com.qr.scanner.utils.viewQrCodeActivity
-import com.qr.scanner.wifi.WifiConfigManager
+import kotlinx.android.synthetic.main.fragment_wifi_result.*
 import kotlinx.android.synthetic.main.fragment_wifi_result.view.*
 
 
 class WifiResultFragment : Fragment() {
 
     private var userPreferences: UserPreferences? = null
-    private var wifiResult: WifiParsedResult? = null
-    private var result: Result? = null
+    private var result: com.qr.scanner.model.Result? = null
+
+    private val barcode by unsafeLazy {
+        ParsedResultHandler(result!!)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            result = it.getParcelable("result")
+            result = it.getSerializable(PARSE_RESULT) as com.qr.scanner.model.Result?
         }
     }
 
@@ -38,106 +40,103 @@ class WifiResultFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view: View? = inflater.inflate(R.layout.fragment_wifi_result, container, false)
+        return inflater.inflate(R.layout.fragment_wifi_result, container, false)
+    }
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         userPreferences = UserPreferences(requireContext())
 
-        val resultHandler = ResultHandlerFactory.makeResultHandler(activity, result)
-
-        wifiResult = resultHandler?.result as WifiParsedResult?
-
-        if (userPreferences?.autoCopy!!){
-            copyContent(requireContext(),wifiResult.toString())
+        if (userPreferences?.autoCopy!!) {
+            copyContent(requireContext(), barcode.text)
         }
 
-        if (wifiResult?.ssid != null && wifiResult?.ssid?.isNotEmpty()!!) {
-            view?.ssidLayout?.visibility = View.VISIBLE
-            view?.ssid?.text = wifiResult?.ssid
+        if (!barcode.networkName.isNullOrEmpty()) {
+            ssidLayout?.visibility = View.VISIBLE
+            ssid?.text = barcode.networkName
         } else {
-            view?.ssidLayout?.visibility = View.GONE
+            ssidLayout?.visibility = View.GONE
         }
-        if (wifiResult?.password != null && wifiResult?.password?.isNotEmpty()!!) {
-            view?.passwordLayout?.visibility = View.VISIBLE
-            view?.password?.text = wifiResult?.password
+        if (!barcode?.networkPassword.isNullOrEmpty()) {
+            passwordLayout?.visibility = View.VISIBLE
+            password?.text = barcode?.networkPassword
         } else {
-            view?.passwordLayout?.visibility = View.VISIBLE
+            passwordLayout?.visibility = View.VISIBLE
         }
-        if (wifiResult?.identity != null && wifiResult?.identity?.isNotEmpty()!!) {
-            view?.identityLayout?.visibility = View.VISIBLE
-            view?.identity?.text = wifiResult?.identity
+        if (!barcode.identity.isNullOrEmpty()) {
+            identityLayout?.visibility = View.VISIBLE
+            identity?.text = barcode.identity
         } else {
-            view?.identityLayout?.visibility = View.GONE
+            identityLayout?.visibility = View.GONE
 
         }
-        if (wifiResult?.isHidden != null) {
-            view?.hiddenLayout?.visibility = View.VISIBLE
-            if (wifiResult?.isHidden!!) {
-                view?.hidden?.text = "Yes"
+        if (barcode?.isHidden != null) {
+            hiddenLayout?.visibility = View.VISIBLE
+            if (barcode?.isHidden!!) {
+                hidden?.text = "Yes"
             } else {
-                view?.hidden?.text = "No"
+                hidden?.text = "No"
             }
         } else {
-            view?.hiddenLayout?.visibility = View.GONE
+            hiddenLayout?.visibility = View.GONE
         }
-        if (wifiResult?.anonymousIdentity != null && wifiResult?.anonymousIdentity?.isNotEmpty()!!) {
-            view?.anonymousLayout?.visibility = View.VISIBLE
-            view?.anonymous?.text = wifiResult?.anonymousIdentity
+        if (!barcode?.anonymousIdentity.isNullOrEmpty()) {
+            anonymousLayout?.visibility = View.VISIBLE
+            anonymous?.text = barcode?.anonymousIdentity
         } else {
-            view?.anonymousLayout?.visibility = View.GONE
+            anonymousLayout?.visibility = View.GONE
         }
-        if (wifiResult?.networkEncryption != null && wifiResult?.networkEncryption?.isNotEmpty()!!) {
-            view?.networkEncryptionLayout?.visibility = View.VISIBLE
-            view?.networkEncryption?.text = wifiResult?.networkEncryption
+        if (!barcode?.networkAuthType.isNullOrEmpty()) {
+            networkEncryptionLayout?.visibility = View.VISIBLE
+            networkEncryption?.text = barcode?.networkAuthType
         } else {
-            view?.networkEncryptionLayout?.visibility = View.GONE
+            networkEncryptionLayout?.visibility = View.GONE
         }
-        // view?.eapMethod?.text = wifiResult?.eapMethod
-        // view?.phase2Method?.text = wifiResult?.phase2Method
+        // eapMethod?.text = wifiResult?.eapMethod
+        // phase2Method?.text = wifiResult?.phase2Method
 
-        view?.connectLayout?.setOnClickListener {
+        connectLayout?.setOnClickListener {
             connectWifi()
         }
-        view?.copyLayout?.setOnClickListener {
-            copyContent(requireContext(), wifiResult.toString())
+        copyLayout?.setOnClickListener {
+            copyContent(requireContext(), barcode.text)
         }
-        view?.copyPasswordLayout?.setOnClickListener {
-            copyContent(requireContext(), wifiResult?.password)
-        }
-
-        view?.viewQrcode?.setOnClickListener {
-            viewQrCodeActivity(requireContext(), result)
-
-        }
-        view?.shareLayout?.setOnClickListener {
-            shareContent(requireContext(), wifiResult.toString())
-
+        copyPasswordLayout?.setOnClickListener {
+            copyContent(requireContext(), barcode?.networkPassword)
         }
 
+        viewQrcode?.setOnClickListener {
+            ViewQRcodeActivity.start(requireContext(), result!!)
 
-        return view
+        }
+        shareLayout?.setOnClickListener {
+            shareContent(requireContext(), barcode.text)
+        }
+
+
     }
 
     private fun connectWifi() {
         val wifiManager =
             activity?.applicationContext?.getSystemService(Context.WIFI_SERVICE) as WifiManager
-        if (wifiManager == null) {
-            return
-        }
+                ?: return
         Toast.makeText(
             requireActivity()?.applicationContext,
             R.string.wifi_changing_network,
             Toast.LENGTH_SHORT
         ).show()
-        WifiConfigManager(wifiManager).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, wifiResult)
+        //  WifiConfigManager(wifiManager).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, wifiResult)
     }
 
 
     companion object {
         @JvmStatic
-        fun newInstance(result: Result) =
+        fun newInstance(result: com.qr.scanner.model.Result?) =
             WifiResultFragment().apply {
                 arguments = Bundle().apply {
-                    putParcelable("result", result)
+                    putSerializable(PARSE_RESULT, result)
                 }
             }
     }

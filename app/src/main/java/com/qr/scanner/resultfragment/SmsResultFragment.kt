@@ -1,30 +1,36 @@
 package com.qr.scanner.resultfragment
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.core.Result
-import com.core.client.result.ParsedResultType
-import com.core.client.result.SMSParsedResult
 import com.qr.scanner.R
-import com.qr.scanner.constant.RESULT
+import com.qr.scanner.activity.ViewQRcodeActivity
+import com.qr.scanner.constant.PARSE_RESULT
+import com.qr.scanner.extension.unsafeLazy
 import com.qr.scanner.preference.UserPreferences
-import com.qr.scanner.result.ResultHandlerFactory
+import com.qr.scanner.result.ParsedResultHandler
 import com.qr.scanner.utils.*
+import kotlinx.android.synthetic.main.fragment_sms_result_fragmet.*
 import kotlinx.android.synthetic.main.fragment_sms_result_fragmet.view.*
 
 class SmsResultFragment : Fragment() {
 
     private var userPreferences: UserPreferences? = null
-    private var result: Result? = null
+    private var result: com.qr.scanner.model.Result? = null
+
+    private val barcode by unsafeLazy {
+        ParsedResultHandler(result!!)
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            result = it.getParcelable(RESULT)
+            result = it.getSerializable(PARSE_RESULT) as com.qr.scanner.model.Result?
         }
     }
 
@@ -32,58 +38,62 @@ class SmsResultFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view: View? = inflater.inflate(R.layout.fragment_sms_result_fragmet, container, false)
+        return inflater.inflate(R.layout.fragment_sms_result_fragmet, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         userPreferences = UserPreferences(requireContext())
 
-        val resultHandler = ResultHandlerFactory.makeResultHandler(activity, result)
-
-        val smsResult = resultHandler.result as SMSParsedResult?
 
         if (userPreferences?.autoCopy!!){
-            copyContent(requireContext(),smsResult.toString())
+            copyContent(requireContext(),barcode.text)
         }
-        if (smsResult?.numbers != null && smsResult?.numbers?.get(0)?.isNotEmpty()!!) {
-            view?.tvNumber?.text = smsResult?.numbers?.get(0)
+        if (barcode.phone.isNullOrEmpty().not()) {
+            tvNumber?.text = barcode.phone
         } else {
-            view?.tvNumber?.visibility = View.GONE
+            tvNumber?.visibility = View.GONE
         }
-        if (smsResult?.body != null && smsResult?.body?.isNotEmpty()!!) {
-            view?.tvBody?.text = smsResult?.body
+        if (barcode?.smsBody.isNullOrEmpty().not()) {
+            tvBody?.text = barcode.smsBody
         } else {
-            view?.tvBody?.visibility = View.GONE
-        }
-        if (smsResult?.subject != null && smsResult?.subject?.isNotEmpty()!!) {
-            view?.tvSubject?.text = smsResult?.subject
-        } else {
-            view?.tvSubject?.visibility = View.GONE
+            tvBody?.visibility = View.GONE
         }
 
-        view?.sendLayout?.setOnClickListener {
-            sendSMS(smsResult?.numbers?.get(0)!!,smsResult?.body,context)
+        sendLayout?.setOnClickListener {
+            sendSmsOrMms(barcode.phone)
         }
 
-        view?.shareLayout?.setOnClickListener {
-            shareContent(requireContext(), smsResult.toString())
+        shareLayout?.setOnClickListener {
+            shareContent(requireContext(), barcode.text)
         }
 
-        view?.copyLayout?.setOnClickListener {
-            copyContent(requireContext(), smsResult.toString())
+        copyLayout?.setOnClickListener {
+            copyContent(requireContext(), barcode.text)
         }
 
-        view?.viewQrcode?.setOnClickListener {
-            viewQrCodeActivity(requireContext(), result)
+        viewQrcode?.setOnClickListener {
+            ViewQRcodeActivity.start(requireContext(), result!!)
         }
 
-        return view
+    }
+    
+    
+    private fun sendSmsOrMms(phone: String?) {
+        val uri = Uri.parse("sms:${phone.orEmpty()}")
+        val intent = Intent(Intent.ACTION_SENDTO, uri).apply {
+            putExtra("sms_body", barcode.smsBody.orEmpty())
+        }
+        startActivityIfExists(requireContext(),intent)
     }
 
     companion object {
         @JvmStatic
-        fun newInstance(result: Result?) =
+        fun newInstance(result: com.qr.scanner.model.Result) =
             SmsResultFragment().apply {
                 arguments = Bundle().apply {
-                    putParcelable(RESULT, result)
+                    putSerializable(PARSE_RESULT, result)
                 }
             }
     }

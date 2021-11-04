@@ -5,26 +5,28 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.core.Result
-import com.core.client.result.TextParsedResult
 import com.qr.scanner.R
-import com.qr.scanner.constant.RESULT
+import com.qr.scanner.activity.ViewQRcodeActivity
+import com.qr.scanner.constant.PARSE_RESULT
+import com.qr.scanner.extension.unsafeLazy
 import com.qr.scanner.preference.UserPreferences
-import com.qr.scanner.result.ResultHandlerFactory
+import com.qr.scanner.result.ParsedResultHandler
 import com.qr.scanner.utils.*
-import kotlinx.android.synthetic.main.fragment_text_result.view.*
+import kotlinx.android.synthetic.main.fragment_text_result.*
 
 
 class TextResultFragment : Fragment() {
 
     private var userPreferences: UserPreferences? = null
-    private var resultData: String? = null
-    private var result: Result? = null
+    private var result: com.qr.scanner.model.Result? = null
+    private val barcode by unsafeLazy {
+        ParsedResultHandler(result!!)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            result = it.getParcelable(RESULT)
+            result = it.getSerializable(PARSE_RESULT) as com.qr.scanner.model.Result?
         }
     }
 
@@ -32,46 +34,46 @@ class TextResultFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view: View? = inflater.inflate(R.layout.fragment_text_result, container, false)
+        return inflater.inflate(R.layout.fragment_text_result, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         userPreferences = UserPreferences(requireContext())
 
-        val resultHandler = ResultHandlerFactory.makeResultHandler(activity,result)
 
-        val textResult = resultHandler?.result as TextParsedResult
-
-        if (userPreferences?.autoCopy!!){
-            copyContent(requireContext(),textResult.toString())
+        if (userPreferences?.autoCopy!!) {
+            copyContent(requireContext(), barcode.text)
         }
 
-        if (textResult?.text != null && textResult?.text?.isNotEmpty()!!) {
-            view?.text?.text = textResult?.text
-        }else {
-            view?.text?.text = "None"
+        if (!barcode?.text.isNullOrEmpty()) {
+            text?.text = barcode?.text
+        } else {
+            text?.text = "None"
         }
 
-        view?.copyLayout?.setOnClickListener {
-            copyContent(requireContext(),textResult.toString())
+        copyLayout?.setOnClickListener {
+            copyContent(requireContext(), barcode.text)
         }
 
-        view?.viewQrCode?.setOnClickListener {
-            viewQrCodeActivity(requireContext(), result)
+        viewQrCode?.setOnClickListener {
+            ViewQRcodeActivity.start(requireContext(), result!!)
         }
-        view?.shareLayout?.setOnClickListener {
-            shareContent(requireContext(),textResult.toString())
+        shareLayout?.setOnClickListener {
+            shareContent(requireContext(), barcode.text)
         }
-        view?.searchLayout?.setOnClickListener {
-            searchContent(requireContext(),textResult.toString())
+        searchLayout?.setOnClickListener {
+            searchContent(requireContext(), barcode.text)
         }
-        return view
     }
 
     companion object {
         @JvmStatic
-        fun newInstance(result: Result?) =
+        fun newInstance(result: com.qr.scanner.model.Result?) =
             TextResultFragment().apply {
                 arguments = Bundle().apply {
-                    putParcelable(RESULT, result)
+                    putSerializable(PARSE_RESULT, result)
                 }
             }
     }
