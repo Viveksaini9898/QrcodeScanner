@@ -205,6 +205,7 @@
     <string name="last_name">Last Name</string>
     <string name="organization">Organization</string>
     <string name="job_">Job</string>
+    <string name="favorite">Favorite</string>
 
     <plurals name="delete_alert_title">
         <item quantity="zero">Delete item?</item>

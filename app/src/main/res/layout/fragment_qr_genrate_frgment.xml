@@ -42,7 +42,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:src="@drawable/ic_email_black_24dp"
+                        app:srcCompat="@drawable/ic_email_black_24dp"
                         app:tint="@color/app_default"
                         />
 
@@ -79,7 +79,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:src="@drawable/ic_email_black_24dp"
+                        app:srcCompat="@drawable/ic_email_black_24dp"
                         app:tint="@color/app_default" />
 
                     <TextView
@@ -108,7 +108,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:src="@drawable/ic_text_black_24dp"
+                        app:srcCompat="@drawable/ic_text_black_24dp"
                         app:tint="@color/app_default" />
 
                     <TextView
@@ -146,7 +146,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:src="@drawable/ic_website_black_24dp"
+                        app:srcCompat="@drawable/ic_website_black_24dp"
                         app:tint="@color/app_default" />
 
                     <TextView
@@ -175,7 +175,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:src="@drawable/ic_contact_page_black_24dp"
+                        app:srcCompat="@drawable/ic_contact_page_black_24dp"
                         app:tint="@color/app_default" />
 
                     <TextView
@@ -213,7 +213,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:src="@drawable/ic_event_black_24dp"
+                        app:srcCompat="@drawable/ic_event_black_24dp"
                         app:tint="@color/app_default" />
 
                     <TextView
@@ -242,7 +242,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:src="@drawable/ic_wifi_black_24dp"
+                        app:srcCompat="@drawable/ic_wifi_black_24dp"
                         app:tint="@color/app_default" />
 
                     <TextView
@@ -280,7 +280,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:src="@drawable/ic_call_black_24dp"
+                        app:srcCompat="@drawable/ic_call_black_24dp"
                         app:tint="@color/app_default" />
 
                     <TextView
@@ -309,7 +309,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:src="@drawable/ic_sms_black_24dp"
+                        app:srcCompat="@drawable/ic_sms_black_24dp"
                         app:tint="@color/app_default" />
 
                     <TextView

@@ -48,4 +48,10 @@ class HistoryRepository(application: Application) {
         return generate!!
     }
 
+    fun update(history: History?) {
+        subscribeOnBackground {
+            historyDao.update(history!!)
+        }
+    }
+
 }

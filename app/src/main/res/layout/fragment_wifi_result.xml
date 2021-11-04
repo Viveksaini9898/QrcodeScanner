@@ -249,7 +249,7 @@
                                     android:layout_gravity="center"
                                     android:background="@drawable/circle_button_background"
                                     android:scaleType="centerInside"
-                                    android:src="@drawable/ic_share"
+                                    app:srcCompat="@drawable/ic_share"
                                     app:tint="@color/app_default" />
 
                                 <TextView
@@ -276,7 +276,7 @@
                                     android:layout_gravity="center"
                                     android:background="@drawable/circle_button_background"
                                     android:scaleType="centerInside"
-                                    android:src="@drawable/ic_copy"
+                                    app:srcCompat="@drawable/ic_copy"
                                     app:tint="@color/app_default" />
 
                                 <TextView
@@ -305,7 +305,7 @@
                                     android:layout_gravity="center"
                                     android:background="@drawable/circle_button_background"
                                     android:scaleType="centerInside"
-                                    android:src="@drawable/ic_copy_message_black_24dp"
+                                    app:srcCompat="@drawable/ic_copy_message_black_24dp"
                                     app:tint="@color/app_default" />
 
                                 <TextView
@@ -332,7 +332,7 @@
                                     android:layout_gravity="center"
                                     android:background="@drawable/circle_button_background"
                                     android:scaleType="centerInside"
-                                    android:src="@drawable/ic_wifi_black_24dp"
+                                    app:srcCompat="@drawable/ic_wifi_black_24dp"
                                     app:tint="@color/app_default" />
 
                                 <TextView
@@ -359,7 +359,7 @@
                 android:layout_centerHorizontal="true"
                 android:background="@drawable/circle_background"
                 android:padding="@dimen/dimen_10dp"
-                android:src="@drawable/ic_wifi_black_24dp" />
+                app:srcCompat="@drawable/ic_wifi_black_24dp" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -380,7 +380,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:paddingStart="@dimen/dimen_20dp"
-                android:src="@drawable/ic_qr_code_2_black_24dp"
+                app:srcCompat="@drawable/ic_qr_code_2_black_24dp"
                 app:tint="@color/gray" />
 
             <TextView

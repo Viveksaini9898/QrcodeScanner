@@ -37,7 +37,7 @@ class HistoryAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val historyList = getItem(position)
-        val result = Result(historyList?.text,null,null,historyList?.format, historyList?.timestamp!!)
+        val result = Result(historyList?.text,null,null,historyList?.format, historyList?.timestamp!!,historyList.isFavorite)
         val resultHandler =
             ResultHandlerFactory.makeResultHandler(activity, result)
         when (resultHandler.type) {

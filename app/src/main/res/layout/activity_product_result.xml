@@ -88,7 +88,7 @@
                                         android:layout_gravity="center"
                                         android:background="@drawable/circle_button_background"
                                         android:scaleType="centerInside"
-                                        android:src="@drawable/ic_share"
+                                        app:srcCompat="@drawable/ic_share"
                                         app:tint="@color/app_default" />
 
                                     <TextView
@@ -113,7 +113,7 @@
                                         android:layout_gravity="center"
                                         android:background="@drawable/circle_button_background"
                                         android:scaleType="centerInside"
-                                        android:src="@drawable/ic_copy"
+                                        app:srcCompat="@drawable/ic_copy"
                                         app:tint="@color/app_default" />
 
                                     <TextView
@@ -139,7 +139,7 @@
                                         android:background="@drawable/circle_button_background"
                                         android:scaleType="fitCenter"
                                         android:padding="@dimen/dimen_10dp"
-                                        android:src="@drawable/ic_google"
+                                        app:srcCompat="@drawable/ic_google"
                                          />
 
                                     <TextView
@@ -166,7 +166,7 @@
                                         android:background="@drawable/circle_button_background"
                                         android:scaleType="fitCenter"
                                         android:padding="13dp"
-                                        android:src="@drawable/ic_flipkart"
+                                        app:srcCompat="@drawable/ic_flipkart"
                                          />
 
                                     <TextView
@@ -194,7 +194,7 @@
                                         android:background="@drawable/circle_button_background"
                                         android:scaleType="fitCenter"
                                         android:padding="@dimen/dimen_10dp"
-                                        android:src="@drawable/ic_amazon"
+                                        app:srcCompat="@drawable/ic_amazon"
                                          />
 
                                     <TextView
@@ -221,7 +221,7 @@
                                         android:background="@drawable/circle_button_background"
                                         android:scaleType="fitCenter"
                                         android:padding="@dimen/dimen_10dp"
-                                        android:src="@drawable/ic_ebay"
+                                        app:srcCompat="@drawable/ic_ebay"
                                          />
 
                                     <TextView
@@ -267,7 +267,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:paddingStart="@dimen/dimen_20dp"
-                android:src="@drawable/ic_qr_code_2_black_24dp"
+                app:srcCompat="@drawable/ic_qr_code_2_black_24dp"
                 app:tint="@color/gray" />
 
             <TextView

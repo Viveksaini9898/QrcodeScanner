@@ -18,6 +18,10 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
         repository.insert(history)
     }
 
+    fun update(history: History?) {
+        repository.update(history)
+    }
+
     fun getAllHistory(): LiveData<List<History>>? {
         return allHistory!!
     }

@@ -216,7 +216,7 @@
                                 android:id="@+id/image"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:src="@drawable/ic_call_black_24dp"
+                                app:srcCompat="@drawable/ic_call_black_24dp"
                                 android:visibility="gone"
                                 app:tint="@color/app_default_light" />
 
@@ -240,7 +240,7 @@
                                 android:id="@+id/image1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:src="@drawable/ic_call_black_24dp"
+                                app:srcCompat="@drawable/ic_call_black_24dp"
                                 android:visibility="gone"
                                 app:tint="@color/app_default_light" />
 
@@ -268,7 +268,7 @@
                                 android:layout_height="@dimen/dimen_20dp"
                                 android:layout_centerVertical="true"
                                 android:scaleType="centerInside"
-                                android:src="@drawable/ic_call_black_24dp" />
+                                app:srcCompat="@drawable/ic_call_black_24dp" />
 
                             <TextView
                                 android:id="@+id/tvNumber"
@@ -298,7 +298,7 @@
                                 android:layout_height="@dimen/dimen_20dp"
                                 android:layout_centerVertical="true"
                                 android:scaleType="centerInside"
-                                android:src="@drawable/ic_call_black_24dp" />
+                                app:srcCompat="@drawable/ic_call_black_24dp" />
 
                             <TextView
                                 android:id="@+id/tvNumber1"
@@ -327,7 +327,7 @@
                                 android:layout_height="@dimen/dimen_20dp"
                                 android:layout_centerVertical="true"
                                 android:scaleType="centerInside"
-                                android:src="@drawable/ic_call_black_24dp" />
+                                app:srcCompat="@drawable/ic_call_black_24dp" />
 
                             <TextView
                                 android:id="@+id/tvNumber2"
@@ -356,7 +356,7 @@
                                 android:layout_height="@dimen/dimen_20dp"
                                 android:layout_centerVertical="true"
                                 android:scaleType="centerInside"
-                                android:src="@drawable/ic_call_black_24dp" />
+                                app:srcCompat="@drawable/ic_call_black_24dp" />
 
                             <TextView
                                 android:id="@+id/tvNumber3"
@@ -385,7 +385,7 @@
                                 android:layout_height="@dimen/dimen_20dp"
                                 android:layout_centerVertical="true"
                                 android:scaleType="centerInside"
-                                android:src="@drawable/ic_call_black_24dp" />
+                                app:srcCompat="@drawable/ic_call_black_24dp" />
 
                             <TextView
                                 android:id="@+id/tvNumber4"
@@ -413,7 +413,7 @@
                                 android:layout_height="@dimen/dimen_20dp"
                                 android:layout_centerVertical="true"
                                 android:scaleType="centerInside"
-                                android:src="@drawable/ic_website_black_24dp" />
+                                app:srcCompat="@drawable/ic_website_black_24dp" />
 
                             <TextView
                                 android:id="@+id/tvWebsite"
@@ -441,7 +441,7 @@
                                 android:layout_height="@dimen/dimen_20dp"
                                 android:layout_centerVertical="true"
                                 android:scaleType="centerInside"
-                                android:src="@drawable/ic_email_black_24dp" />
+                                app:srcCompat="@drawable/ic_email_black_24dp" />
 
                             <TextView
                                 android:id="@+id/tvEmail"
@@ -469,7 +469,7 @@
                                 android:layout_height="@dimen/dimen_20dp"
                                 android:layout_centerVertical="true"
                                 android:scaleType="centerInside"
-                                android:src="@drawable/ic_home_black_24dp" />
+                                app:srcCompat="@drawable/ic_home_black_24dp" />
 
                             <TextView
                                 android:id="@+id/tvAddress"
@@ -511,7 +511,7 @@
                                         android:layout_gravity="center"
                                         android:background="@drawable/circle_button_background"
                                         android:scaleType="centerInside"
-                                        android:src="@drawable/ic_share"
+                                        app:srcCompat="@drawable/ic_share"
                                         app:tint="@color/app_default" />
 
                                     <TextView
@@ -536,7 +536,7 @@
                                         android:layout_gravity="center"
                                         android:background="@drawable/circle_button_background"
                                         android:scaleType="centerInside"
-                                        android:src="@drawable/ic_copy"
+                                        app:srcCompat="@drawable/ic_copy"
                                         app:tint="@color/app_default" />
 
                                     <TextView
@@ -561,7 +561,7 @@
                                         android:layout_gravity="center"
                                         android:background="@drawable/circle_button_background"
                                         android:scaleType="centerInside"
-                                        android:src="@drawable/ic_add_contact_black_24dp"
+                                        app:srcCompat="@drawable/ic_add_contact_black_24dp"
                                         app:tint="@color/app_default" />
 
                                     <TextView
@@ -587,7 +587,7 @@
                                         android:layout_gravity="center"
                                         android:background="@drawable/circle_button_background"
                                         android:scaleType="centerInside"
-                                        android:src="@drawable/ic_call_black_24dp"
+                                        app:srcCompat="@drawable/ic_call_black_24dp"
                                         app:tint="@color/app_default" />
 
                                     <TextView
@@ -612,7 +612,7 @@
                                         android:layout_gravity="center"
                                         android:background="@drawable/circle_button_background"
                                         android:scaleType="centerInside"
-                                        android:src="@drawable/ic_email_black_24dp"
+                                        app:srcCompat="@drawable/ic_email_black_24dp"
                                         app:tint="@color/app_default" />
 
                                     <TextView
@@ -637,7 +637,7 @@
                                         android:layout_gravity="center"
                                         android:background="@drawable/circle_button_background"
                                         android:scaleType="centerInside"
-                                        android:src="@drawable/ic_sms_black_24dp"
+                                        app:srcCompat="@drawable/ic_sms_black_24dp"
                                         app:tint="@color/app_default" />
 
                                     <TextView
@@ -663,7 +663,7 @@
                                         android:layout_gravity="center"
                                         android:background="@drawable/circle_button_background"
                                         android:scaleType="centerInside"
-                                        android:src="@drawable/ic_place_black_24dp"
+                                        app:srcCompat="@drawable/ic_place_black_24dp"
                                         app:tint="@color/app_default" />
 
                                     <TextView
@@ -690,7 +690,7 @@
                 android:layout_centerHorizontal="true"
                 android:background="@drawable/circle_background"
                 android:padding="@dimen/dimen_10dp"
-                android:src="@drawable/ic_contact_page_black_24dp" />
+                app:srcCompat="@drawable/ic_contact_page_black_24dp" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -711,7 +711,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:paddingStart="@dimen/dimen_20dp"
-                android:src="@drawable/ic_qr_code_2_black_24dp"
+                app:srcCompat="@drawable/ic_qr_code_2_black_24dp"
                 app:tint="@color/gray" />
 
             <TextView

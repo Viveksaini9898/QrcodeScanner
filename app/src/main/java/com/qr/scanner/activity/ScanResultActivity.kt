@@ -2,19 +2,27 @@ package com.qr.scanner.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
 import com.core.Result
 import com.core.client.result.ParsedResultType
 import com.qr.scanner.R
 import com.qr.scanner.constant.RESULT
 import com.qr.scanner.extension.Toast.toast
+import com.qr.scanner.history.History
 import com.qr.scanner.result.ResultHandlerFactory
 import com.qr.scanner.resultfragment.*
 import com.qr.scanner.utils.*
+import com.qr.scanner.viewmodel.HistoryViewModel
 import kotlinx.android.synthetic.main.toolbar.*
 
 class ScanResultActivity : AppCompatActivity() {
 
+    private val viewModel by lazy {
+        ViewModelProvider(this).get(HistoryViewModel::class.java)
+    }
 
     private var result: Result? = null
 
@@ -27,6 +35,7 @@ class ScanResultActivity : AppCompatActivity() {
             setSupportActionBar(toolbar)
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
         }
+
 
         if (intent.extras != null) {
             result = intent.getParcelableExtra(RESULT) as Result?
@@ -76,11 +85,50 @@ class ScanResultActivity : AppCompatActivity() {
 
     }
 
+
+   /* private fun toggleIsFavorite() {
+        if (result?.isFavorite!!) {
+            updateHistory(result,false)
+        }else {
+            updateHistory(result,true)
+        }
+    }*/
+
+    private fun updateHistory(result: Result?,favorite: Boolean) {
+       /* val history = History(0,
+            result?.text!!, result?.barcodeFormat!!, result?.timestamp!!,
+            isGenerated = false,
+            favorite
+        )
+        viewModel?.update(history)
+        */showIsFavorite(favorite)
+    }
+
+    private fun showIsFavorite(isFavorite :Boolean) {
+        val iconId = if (isFavorite) {
+            R.drawable.ic_favorite_red_900_24dp
+        } else {
+            R.drawable.ic_favorite_border_black_24dp
+        }
+        toolbar.menu?.findItem(R.id.item_add_to_favorites)?.icon = ContextCompat.getDrawable(this, iconId)
+
+    }
+
+
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.qr_menu,menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
                 finish()
                 true
+            }
+            R.id.item_add_to_favorites ->{
+            //    toggleIsFavorite()
             }
         }
         return super.onOptionsItemSelected(item)
