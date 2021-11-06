@@ -5,10 +5,10 @@ import android.content.*
 import android.database.Cursor
 import android.graphics.Bitmap
 import android.net.Uri
+import android.net.wifi.WifiManager
 import android.os.Environment
 import android.provider.ContactsContract
 import android.provider.MediaStore
-import android.provider.Telephony
 import android.util.Patterns
 import android.webkit.URLUtil
 import android.widget.Toast
@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.qr.scanner.activity.ViewQRcodeActivity
 import androidx.core.content.FileProvider
+import com.qr.scanner.R
 import com.qr.scanner.constant.RESULT
 import com.qr.scanner.extension.Toast.toast
 import com.qr.scanner.extension.toEmailType
@@ -61,40 +62,40 @@ fun shareContent(context: Context?, string: String?) {
     val sharingIntent = Intent(Intent.ACTION_SEND)
     sharingIntent.type = "text/plain"
     sharingIntent?.putExtra(Intent.EXTRA_TEXT, string)
-    context?.startActivity(Intent.createChooser(sharingIntent, "Share "))
+    startIntent(context,sharingIntent)
 }
 
 fun searchContent(context: Context?, string: String?) {
     val url = if (Patterns.WEB_URL.matcher(string).matches()) {
-        string;
+        string
     } else {
         "https://www.google.com/search?q=$string"
     }
-    context?.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+    startIntent(context,Intent.ACTION_VIEW, url!!)
 }
 fun amazonContent(context: Context?, string: String?) {
     val url = if (Patterns.WEB_URL.matcher(string).matches()) {
-        string;
+        string
     } else {
         "https://www.amazon.in/s?k=$string"
     }
-    context?.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+    startIntent(context,Intent.ACTION_VIEW, url!!)
 }
 fun flipkartContent(context: Context?, string: String?) {
     val url = if (Patterns.WEB_URL.matcher(string).matches()) {
-        string;
+        string
     } else {
         "https://www.flipkart.com/search?q=$string"
     }
-    context?.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+    startIntent(context,Intent.ACTION_VIEW, url!!)
 }
 fun ebayContent(context: Context?, string: String?) {
     val url = if (Patterns.WEB_URL.matcher(string).matches()) {
-        string;
+        string
     } else {
         "https://www.ebay.com/sch/i.html?_nkw=$string"
     }
-    context?.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+    startIntent(context,Intent.ACTION_VIEW, url!!)
 }
 
 fun dialPhone(phoneNumber: String?, context: Context?) {
@@ -208,7 +209,7 @@ fun saveImageToGallery(context: Context?,bmp: Bitmap?) {
 
         val uri: Uri = Uri.fromFile(file)
         context?.sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri))
-        toast(context,"Save Successfully")
+        toast(context,R.string.save_successfully)
     } catch (e: IOException) {
         e.printStackTrace()
     }
@@ -255,13 +256,15 @@ fun shareBitmap(activity: Activity?,bitmap: Bitmap?) {
     activity?.startActivity(Intent.createChooser(intent, "Share with"))
 }
 
-fun startActivityIfExists(context: Context?,intent: Intent) {
+fun startIntent(context: Context?, intent: Intent) {
     intent.apply {
         flags = flags or Intent.FLAG_ACTIVITY_NEW_TASK
     }
 
-    if (intent.resolveActivity(context?.packageManager!!) != null) {
+    if (intent != null) {
         context?.startActivity(intent)
+    }else {
+        toast(context, R.string.no_app_found)
     }
 }
 
@@ -294,17 +297,17 @@ fun addToContacts(context: Context?,barcode: ParsedResultHandler) {
 
         putExtra(ContactsContract.Intents.Insert.NOTES, barcode.note.orEmpty())
     }
-    startActivityIfExists(context,intent)
+    startIntent(context,intent)
 }
 
 fun callPhone(context: Context?,phone: String?) {
     val phoneUri = "tel:${phone.orEmpty()}"
-    startActivityIfExists(context,Intent.ACTION_DIAL, phoneUri)
+    startIntent(context,Intent.ACTION_DIAL, phoneUri)
 }
 
-fun startActivityIfExists(context: Context?,action: String, uri: String) {
+fun startIntent(context: Context?, action: String, uri: String) {
     val intent = Intent(action, Uri.parse(uri))
-    startActivityIfExists(context,intent)
+    startIntent(context,intent)
 }
 
 fun sendEmail(context: Context?,email: String?, subject: String?, body: String?) {
@@ -315,10 +318,13 @@ fun sendEmail(context: Context?,email: String?, subject: String?, body: String?)
         putExtra(Intent.EXTRA_SUBJECT, subject)
         putExtra(Intent.EXTRA_TEXT, body)
     }
-    startActivityIfExists(context, intent)
+    startIntent(context, intent)
 }
 
 fun searchMap(context: Context?,address: String?) {
     val intent =Intent(Intent.ACTION_VIEW, Uri.parse("geo:0,0?q=" + Uri.encode(address)))
-    startActivityIfExists(context,intent)
+    startIntent(context,intent)
 }
+
+val Context.wifiManager: WifiManager?
+    get() = applicationContext.getSystemService(Context.WIFI_SERVICE) as? WifiManager

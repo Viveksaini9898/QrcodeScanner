@@ -207,6 +207,10 @@
     <string name="job_">Job</string>
     <string name="favorite">Favorite</string>
     <string name="scan_image">Scan Image</string>
+    <string name="no_app_found">No app found for this action</string>
+    <string name="save_successfully">Save Successfully</string>
+    <string name="no_qr_found">Qr not found</string>
+    <string name="image_not_found">Image not found</string>
 
     <plurals name="delete_alert_title">
         <item quantity="zero">Delete item?</item>

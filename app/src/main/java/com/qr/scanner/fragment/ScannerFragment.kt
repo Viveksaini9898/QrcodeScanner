@@ -35,7 +35,6 @@ class ScannerFragment : Fragment() {
         private val PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
         private const val PERMISSION_REQUEST_CODE = 101
         private const val ZXING_SCAN_INTENT_ACTION = "com.google.zxing.client.android.SCAN"
-        private const val CONTINUOUS_SCANNING_PREVIEW_DELAY = 500L
     }
 
     private var beepManager: BeepManager? = null

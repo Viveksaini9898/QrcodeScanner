@@ -12,18 +12,14 @@ import com.qr.scanner.constant.PARSE_RESULT
 import com.qr.scanner.extension.unsafeLazy
 import com.qr.scanner.preference.UserPreferences
 import com.qr.scanner.result.ParsedResultHandler
-import com.qr.scanner.utils.addToContacts
-import com.qr.scanner.utils.copyContent
-import com.qr.scanner.utils.dialPhone
-import com.qr.scanner.utils.shareContent
+import com.qr.scanner.utils.*
 import kotlinx.android.synthetic.main.fragment_phone_result.*
-import kotlinx.android.synthetic.main.fragment_phone_result.view.*
-
+import com.qr.scanner.model.Result
 
 class PhoneResultFragment : Fragment() {
 
     private var userPreferences: UserPreferences? = null
-    private var result: com.qr.scanner.model.Result? = null
+    private var result: Result? = null
 
     private val barcode by unsafeLazy {
         ParsedResultHandler(result!!)
@@ -32,7 +28,7 @@ class PhoneResultFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            result = it.getSerializable(PARSE_RESULT) as com.qr.scanner.model.Result?
+            result = it.getSerializable(PARSE_RESULT) as Result?
         }
     }
 
@@ -70,7 +66,7 @@ class PhoneResultFragment : Fragment() {
 
         callLayout?.setOnClickListener {
             if (barcode.phone.isNullOrEmpty().not()) {
-                dialPhone(barcode.phone, requireContext())
+                callPhone(requireContext(),barcode.phone)
             }
         }
         addContactLayout?.setOnClickListener {
@@ -85,7 +81,7 @@ class PhoneResultFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(result: com.qr.scanner.model.Result) =
+        fun newInstance(result: Result) =
             PhoneResultFragment().apply {
                 arguments = Bundle().apply {
                     putSerializable(PARSE_RESULT, result)

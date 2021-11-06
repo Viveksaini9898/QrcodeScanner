@@ -3,9 +3,11 @@ package com.qr.scanner.activity
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.qr.scanner.R
 import com.qr.scanner.fragment.*
 import com.qr.scanner.utils.createDir
@@ -14,7 +16,7 @@ import kotlinx.android.synthetic.main.toolbar.*
 import com.qr.scanner.utils.loadFragment
 
 
-class MainActivity : BaseActivity() {
+class MainActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
     private val MY_CAMERA_REQUEST_CODE: Int = 1000
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,37 +32,8 @@ class MainActivity : BaseActivity() {
         }
         createDir()
 
-        bottomBar?.onItemSelected = {
-            when (it) {
-                0 -> {
-                    loadScannerFragment()
-                }
-                1 -> {
-                    QrGenerateFragment().loadFragment(this, R.id.container)
-                }
+        bottomBar?.setOnNavigationItemSelectedListener(this@MainActivity)
 
-                2 -> {
-                    ViewPagerFragment().loadFragment(this, R.id.container)
-
-                }
-                3 -> {
-                    SettingsFragment().loadFragment(this, R.id.container)
-                }
-
-            }
-        }
-
-        bottomBar?.onItemReselected = {
-            when (it) {
-                0 -> {
-                }
-                1 -> {
-                }
-                2 -> {
-                }
-
-            }
-        }
     }
 
     private fun requestPermission() {
@@ -88,5 +61,33 @@ class MainActivity : BaseActivity() {
 
     private fun loadScannerFragment() {
         ScannerFragment().loadFragment(this, R.id.container)
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == bottomBar.selectedItemId) {
+            return false
+        }
+        loadFragment(item.itemId)
+        return true
+    }
+
+    private fun loadFragment(itemId: Int) {
+        when (itemId) {
+            R.id.menu_scan -> {
+                loadScannerFragment()
+            }
+            R.id.menu_generate -> {
+                QrGenerateFragment().loadFragment(this, R.id.container)
+            }
+            R.id.menu_favorite -> {
+                FavoritesFragment().loadFragment(this, R.id.container)
+            }
+            R.id.menu_history -> {
+                ViewPagerFragment().loadFragment(this, R.id.container)
+            }
+            R.id.menu_settings -> {
+                SettingsFragment().loadFragment(this, R.id.container)
+            }
+        }
     }
 }

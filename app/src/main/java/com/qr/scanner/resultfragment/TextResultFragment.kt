@@ -27,7 +27,7 @@ class TextResultFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            result = it.getSerializable(PARSE_RESULT) as com.qr.scanner.model.Result?
+            result = it.getSerializable(PARSE_RESULT) as Result?
         }
     }
 
@@ -71,7 +71,7 @@ class TextResultFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(result: com.qr.scanner.model.Result?) =
+        fun newInstance(result: Result?) =
             TextResultFragment().apply {
                 arguments = Bundle().apply {
                     putSerializable(PARSE_RESULT, result)

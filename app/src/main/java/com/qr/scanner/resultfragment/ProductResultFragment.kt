@@ -50,7 +50,7 @@ class ProductResultFragment : Fragment() {
         if (barcode.text.isNullOrEmpty().not()) {
             text?.text = barcode.text
         } else {
-            text?.text = "Not Found"
+            text?.text = "None"
         }
 
         copyLayout?.setOnClickListener {

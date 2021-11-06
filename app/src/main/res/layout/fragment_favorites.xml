@@ -6,6 +6,8 @@
     tools:context=".fragment.HistoryFragment"
     android:orientation="vertical">
 
+    <include layout="@layout/toolbar" />
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"

@@ -10,19 +10,12 @@ import androidx.lifecycle.ViewModelProvider
 import com.qr.scanner.R
 import com.qr.scanner.extension.isNotBlank
 import kotlinx.android.synthetic.main.fragment_email_generate.*
-import com.core.BarcodeFormat
-import com.core.Result
 import com.qr.scanner.activity.ViewQRcodeActivity
-import com.qr.scanner.constant.*
 
-import com.qr.scanner.extension.appendIfNotNullOrBlank
 import com.qr.scanner.extension.textString
-import com.qr.scanner.history.History
 import com.qr.scanner.model.Email
 import com.qr.scanner.model.Parsers
-import com.qr.scanner.model.Wifi
 
-import com.qr.scanner.utils.viewQrCodeActivity
 import com.qr.scanner.viewmodel.HistoryViewModel
 
 

@@ -1,5 +1,6 @@
 package com.qr.scanner.resultfragment
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.net.wifi.WifiManager
 import android.os.Bundle
@@ -11,19 +12,25 @@ import android.widget.Toast
 import com.qr.scanner.R
 import com.qr.scanner.activity.ViewQRcodeActivity
 import com.qr.scanner.constant.PARSE_RESULT
+import com.qr.scanner.extension.Toast.toast
+import com.qr.scanner.extension.orFalse
 import com.qr.scanner.extension.unsafeLazy
+import com.qr.scanner.objects.WifiConnector
 import com.qr.scanner.preference.UserPreferences
 import com.qr.scanner.result.ParsedResultHandler
 import com.qr.scanner.utils.copyContent
 import com.qr.scanner.utils.shareContent
+import com.qr.scanner.utils.subscribeOnBackground
+import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_wifi_result.*
 import kotlinx.android.synthetic.main.fragment_wifi_result.view.*
+import com.qr.scanner.model.Result
 
 
 class WifiResultFragment : Fragment() {
 
     private var userPreferences: UserPreferences? = null
-    private var result: com.qr.scanner.model.Result? = null
+    private var result: Result? = null
 
     private val barcode by unsafeLazy {
         ParsedResultHandler(result!!)
@@ -32,7 +39,7 @@ class WifiResultFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            result = it.getSerializable(PARSE_RESULT) as com.qr.scanner.model.Result?
+            result = it.getSerializable(PARSE_RESULT) as Result?
         }
     }
 
@@ -98,7 +105,7 @@ class WifiResultFragment : Fragment() {
         // phase2Method?.text = wifiResult?.phase2Method
 
         connectLayout?.setOnClickListener {
-            connectWifi()
+            connectToWifi()
         }
         copyLayout?.setOnClickListener {
             copyContent(requireContext(), barcode.text)
@@ -118,22 +125,27 @@ class WifiResultFragment : Fragment() {
 
     }
 
-    private fun connectWifi() {
-        val wifiManager =
-            activity?.applicationContext?.getSystemService(Context.WIFI_SERVICE) as WifiManager
-                ?: return
-        Toast.makeText(
-            requireActivity()?.applicationContext,
-            R.string.wifi_changing_network,
-            Toast.LENGTH_SHORT
-        ).show()
-        //  WifiConfigManager(wifiManager).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, wifiResult)
+    private fun connectToWifi() {
+        subscribeOnBackground {
+            WifiConnector
+                .tryToConnect(
+                    requireContext(),
+                    barcode.networkAuthType.orEmpty(),
+                    barcode.networkName.orEmpty(),
+                    barcode.networkPassword.orEmpty(),
+                    barcode.isHidden.orFalse(),
+                    barcode.anonymousIdentity.orEmpty(),
+                    barcode.identity.orEmpty(),
+                    barcode.eapMethod.orEmpty(),
+                    barcode.phase2Method.orEmpty()
+                )
+        }
     }
 
 
     companion object {
         @JvmStatic
-        fun newInstance(result: com.qr.scanner.model.Result?) =
+        fun newInstance(result: Result?) =
             WifiResultFragment().apply {
                 arguments = Bundle().apply {
                     putSerializable(PARSE_RESULT, result)

@@ -15,12 +15,12 @@ import com.qr.scanner.utils.copyContent
 import com.qr.scanner.utils.sendEmail
 import com.qr.scanner.utils.shareContent
 import kotlinx.android.synthetic.main.fragment_email_result.*
-import kotlinx.android.synthetic.main.fragment_email_result.view.*
+import com.qr.scanner.model.Result
 
 class EmailResultFragment : Fragment() {
 
     private var userPreferences: UserPreferences? = null
-    private var result: com.qr.scanner.model.Result? = null
+    private var result: Result? = null
 
     private val barcode by unsafeLazy {
         ParsedResultHandler(result!!)
@@ -29,7 +29,7 @@ class EmailResultFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            result = it.getSerializable(PARSE_RESULT) as com.qr.scanner.model.Result?
+            result = it.getSerializable(PARSE_RESULT) as Result?
         }
     }
 
@@ -89,7 +89,7 @@ class EmailResultFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(result: com.qr.scanner.model.Result) =
+        fun newInstance(result: Result) =
             EmailResultFragment().apply {
                 arguments = Bundle().apply {
                     putSerializable(PARSE_RESULT, result)

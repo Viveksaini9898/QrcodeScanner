@@ -1,4 +1,3 @@
-/*
 package com.qr.scanner.objects
 
 import android.content.Context
@@ -7,13 +6,15 @@ import android.net.wifi.WifiEnterpriseConfig
 import android.net.wifi.WifiNetworkSuggestion
 import android.os.Build
 import androidx.annotation.RequiresApi
+import com.qr.scanner.extension.toCaps
+import com.qr.scanner.utils.wifiManager
 import io.reactivex.Completable
 import io.reactivex.schedulers.Schedulers
 
 object WifiConnector {    
     private val hexRegex = """^[0-9a-f]+$""".toRegex(RegexOption.IGNORE_CASE)
 
-    fun connect(
+    fun tryToConnect(
             context: Context,
             authType: String,
             name: String,
@@ -21,46 +22,13 @@ object WifiConnector {
             isHidden: Boolean,
             anonymousIdentity: String,
             identity: String,
-            eapMethod: String,
-            phase2Method: String
-    ): Completable {
-        return Completable
-            .create { emitter ->
-                try {
-                    tryToConnect(
-                            context,
-                            authType,
-                            name,
-                            password,
-                            isHidden,
-                            anonymousIdentity,
-                            identity,
-                            eapMethod.toEapMethod(),
-                            phase2Method.toPhase2Method()
-                    )
-                    emitter.onComplete()
-                } catch (ex: Exception) {
-                    emitter.onError(ex)
-                }
-            }
-            .subscribeOn(Schedulers.newThread())
-    }
-
-    private fun tryToConnect(
-            context: Context,
-            authType: String,
-            name: String,
-            password: String,
-            isHidden: Boolean,
-            anonymousIdentity: String,
-            identity: String,
-            eapMethod: Int?,
-            phase2Method: Int?
+            eapMethod: String?,
+            phase2Method: String?
     ) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            tryToConnectNewApi(context, authType, name, password, anonymousIdentity, identity, eapMethod, phase2Method)
+            tryToConnectNewApi(context, authType, name, password, anonymousIdentity, identity, eapMethod?.toEapMethod(), phase2Method?.toPhase2Method())
         } else {
-            tryToConnectOldApi(context, authType, name, password, isHidden, anonymousIdentity, identity, eapMethod, phase2Method)
+            tryToConnectOldApi(context, authType, name, password, isHidden, anonymousIdentity, identity, eapMethod?.toEapMethod(), phase2Method?.toPhase2Method())
         }
     }
 
@@ -176,9 +144,9 @@ object WifiConnector {
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun connect(context: Context, builder: WifiNetworkSuggestion.Builder) {
         val suggestions = listOf(builder.build())
-        context.applicationContext.getSystemService(Context.WIFI_SERVICE)?.apply {
-            removeNetworkSuggestions(suggestions)
-            addNetworkSuggestions(suggestions)
+        context.wifiManager.apply {
+            this?.removeNetworkSuggestions(suggestions)
+            this?.addNetworkSuggestions(suggestions)
         }
     }
 
@@ -371,4 +339,4 @@ object WifiConnector {
     private inline fun <T> requireApiLevel(version: Int, block: () -> T): T? {
         return if (Build.VERSION.SDK_INT >= version) return block() else null
     }
-}*/
+}

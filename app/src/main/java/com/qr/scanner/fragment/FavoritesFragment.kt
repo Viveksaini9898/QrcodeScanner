@@ -13,6 +13,7 @@ import com.qr.scanner.adapter.FavoritesAdapter
 import com.qr.scanner.adapter.HistoryAdapter
 import com.qr.scanner.viewmodel.HistoryViewModel
 import kotlinx.android.synthetic.main.fragment_favorites.*
+import kotlinx.android.synthetic.main.toolbar.*
 
 class FavoritesFragment : Fragment(),SwipeRefreshLayout.OnRefreshListener {
 
@@ -30,6 +31,11 @@ class FavoritesFragment : Fragment(),SwipeRefreshLayout.OnRefreshListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        if (toolbar != null){
+            toolbar?.title = resources?.getString(R.string.favorite)
+        }
+
         swipeRefreshLayout?.setOnRefreshListener(this)
         recyclerView?.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         getData()

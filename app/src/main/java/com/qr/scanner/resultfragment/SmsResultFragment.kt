@@ -15,12 +15,12 @@ import com.qr.scanner.preference.UserPreferences
 import com.qr.scanner.result.ParsedResultHandler
 import com.qr.scanner.utils.*
 import kotlinx.android.synthetic.main.fragment_sms_result_fragmet.*
-import kotlinx.android.synthetic.main.fragment_sms_result_fragmet.view.*
+import com.qr.scanner.model.Result
 
 class SmsResultFragment : Fragment() {
 
     private var userPreferences: UserPreferences? = null
-    private var result: com.qr.scanner.model.Result? = null
+    private var result: Result? = null
 
     private val barcode by unsafeLazy {
         ParsedResultHandler(result!!)
@@ -30,7 +30,7 @@ class SmsResultFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            result = it.getSerializable(PARSE_RESULT) as com.qr.scanner.model.Result?
+            result = it.getSerializable(PARSE_RESULT) as Result?
         }
     }
 
@@ -85,12 +85,12 @@ class SmsResultFragment : Fragment() {
         val intent = Intent(Intent.ACTION_SENDTO, uri).apply {
             putExtra("sms_body", barcode.smsBody.orEmpty())
         }
-        startActivityIfExists(requireContext(),intent)
+        startIntent(requireContext(),intent)
     }
 
     companion object {
         @JvmStatic
-        fun newInstance(result: com.qr.scanner.model.Result) =
+        fun newInstance(result: Result) =
             SmsResultFragment().apply {
                 arguments = Bundle().apply {
                     putSerializable(PARSE_RESULT, result)

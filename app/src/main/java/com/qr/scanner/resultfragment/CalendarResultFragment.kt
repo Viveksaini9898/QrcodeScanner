@@ -16,12 +16,13 @@ import com.qr.scanner.result.ParsedResultHandler
 import com.qr.scanner.utils.*
 import kotlinx.android.synthetic.main.fragment_calendar_result.*
 import java.text.SimpleDateFormat
+import com.qr.scanner.model.Result
 
 
 class CalendarResultFragment : Fragment() {
 
     private var userPreferences: UserPreferences? = null
-    private var result: com.qr.scanner.model.Result? = null
+    private var result: Result? = null
     private val barcode by unsafeLazy {
         ParsedResultHandler(result!!)
     }
@@ -29,7 +30,7 @@ class CalendarResultFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            result = it.getSerializable(PARSE_RESULT) as com.qr.scanner.model.Result?
+            result = it.getSerializable(PARSE_RESULT) as Result?
         }
     }
 
@@ -112,7 +113,7 @@ class CalendarResultFragment : Fragment() {
             putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, barcode.eventStartDate)
             putExtra(CalendarContract.EXTRA_EVENT_END_TIME, barcode.eventEndDate)
         }
-        startActivityIfExists(requireContext(),intent)
+        startIntent(requireContext(),intent)
     }
 
     private fun getDate(time_stamp_server: Long): String? {
@@ -123,7 +124,7 @@ class CalendarResultFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(result: com.qr.scanner.model.Result) =
+        fun newInstance(result: Result) =
             CalendarResultFragment().apply {
                 arguments = Bundle().apply {
                     putSerializable(PARSE_RESULT, result)

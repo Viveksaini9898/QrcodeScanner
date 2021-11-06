@@ -28,7 +28,6 @@ class ViewPagerFragment : Fragment() {
         }
         val viewPagerAdapter = ViewPagerAdapter(childFragmentManager)
         viewPagerAdapter.add(HistoryFragment(),"All History")
-        viewPagerAdapter.add(FavoritesFragment(),"Favorite")
         viewPagerAdapter.add(GenerateHistoryFragment(),"Generate")
 
         viewpager?.adapter = viewPagerAdapter

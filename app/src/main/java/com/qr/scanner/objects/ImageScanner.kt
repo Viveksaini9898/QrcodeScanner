@@ -11,26 +11,10 @@ import io.reactivex.Single
 import io.reactivex.SingleEmitter
 import io.reactivex.schedulers.Schedulers
 
-object BarcodeImageScanner {
+object ImageScanner {
     private var bitmapBuffer: IntArray? = null
 
-    fun parse(image: Bitmap): Single<Result> {
-        return Single
-            .create<Result> { emitter ->
-                parse(image, emitter)
-            }
-            .subscribeOn(Schedulers.newThread())
-    }
-
-    private fun parse(image: Bitmap, emitter: SingleEmitter<Result>) {
-        try {
-            emitter.onSuccess(tryParse(image))
-        } catch (ex: Exception) {
-            emitter.onError(ex)
-        }
-    }
-
-    private fun tryParse(image: Bitmap): Result {
+    fun tryParse(image: Bitmap): Result {
         val width = image.width
         val height = image.height
         val size = width * height

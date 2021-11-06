@@ -8,18 +8,21 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.MenuItem
-import com.core.*
-import com.core.common.HybridBinarizer
 import com.qr.scanner.R
 import androidx.lifecycle.ViewModelProvider
-import com.qr.scanner.constant.PARSE_RESULT
+import com.google.zxing.BinaryBitmap
+import com.google.zxing.MultiFormatReader
+import com.google.zxing.RGBLuminanceSource
+import com.google.zxing.Result
+import com.google.zxing.common.HybridBinarizer
 import com.qr.scanner.extension.Toast.toast
-import com.qr.scanner.history.History
+import com.qr.scanner.extension.orZero
+import com.qr.scanner.objects.BarcodeParser
+import com.qr.scanner.utils.subscribeOnBackground
 import com.qr.scanner.viewmodel.HistoryViewModel
 import kotlinx.android.synthetic.main.activity_image_scanner.*
 import kotlinx.android.synthetic.main.toolbar.*
 import java.lang.Exception
-import com.qr.scanner.model.Result
 
 
 class ImageScannerActivity : AppCompatActivity() {
@@ -51,26 +54,24 @@ class ImageScannerActivity : AppCompatActivity() {
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
         }
 
-       pickImage()
+        pickImage()
 
         selectImage?.setOnClickListener {
-           pickImage()
+            pickImage()
         }
 
         scanQrcode?.setOnClickListener {
-
-            result = tryParse(bitmap!!)
             if (result != null) {
-               ScanResultActivity.start(applicationContext,result)
-                viewModel?.insert(result)
-
+                val scanResult = BarcodeParser.parseResult(result!!)
+                ScanResultActivity.start(this, scanResult)
+                viewModel?.insert(scanResult)
             } else {
-                toast(applicationContext, "Qr not found")
+                toast(this, R.string.no_qr_found)
             }
         }
     }
 
-    private fun pickImage(){
+    private fun pickImage() {
         val photoPickerIntent = Intent(Intent.ACTION_PICK)
         photoPickerIntent.type = "image/*"
         startActivityForResult(photoPickerIntent, SELECT_PHOTO)
@@ -85,9 +86,11 @@ class ImageScannerActivity : AppCompatActivity() {
 
                     bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, selectedImage)
                     image?.setImageBitmap(bitmap)
-
+                    subscribeOnBackground {
+                        result = tryParse(bitmap!!)
+                    }
                 } else {
-                    toast(applicationContext, "Image no found")
+                    toast(applicationContext, R.string.image_not_found)
                 }
             } else {
                 finish()
@@ -111,15 +114,10 @@ class ImageScannerActivity : AppCompatActivity() {
             val bitmap = BinaryBitmap(HybridBinarizer(source))
 
             val reader = MultiFormatReader()
-            return reader.decode(bitmap) as Result
+            return reader.decode(bitmap)
         } catch (e: Exception) {
             return null
         }
-    }
-
-
-    private fun Int?.orZero(): Int {
-        return this ?: 0
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

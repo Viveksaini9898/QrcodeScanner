@@ -75,4 +75,9 @@
     </style>
 
     <color name="edit_text_hint_color">#9E9E9E</color>
+
+    <style name="BottomNavigationText" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">@dimen/dimen_12dp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>

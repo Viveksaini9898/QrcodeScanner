@@ -56,8 +56,6 @@ dependencies {
 
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.1"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1"
-//    implementation 'me.dm7.barcodescanner:zxing:1.9.8'
-    implementation 'com.github.ertugrulkaragoz:SuperBottomBar:0.4'
 
     implementation 'com.github.florent37:singledateandtimepicker:2.2.6'
     implementation 'com.googlecode.ez-vcard:ez-vcard:0.11.0'
