@@ -31,18 +31,14 @@
         android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/Theme.QrScanner">
-        <activity
-            android:name=".activity.ViewGenerateQrActivity"
-            android:exported="true" />
+
         <activity
             android:name=".activity.QrGenerateActivity"
             android:exported="true" />
         <activity
             android:name=".activity.ViewBarcodeActivity"
             android:exported="true" />
-        <activity
-            android:name=".activity.ProductResultActivity"
-            android:exported="true" />
+
         <activity
             android:name=".activity.ImageScannerActivity"
             android:exported="true" />
@@ -61,11 +57,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".history.HistoryActivity"
-            android:label="@string/history_title"
-            android:stateNotNeeded="true" />
-        <activity android:name=".encode.EncodeActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

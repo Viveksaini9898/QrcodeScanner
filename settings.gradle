@@ -9,5 +9,3 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Qr Scanner"
 include ':app'
-include ':core'
-include ':core'

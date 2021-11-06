@@ -8,19 +8,15 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.annotation.NonNull
 import androidx.core.content.FileProvider
+import com.google.zxing.BarcodeFormat
+import com.google.zxing.MultiFormatWriter
+import com.google.zxing.WriterException
 import com.qr.scanner.R
-import com.core.WriterException
 
-import com.core.common.BitMatrix
-
-import com.core.oned.Code128Writer
-
-import com.core.BarcodeFormat
 
 import kotlinx.android.synthetic.main.activity_view_barcode.*
 import kotlinx.android.synthetic.main.toolbar.*
 import java.util.*
-import com.core.MultiFormatWriter
 import com.qr.scanner.utils.saveImageToGallery
 import com.qr.scanner.utils.shareBitmap
 

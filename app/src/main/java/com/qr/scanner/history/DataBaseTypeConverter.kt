@@ -1,7 +1,7 @@
 package com.qr.scanner.history
 
 import androidx.room.TypeConverter
-import com.core.BarcodeFormat
+import com.google.zxing.BarcodeFormat
 
 class DataBaseTypeConverter {
 

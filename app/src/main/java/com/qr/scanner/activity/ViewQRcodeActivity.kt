@@ -6,14 +6,14 @@ import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import com.google.zxing.BarcodeFormat
+import com.google.zxing.MultiFormatWriter
+import com.google.zxing.WriterException
+import com.google.zxing.common.BitMatrix
 import com.qr.scanner.R
 import kotlinx.android.synthetic.main.toolbar.*
-import com.core.WriterException
 import kotlinx.android.synthetic.main.activity_view_qr_code.*
-import com.core.BarcodeFormat
-import com.core.MultiFormatWriter
 
-import com.core.common.BitMatrix
 import com.qr.scanner.constant.PARSE_RESULT
 import com.qr.scanner.extension.unsafeLazy
 import com.qr.scanner.model.ParsedResultType

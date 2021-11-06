@@ -7,8 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelProvider
-import com.core.BarcodeFormat
-import com.core.Result
+
+
 import com.qr.scanner.R
 import com.qr.scanner.activity.ViewQRcodeActivity
 import com.qr.scanner.extension.isNotBlank
