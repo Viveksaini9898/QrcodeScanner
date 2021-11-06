@@ -1,7 +1,6 @@
 package com.qr.scanner.adapter
 
 import android.app.Activity
-import android.content.*
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,13 +10,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.core.client.result.*
 import com.qr.scanner.R
-import com.qr.scanner.activity.ProductResultActivity
 import com.qr.scanner.activity.ScanResultActivity
-import com.qr.scanner.constant.RESULT
 import com.qr.scanner.extension.unsafeLazy
-import com.qr.scanner.history.History
 import com.qr.scanner.utils.*
 import java.lang.Exception
 import java.text.SimpleDateFormat
@@ -51,9 +46,15 @@ class HistoryAdapter(
                 holder.image?.setImageResource(R.drawable.ic_wifi_black_24dp)
             }
             ParsedResultType.OTHER -> {
-                holder.name?.text = barcode?.text
-                holder.date?.text = getDate(historyList?.date!!)
-                holder.image?.setImageResource(R.drawable.ic_text_black_24dp)
+                if(barcode.isProductBarcode){
+                    holder.name?.text = barcode.text
+                    holder.date?.text = getDate(historyList?.date!!)
+                    holder.image?.setImageResource(R.drawable.ic_barcode)
+                }else {
+                    holder.name?.text = barcode?.text
+                    holder.date?.text = getDate(historyList?.date!!)
+                    holder.image?.setImageResource(R.drawable.ic_text_black_24dp)
+                }
 
             }
             ParsedResultType.SMS -> {
@@ -110,18 +111,11 @@ class HistoryAdapter(
                 holder.image?.setImageResource(R.drawable.ic_event_black_24dp)
 
             }
-            ParsedResultType.GEO -> {
-                holder.name?.text = barcode.text
-                holder.date?.text = getDate(historyList?.date!!)
-
-                holder.image?.setImageResource(R.drawable.ic_barcode)
-
-            }
 
         }
 
         holder?.delete?.setOnClickListener {
-            confirmDelete(activity,position)
+            confirmDelete(historyList)
         }
 
 
@@ -179,7 +173,7 @@ class HistoryAdapter(
         return formatter.format(time_stamp_server)
     }
 
-    private fun confirmDelete(context: Context?,position: Int) {
+    private fun confirmDelete(historyList: Result) {
         AlertDialog.Builder(activity!!, R.style.DialogAlertTheme)
             .setTitle(activity!!.resources.getQuantityString(R.plurals.delete_alert_title, 1))
             .setMessage(activity!!.resources.getQuantityString(R.plurals.delete_alert_message, 1))

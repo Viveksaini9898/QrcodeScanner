@@ -54,7 +54,7 @@ class PhoneResultFragment : Fragment() {
             copyContent(requireContext(),barcode.phone)
         }
 
-        if (barcode.phone != null) {
+        if (barcode.phone.isNullOrEmpty().not()) {
             tvNumber?.text = barcode.phone
         } else {
             tvNumber?.visibility = View.GONE
@@ -69,7 +69,7 @@ class PhoneResultFragment : Fragment() {
         }
 
         callLayout?.setOnClickListener {
-            if (barcode.phone != null && barcode.phone.isNullOrEmpty()) {
+            if (barcode.phone.isNullOrEmpty().not()) {
                 dialPhone(barcode.phone, requireContext())
             }
         }

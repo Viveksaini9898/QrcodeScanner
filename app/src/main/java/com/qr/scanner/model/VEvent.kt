@@ -138,6 +138,7 @@ data class VEvent(
             .appendIfNotNullOrBlank(STAMP_PREFIX, stamp, PARAMETERS_SEPARATOR_1)
             .appendIfNotNullOrBlank(ORGANIZER_PREFIX, organizer, PARAMETERS_SEPARATOR_1)
             .appendIfNotNullOrBlank(DESCRIPTION_PREFIX, description, PARAMETERS_SEPARATOR_1)
+            .appendIfNotNullOrBlank(LOCATION_PREFIX, location, PARAMETERS_SEPARATOR_1)
             .appendIfNotNullOrBlank(START_PREFIX, startDate, PARAMETERS_SEPARATOR_1)
             .appendIfNotNullOrBlank(END_PREFIX, endDate, PARAMETERS_SEPARATOR_1)
             .appendIfNotNullOrBlank(SUMMARY_PREFIX, summary, PARAMETERS_SEPARATOR_1)

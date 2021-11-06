@@ -87,6 +87,6 @@ class MainActivity : BaseActivity() {
     }
 
     private fun loadScannerFragment() {
-        ScanBarcodeFromCameraFragment().loadFragment(this, R.id.container)
+        ScannerFragment().loadFragment(this, R.id.container)
     }
 }

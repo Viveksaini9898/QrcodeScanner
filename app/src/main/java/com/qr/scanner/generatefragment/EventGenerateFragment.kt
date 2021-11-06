@@ -6,24 +6,32 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.ViewModelProvider
 import com.core.BarcodeFormat
 import com.core.Result
 import com.qr.scanner.R
+import com.qr.scanner.activity.ViewQRcodeActivity
 import com.qr.scanner.constant.*
 import com.qr.scanner.extension.appendIfNotNullOrBlank
 import com.qr.scanner.extension.isNotBlank
 import com.qr.scanner.extension.textString
 import com.qr.scanner.extension.unsafeLazy
+import com.qr.scanner.model.Parsers
+import com.qr.scanner.model.Sms
+import com.qr.scanner.model.VEvent
 import com.qr.scanner.utils.viewQrCodeActivity
-import kotlinx.android.synthetic.main.fragment_email_generate.*
+import com.qr.scanner.viewmodel.HistoryViewModel
 import kotlinx.android.synthetic.main.fragment_event_generate.*
-import kotlinx.android.synthetic.main.fragment_event_generate.generateQrcode
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
 
 class EventGenerateFragment : Fragment() {
+
+    private val viewModel by lazy {
+        ViewModelProvider(this).get(HistoryViewModel::class.java)
+    }
 
     private val BARCODE_TEXT_DATE_FORMATTER by unsafeLazy {
         SimpleDateFormat("yyyyMMdd'T'HHmmss'Z'", Locale.US).apply {
@@ -50,57 +58,49 @@ class EventGenerateFragment : Fragment() {
         initEditText()
 
         generateQrcode?.setOnClickListener {
-            val result = Result(toBarcodeText(edit_text_title.textString,edit_text_organizer.textString,edit_text_summary.textString,button_date_time_start.dateTime,button_date_time_end.dateTime), null, null, BarcodeFormat.QR_CODE)
-            viewQrCodeActivity(requireContext(), result)
+           createQrCode(parse())
         }
     }
 
-    private fun initEditText() {
-        edit_text_title.requestFocus()
+    private fun createQrCode(parse: Parsers) {
+        val result = com.qr.scanner.model.Result(
+            text = parse.toBarcodeText(),
+            formattedText = parse.toFormattedText(),
+            format = com.google.zxing.BarcodeFormat.QR_CODE,
+            parse = parse.parser,
+            date = System.currentTimeMillis(),
+            isGenerated = true
+        )
+        viewModel?.insert(result)
+        ViewQRcodeActivity.start(requireContext(), result)
 
     }
 
+    private fun parse(): Parsers {
+        return VEvent(
+            organizer = edit_text_organizer.textString,
+            summary = edit_text_summary.textString,
+            location = edit_text_location.textString,
+            startDate = button_date_time_start.dateTime,
+            endDate = button_date_time_end.dateTime
+        )
+    }
+
+    private fun initEditText() {
+        edit_text_summary.requestFocus()
+    }
+
     private fun handleTextChanged() {
-        edit_text_title.addTextChangedListener { toggleCreateBarcodeButton() }
+        edit_text_location.addTextChangedListener { toggleCreateBarcodeButton() }
         edit_text_organizer.addTextChangedListener { toggleCreateBarcodeButton() }
         edit_text_summary.addTextChangedListener { toggleCreateBarcodeButton() }
     }
 
     private fun toggleCreateBarcodeButton() {
-        if (edit_text_title.isNotBlank() || edit_text_organizer.isNotBlank() || edit_text_summary.isNotBlank()) {
+        if (edit_text_location.isNotBlank() || edit_text_organizer.isNotBlank() || edit_text_summary.isNotBlank()) {
             generateQrcode?.background = resources?.getDrawable(R.drawable.button_background_1)
         } else {
             generateQrcode?.background = resources?.getDrawable(R.drawable.circle_button_background)
-        }
-    }
-
-   private fun toBarcodeText(
-        uid: String?,
-        organizer: String?,
-        summary: String?,
-        startDate: Long?,
-        endDate: Long?
-    ): String {
-        val startDate = BARCODE_TEXT_DATE_FORMATTER.formatOrNull(startDate)
-        val endDate = BARCODE_TEXT_DATE_FORMATTER.formatOrNull(endDate)
-
-        return StringBuilder()
-            .append(EVENT_SCHEMA_PREFIX)
-            .append(PARAMETERS_SEPARATOR_1)
-            .appendIfNotNullOrBlank(UID_PREFIX, uid, PARAMETERS_SEPARATOR_1)
-            .appendIfNotNullOrBlank(ORGANIZER_PREFIX, organizer, PARAMETERS_SEPARATOR_1)
-            .appendIfNotNullOrBlank(START_PREFIX, startDate, PARAMETERS_SEPARATOR_1)
-            .appendIfNotNullOrBlank(END_PREFIX, endDate, PARAMETERS_SEPARATOR_1)
-            .appendIfNotNullOrBlank(SUMMARY_PREFIX, summary, PARAMETERS_SEPARATOR_1)
-            .append(EVENT_SCHEMA_PREFIX)
-            .toString()
-    }
-
-    private fun DateFormat.formatOrNull(time: Long?): String? {
-        return try {
-            format(Date(time!!))
-        } catch (ex: Exception) {
-            null
         }
     }
 }

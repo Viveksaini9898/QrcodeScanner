@@ -7,15 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelProvider
-import com.core.BarcodeFormat
-import com.core.Result
+import com.google.zxing.BarcodeFormat
 import com.qr.scanner.R
+import com.qr.scanner.activity.ViewBarcodeActivity
+import com.qr.scanner.activity.ViewQRcodeActivity
 import com.qr.scanner.extension.isNotBlank
 import com.qr.scanner.extension.textString
-import com.qr.scanner.history.History
+import com.qr.scanner.model.Other
+import com.qr.scanner.model.Parsers
 import com.qr.scanner.utils.viewQrCodeActivity
 import com.qr.scanner.viewmodel.HistoryViewModel
-import kotlinx.android.synthetic.main.fragment_email_generate.*
 import kotlinx.android.synthetic.main.fragment_text_generate.*
 import kotlinx.android.synthetic.main.fragment_text_generate.generateQrcode
 
@@ -40,15 +41,26 @@ class TextGenerateFragment : Fragment() {
         initEditText()
 
         generateQrcode?.setOnClickListener {
-            val result = Result(edit_text.textString, null, null, BarcodeFormat.QR_CODE)
-            val history = History(0,
-                result?.text!!, result?.barcodeFormat!!, result?.timestamp!!,
-                isGenerated = true,
-                isFavorite = false
-            )
-          //  viewModel?.insert(history)
-            viewQrCodeActivity(requireContext(), result)
+            createQrCode(parse())
         }
+    }
+
+    private fun createQrCode(parse: Parsers) {
+        val result = com.qr.scanner.model.Result(
+            text = parse.toBarcodeText(),
+            formattedText = parse.toFormattedText(),
+            format = BarcodeFormat.QR_CODE,
+            parse = parse.parser,
+            date = System.currentTimeMillis(),
+            isGenerated = true
+        )
+        viewModel?.insert(result)
+        ViewQRcodeActivity.start(requireContext(), result)
+
+    }
+
+    private fun parse(): Parsers {
+        return Other(edit_text.textString)
     }
 
     private fun initEditText() {
@@ -63,7 +75,8 @@ class TextGenerateFragment : Fragment() {
                 generateQrcode?.background = resources?.getDrawable(R.drawable.button_background_1)
             } else {
                 generateQrcode?.isClickable = false
-                generateQrcode?.background = resources?.getDrawable(R.drawable.circle_button_background)
+                generateQrcode?.background =
+                    resources?.getDrawable(R.drawable.circle_button_background)
 
             }
         }

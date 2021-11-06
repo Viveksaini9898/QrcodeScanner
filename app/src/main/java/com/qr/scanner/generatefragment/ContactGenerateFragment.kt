@@ -6,12 +6,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.ViewModelProvider
 import com.core.BarcodeFormat
 import com.core.Result
 import com.qr.scanner.R
+import com.qr.scanner.activity.ViewQRcodeActivity
 import com.qr.scanner.extension.isNotBlank
 import com.qr.scanner.extension.textString
+import com.qr.scanner.model.Parsers
+import com.qr.scanner.model.VCard
 import com.qr.scanner.utils.viewQrCodeActivity
+import com.qr.scanner.viewmodel.HistoryViewModel
 import ezvcard.Ezvcard
 import ezvcard.VCardVersion
 import ezvcard.property.*
@@ -19,6 +24,9 @@ import kotlinx.android.synthetic.main.fragment_contact_generate.*
 
 class ContactGenerateFragment : Fragment() {
 
+    private val viewModel by lazy {
+        ViewModelProvider(this).get(HistoryViewModel::class.java)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,24 +42,38 @@ class ContactGenerateFragment : Fragment() {
         initEditText()
 
         generateQrcode?.setOnClickListener {
-            val result = Result(
-                toBarcodeText(
-                    edit_text_first_name.textString,
-                    edit_text_last_name.textString,
-                    null,
-                    edit_text_organization.textString,
-                    edit_text_job.textString,
-                    edit_text_email.textString,
-                    null,
-                    null,
-                    edit_text_phone.textString,
-                    edit_text_fax.textString,
-                    edit_text_website.textString
-                ), null, null, BarcodeFormat.QR_CODE
-            )
-            viewQrCodeActivity(requireContext(), result)
+           createQrCode(parse())
         }
     }
+
+    private fun createQrCode(parse: Parsers) {
+        val result = com.qr.scanner.model.Result(
+            text = parse.toBarcodeText(),
+            formattedText = parse.toFormattedText(),
+            format = com.google.zxing.BarcodeFormat.QR_CODE,
+            parse = parse.parser,
+            date = System.currentTimeMillis(),
+            isGenerated = true
+        )
+        viewModel?.insert(result)
+        ViewQRcodeActivity.start(requireContext(), result)
+
+    }
+
+    private fun parse(): Parsers {
+
+        return VCard(
+            firstName = edit_text_first_name.textString,
+            lastName = edit_text_last_name.textString,
+            organization = edit_text_organization.textString,
+            title = edit_text_job.textString,
+            email = edit_text_email.textString,
+            phone = edit_text_phone.textString,
+            secondaryPhone = edit_text_fax.textString,
+            url = edit_text_website.textString
+        )
+    }
+
 
     private fun handleTextChanged() {
         edit_text_first_name.addTextChangedListener { toggleCreateBarcodeButton() }
@@ -71,68 +93,4 @@ class ContactGenerateFragment : Fragment() {
         }
     }
 
-    private fun toBarcodeText(
-        firstName: String?,
-        lastName: String?,
-        nickname: String?,
-        organization: String?,
-        title: String?,
-        email: String?,
-        secondaryEmail: String?,
-        tertiaryEmail: String?,
-        phone: String?,
-        secondaryPhone: String?,
-        url: String?
-    ): String {
-        val vCard = ezvcard.VCard()
-
-        vCard.structuredName = StructuredName().apply {
-            given = firstName
-            family = lastName
-        }
-
-        if (nickname.isNullOrBlank().not()) {
-            vCard.nickname = Nickname().apply { values.add(nickname) }
-        }
-
-        if (organization.isNullOrBlank().not()) {
-            vCard.organization = Organization().apply { values.add(organization) }
-        }
-
-        if (title.isNullOrBlank().not()) {
-            vCard.addTitle(Title(title))
-        }
-
-        if (email.isNullOrBlank().not()) {
-            vCard.addEmail(Email(email))
-        }
-
-        if (secondaryEmail.isNullOrBlank().not()) {
-            vCard.addEmail(Email(secondaryEmail))
-        }
-
-        if (tertiaryEmail.isNullOrBlank().not()) {
-            vCard.addEmail(Email(tertiaryEmail))
-        }
-
-        if (phone.isNullOrBlank().not()) {
-            vCard.addTelephoneNumber(Telephone(phone))
-        }
-
-        if (secondaryPhone.isNullOrBlank().not()) {
-            vCard.addTelephoneNumber(Telephone(secondaryPhone))
-        }
-
-
-        if (url.isNullOrBlank().not()) {
-            vCard.addUrl(Url(url))
-        }
-
-        return Ezvcard
-            .write(vCard)
-            .version(VCardVersion.V4_0)
-            .prodId(false)
-            .go()
-            .trimEnd('\n', '\r', ' ')
-    }
 }

@@ -53,19 +53,19 @@ class WifiResultFragment : Fragment() {
             copyContent(requireContext(), barcode.text)
         }
 
-        if (!barcode.networkName.isNullOrEmpty()) {
+        if (barcode.networkName.isNullOrEmpty().not()) {
             ssidLayout?.visibility = View.VISIBLE
             ssid?.text = barcode.networkName
         } else {
             ssidLayout?.visibility = View.GONE
         }
-        if (!barcode?.networkPassword.isNullOrEmpty()) {
+        if (barcode?.networkPassword.isNullOrEmpty().not()) {
             passwordLayout?.visibility = View.VISIBLE
             password?.text = barcode?.networkPassword
         } else {
             passwordLayout?.visibility = View.VISIBLE
         }
-        if (!barcode.identity.isNullOrEmpty()) {
+        if (barcode.identity.isNullOrEmpty().not()) {
             identityLayout?.visibility = View.VISIBLE
             identity?.text = barcode.identity
         } else {
@@ -82,13 +82,13 @@ class WifiResultFragment : Fragment() {
         } else {
             hiddenLayout?.visibility = View.GONE
         }
-        if (!barcode?.anonymousIdentity.isNullOrEmpty()) {
+        if (barcode?.anonymousIdentity.isNullOrEmpty().not()) {
             anonymousLayout?.visibility = View.VISIBLE
             anonymous?.text = barcode?.anonymousIdentity
         } else {
             anonymousLayout?.visibility = View.GONE
         }
-        if (!barcode?.networkAuthType.isNullOrEmpty()) {
+        if (barcode?.networkAuthType.isNullOrEmpty().not()) {
             networkEncryptionLayout?.visibility = View.VISIBLE
             networkEncryption?.text = barcode?.networkAuthType
         } else {

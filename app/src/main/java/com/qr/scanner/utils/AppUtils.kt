@@ -8,14 +8,13 @@ import android.net.Uri
 import android.os.Environment
 import android.provider.ContactsContract
 import android.provider.MediaStore
+import android.provider.Telephony
 import android.util.Patterns
 import android.webkit.URLUtil
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import com.core.Result
-import com.qr.scanner.Intents
 import com.qr.scanner.activity.ViewQRcodeActivity
 import androidx.core.content.FileProvider
 import com.qr.scanner.constant.RESULT
@@ -111,14 +110,13 @@ fun launchIntent(context: Context?, intent: Intent?) {
 
 fun rawLaunchIntent(context: Context?, intent: Intent?) {
     if (intent != null) {
-        intent.addFlags(Intents.FLAG_NEW_DOC)
         context?.startActivity(intent)
     }
 }
 
 
 
-fun viewQrCodeActivity(context: Context?, result: Result?) {
+fun viewQrCodeActivity(context: Context?, result: com.qr.scanner.model.Result) {
     val intent = Intent(context, ViewQRcodeActivity::class.java)
     intent.putExtra(RESULT, result)
     context?.startActivity(intent)

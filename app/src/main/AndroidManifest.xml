@@ -62,18 +62,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".CaptureActivity"
-            android:clearTaskOnLaunch="true"
-            android:exported="true"
-            android:screenOrientation="sensorLandscape"
-            android:stateNotNeeded="true"
-            android:theme="@style/CaptureTheme"
-            android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity
-            android:name=".PreferencesActivity"
-            android:label="@string/preferences_name"
-            android:stateNotNeeded="true" />
-        <activity
             android:name=".history.HistoryActivity"
             android:label="@string/history_title"
             android:stateNotNeeded="true" />

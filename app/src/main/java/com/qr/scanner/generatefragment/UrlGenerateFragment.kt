@@ -6,15 +6,26 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.ViewModelProvider
 import com.core.BarcodeFormat
 import com.core.Result
 import com.qr.scanner.R
+import com.qr.scanner.activity.ViewQRcodeActivity
 import com.qr.scanner.extension.isNotBlank
 import com.qr.scanner.extension.textString
+import com.qr.scanner.model.Other
+import com.qr.scanner.model.Parsers
+import com.qr.scanner.model.Url
 import com.qr.scanner.utils.viewQrCodeActivity
-import kotlinx.android.synthetic.main.fragment_url_generate.*
+import com.qr.scanner.viewmodel.HistoryViewModel
+import kotlinx.android.synthetic.main.fragment_url_generate.edit_text
+import kotlinx.android.synthetic.main.fragment_url_generate.generateQrcode
 
 class UrlGenerateFragment : Fragment() {
+
+    private val viewModel by lazy {
+        ViewModelProvider(this).get(HistoryViewModel::class.java)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,13 +42,30 @@ class UrlGenerateFragment : Fragment() {
 
         generateQrcode?.setOnClickListener {
             if (edit_text.isNotBlank()) {
-                val result = Result(edit_text.textString, null, null, BarcodeFormat.QR_CODE)
-                viewQrCodeActivity(requireContext(), result)
+                createQrCode(parse())
             } else {
                 edit_text?.error = "Invalid URL"
             }
         }
 
+    }
+
+    private fun createQrCode(parse: Parsers) {
+        val result = com.qr.scanner.model.Result(
+            text = parse.toBarcodeText(),
+            formattedText = parse.toFormattedText(),
+            format = com.google.zxing.BarcodeFormat.QR_CODE,
+            parse = parse.parser,
+            date = System.currentTimeMillis(),
+            isGenerated = true
+        )
+        viewModel?.insert(result)
+        ViewQRcodeActivity.start(requireContext(), result)
+
+    }
+
+    private fun parse(): Parsers {
+        return Url(edit_text.textString)
     }
 
     private fun initEditText() {

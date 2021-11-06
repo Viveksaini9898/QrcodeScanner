@@ -15,7 +15,6 @@ import com.qr.scanner.preference.UserPreferences
 import com.qr.scanner.result.ParsedResultHandler
 import com.qr.scanner.utils.*
 import kotlinx.android.synthetic.main.fragment_calendar_result.*
-import kotlinx.android.synthetic.main.fragment_calendar_result.view.*
 import java.text.SimpleDateFormat
 
 
@@ -56,7 +55,7 @@ class CalendarResultFragment : Fragment() {
         } else {
             titleLayout?.visibility = View.GONE
         }
-        if (barcode?.eventLocation.isNullOrEmpty().not()) {
+        if (barcode.eventLocation.isNullOrEmpty().not()) {
             tvLocation?.text = barcode.eventLocation
         } else {
             locationLayout?.visibility = View.GONE

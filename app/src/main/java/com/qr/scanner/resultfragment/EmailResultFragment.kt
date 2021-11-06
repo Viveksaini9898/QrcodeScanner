@@ -50,17 +50,17 @@ class EmailResultFragment : Fragment() {
         if (userPreferences?.autoCopy!!) {
             copyContent(requireContext(), barcode.text)
         }
-        if (barcode.email != null && barcode.email.isNullOrEmpty()) {
+        if (barcode.email.isNullOrEmpty().not()) {
             tvEmail?.text = barcode.email
         } else {
             tvEmail?.visibility = View.GONE
         }
-        if (barcode.emailBody != null && barcode.emailBody.isNullOrEmpty()) {
+        if (barcode.emailBody.isNullOrEmpty().not()) {
             tvBody?.text = barcode.emailBody
         } else {
             tvBody?.visibility = View.GONE
         }
-        if (barcode?.emailSubject != null && barcode?.emailSubject.isNullOrEmpty()) {
+        if (barcode?.emailSubject.isNullOrEmpty().not()) {
             tvSubject?.text = barcode?.emailSubject
         } else {
             tvSubject?.visibility = View.GONE

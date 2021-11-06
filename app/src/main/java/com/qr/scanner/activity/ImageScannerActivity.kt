@@ -19,6 +19,7 @@ import com.qr.scanner.viewmodel.HistoryViewModel
 import kotlinx.android.synthetic.main.activity_image_scanner.*
 import kotlinx.android.synthetic.main.toolbar.*
 import java.lang.Exception
+import com.qr.scanner.model.Result
 
 
 class ImageScannerActivity : AppCompatActivity() {
@@ -60,15 +61,8 @@ class ImageScannerActivity : AppCompatActivity() {
 
             result = tryParse(bitmap!!)
             if (result != null) {
-                val intent = Intent(applicationContext, ScanResultActivity::class.java)
-                intent.putExtra("result", result)
-                startActivity(intent)
-                val history = History(0,
-                    result?.text!!, result?.barcodeFormat!!, result?.timestamp!!,
-                    isGenerated = false,
-                    isFavorite = false
-                )
-               // viewModel?.insert(history)
+               ScanResultActivity.start(applicationContext,result)
+                viewModel?.insert(result)
 
             } else {
                 toast(applicationContext, "Qr not found")
@@ -117,7 +111,7 @@ class ImageScannerActivity : AppCompatActivity() {
             val bitmap = BinaryBitmap(HybridBinarizer(source))
 
             val reader = MultiFormatReader()
-            return reader.decode(bitmap)
+            return reader.decode(bitmap) as Result
         } catch (e: Exception) {
             return null
         }

@@ -3,41 +3,31 @@ package com.qr.scanner.activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Environment
 import android.view.MenuItem
-import com.core.Result
 import com.qr.scanner.R
-import com.qr.scanner.result.ResultHandlerFactory
 import kotlinx.android.synthetic.main.toolbar.*
 import com.core.WriterException
-import com.qr.scanner.qrencoder.QRGContents
-import com.qr.scanner.qrencoder.QRGEncoder
-import kotlinx.android.synthetic.main.activity_view_barcode.*
 import kotlinx.android.synthetic.main.activity_view_qr_code.*
 import com.core.BarcodeFormat
 import com.core.MultiFormatWriter
 
 import com.core.common.BitMatrix
 import com.qr.scanner.constant.PARSE_RESULT
-import com.qr.scanner.constant.RESULT
 import com.qr.scanner.extension.unsafeLazy
 import com.qr.scanner.model.ParsedResultType
 import com.qr.scanner.utils.saveImageToGallery
 import com.qr.scanner.utils.shareBitmap
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
 import java.lang.IllegalArgumentException
 import java.lang.NullPointerException
+import com.qr.scanner.model.Result
 
 
 class ViewQRcodeActivity : AppCompatActivity() {
 
     companion object {
-        fun start(context: Context, result: com.qr.scanner.model.Result?) {
+        fun start(context: Context, result: Result?) {
             val intent = Intent(context, ViewQRcodeActivity::class.java).apply {
                 putExtra(PARSE_RESULT, result)
             }
@@ -46,7 +36,7 @@ class ViewQRcodeActivity : AppCompatActivity() {
     }
 
     private val result by unsafeLazy {
-        intent?.getSerializableExtra(PARSE_RESULT) as? com.qr.scanner.model.Result ?: throw IllegalArgumentException("No result passed")
+        intent?.getSerializableExtra(PARSE_RESULT) as? Result ?: throw IllegalArgumentException("No result passed")
     }
 
 

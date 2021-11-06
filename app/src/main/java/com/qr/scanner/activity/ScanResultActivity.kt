@@ -17,6 +17,7 @@ import com.qr.scanner.utils.*
 import com.qr.scanner.viewmodel.HistoryViewModel
 import kotlinx.android.synthetic.main.toolbar.*
 import com.qr.scanner.model.Result
+import com.qr.scanner.result.ParsedResultHandler
 
 class ScanResultActivity : AppCompatActivity() {
 
@@ -38,6 +39,10 @@ class ScanResultActivity : AppCompatActivity() {
         intent?.getSerializableExtra(PARSE_RESULT) as? Result ?: throw IllegalArgumentException("No result passed")
     }
 
+    private val barcode by unsafeLazy {
+        ParsedResultHandler(result!!)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scan_result)
@@ -55,8 +60,13 @@ class ScanResultActivity : AppCompatActivity() {
                 toolbar?.title = "Wifi"
             }
             ParsedResultType.OTHER -> {
-                TextResultFragment.newInstance(result).loadFragment(this, R.id.container)
-                toolbar?.title = "Text"
+                if (barcode.isProductBarcode) {
+                    ProductResultFragment.newInstance(result).loadFragment(this, R.id.container)
+                    toolbar?.title = "Product"
+                }else {
+                    TextResultFragment.newInstance(result).loadFragment(this, R.id.container)
+                    toolbar?.title = "Text"
+                }
             }
             ParsedResultType.SMS -> {
                 SmsResultFragment.newInstance(result).loadFragment(this, R.id.container)

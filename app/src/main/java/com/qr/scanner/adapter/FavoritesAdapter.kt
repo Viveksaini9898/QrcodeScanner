@@ -11,13 +11,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.core.client.result.*
 import com.qr.scanner.R
-import com.qr.scanner.activity.ProductResultActivity
 import com.qr.scanner.activity.ScanResultActivity
-import com.qr.scanner.constant.RESULT
 import com.qr.scanner.extension.unsafeLazy
-import com.qr.scanner.history.History
 import com.qr.scanner.utils.*
 import java.lang.Exception
 import java.text.SimpleDateFormat
@@ -51,10 +47,15 @@ class FavoritesAdapter(
                 holder.image?.setImageResource(R.drawable.ic_wifi_black_24dp)
             }
             ParsedResultType.OTHER -> {
-                holder.name?.text = barcode?.text
-                holder.date?.text = getDate(historyList?.date!!)
-                holder.image?.setImageResource(R.drawable.ic_text_black_24dp)
-
+                if (barcode.isProductBarcode) {
+                    holder.name?.text = barcode.text
+                    holder.date?.text = getDate(historyList?.date!!)
+                    holder.image?.setImageResource(R.drawable.ic_barcode)
+                } else {
+                    holder.name?.text = barcode?.text
+                    holder.date?.text = getDate(historyList?.date!!)
+                    holder.image?.setImageResource(R.drawable.ic_text_black_24dp)
+                }
             }
             ParsedResultType.SMS -> {
                 holder.name?.text = barcode.phone
@@ -92,7 +93,6 @@ class FavoritesAdapter(
             ParsedResultType.EMAIL -> {
                 holder.name?.text = barcode?.email
                 holder.date?.text = getDate(historyList?.date!!)
-
                 holder.image?.setImageResource(R.drawable.ic_email_black_24dp)
 
             }
@@ -121,12 +121,12 @@ class FavoritesAdapter(
         }
 
         holder?.delete?.setOnClickListener {
-            confirmDelete(activity,position)
+            confirmDelete(activity, position)
         }
 
 
         holder?.card?.setOnClickListener {
-            ScanResultActivity.start(activity!!,historyList)
+            ScanResultActivity.start(activity!!, historyList)
         }
     }
 
@@ -179,7 +179,7 @@ class FavoritesAdapter(
         return formatter.format(time_stamp_server)
     }
 
-    private fun confirmDelete(context: Context?,position: Int) {
+    private fun confirmDelete(context: Context?, position: Int) {
         AlertDialog.Builder(activity!!, R.style.DialogAlertTheme)
             .setTitle(activity!!.resources.getQuantityString(R.plurals.delete_alert_title, 1))
             .setMessage(activity!!.resources.getQuantityString(R.plurals.delete_alert_message, 1))
