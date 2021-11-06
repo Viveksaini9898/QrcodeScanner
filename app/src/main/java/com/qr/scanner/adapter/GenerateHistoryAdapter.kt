@@ -1,7 +1,6 @@
 package com.qr.scanner.adapter
 
 import android.app.Activity
-import android.content.*
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,9 +20,11 @@ import java.util.*
 import com.qr.scanner.model.Result
 import com.qr.scanner.model.ParsedResultType
 import com.qr.scanner.result.ParsedResultHandler
+import com.qr.scanner.viewmodel.HistoryViewModel
 
 class GenerateHistoryAdapter(
-    private var activity: Activity?
+    private var activity: Activity?,
+    private val viewModel: HistoryViewModel?
 ) :
     ListAdapter<Result, GenerateHistoryAdapter.ViewHolder>(ListAdapterCallBack) {
 
@@ -122,7 +123,7 @@ class GenerateHistoryAdapter(
         }
 
         holder?.delete?.setOnClickListener {
-            confirmDelete(activity,position)
+            confirmDelete(historyList)
         }
 
 
@@ -180,7 +181,7 @@ class GenerateHistoryAdapter(
         return formatter.format(time_stamp_server)
     }
 
-    private fun confirmDelete(context: Context?,position: Int) {
+    private fun confirmDelete(historyList: Result) {
         AlertDialog.Builder(activity!!, R.style.DialogAlertTheme)
             .setTitle(activity!!.resources.getQuantityString(R.plurals.delete_alert_title, 1))
             .setMessage(activity!!.resources.getQuantityString(R.plurals.delete_alert_message, 1))
@@ -188,7 +189,7 @@ class GenerateHistoryAdapter(
             .setPositiveButton(
                 android.R.string.yes
             ) { _, _ ->
-                //  removeItem(position)
+                viewModel?.delete(historyList)
             }
             .setNegativeButton(
                 android.R.string.no

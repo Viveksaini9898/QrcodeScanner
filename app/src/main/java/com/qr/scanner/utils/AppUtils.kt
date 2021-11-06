@@ -229,31 +229,14 @@ fun getPath(context: Context?,uri: Uri?): String? {
     }
 }
 
-fun shareBitmap(activity: Activity?,bitmap: Bitmap?) {
-    val cachePath = File(activity?.externalCacheDir, "share/")
-    cachePath.mkdirs()
-    val fileName = System.currentTimeMillis().toString() + "qr_scanner" + ".png"
-    val file = File(cachePath, fileName)
-    val fileOutputStream: FileOutputStream
-    try {
-        fileOutputStream = FileOutputStream(file)
-        bitmap?.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream)
-        fileOutputStream.flush()
-        fileOutputStream.close()
-    } catch (e: FileNotFoundException) {
-        e.printStackTrace()
-    } catch (e: IOException) {
-        e.printStackTrace()
-    }
-    val myImageFileUri: Uri =
-        FileProvider.getUriForFile(activity!!, activity?.packageName + ".provider", file)
+fun shareBitmap(context: Context?,uri: Uri?) {
 
     val intent = Intent(Intent.ACTION_SEND)
     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
     intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-    intent.putExtra(Intent.EXTRA_STREAM, myImageFileUri)
+    intent.putExtra(Intent.EXTRA_STREAM, uri)
     intent.type = "image/*"
-    activity?.startActivity(Intent.createChooser(intent, "Share with"))
+    context?.startActivity(Intent.createChooser(intent, "Share with"))
 }
 
 fun startIntent(context: Context?, intent: Intent) {

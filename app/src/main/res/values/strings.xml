@@ -211,6 +211,10 @@
     <string name="save_successfully">Save Successfully</string>
     <string name="no_qr_found">Qr not found</string>
     <string name="image_not_found">Image not found</string>
+    <string name="delete_all_history">Delete all history</string>
+    <string name="no_favorites_available">No favorites available</string>
+    <string name="no_history_available">No history available</string>
+    <string name="no_generate_history_available">No generate history available</string>
 
     <plurals name="delete_alert_title">
         <item quantity="zero">Delete item?</item>

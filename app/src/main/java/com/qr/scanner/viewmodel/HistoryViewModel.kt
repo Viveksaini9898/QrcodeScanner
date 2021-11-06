@@ -12,7 +12,6 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
     private val allHistory = repository.getAllHistory()
     private val favorites = repository.getFavorites()
     private val generate = repository.getGenerate()
-    // val allHistory: LiveData<History> = repository.allHistory.asLiveData()
 
     fun insert(result: Result?) {
         repository.insert(result)
@@ -20,6 +19,14 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
 
     fun update(result: Result?) {
         repository.update(result)
+    }
+
+    fun delete(result: Result?) {
+        repository.delete(result)
+    }
+
+    fun deleteAll() {
+        repository.deleteAll()
     }
 
     fun getAllHistory(): LiveData<List<Result>>? {

@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.toolbar.*
 import com.qr.scanner.model.Result
 import com.qr.scanner.result.ParsedResultHandler
 
-class ScanResultActivity : AppCompatActivity() {
+class ScanResultActivity : BaseActivity() {
 
 
     companion object {
@@ -103,11 +103,7 @@ class ScanResultActivity : AppCompatActivity() {
     private fun toggleIsFavorite() {
         result?.isFavorite = result?.isFavorite.not()
         viewModel?.update(result)
-        updateHistory(result.isFavorite)
-    }
-
-    private fun updateHistory(favorite: Boolean) {
-        showIsFavorite(favorite)
+        showIsFavorite(result.isFavorite)
     }
 
     private fun showIsFavorite(isFavorite :Boolean) {
@@ -122,7 +118,7 @@ class ScanResultActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.qr_menu,menu)
-        updateHistory(result.isFavorite)
+        showIsFavorite(barcode.isFavorite!!)
         return super.onCreateOptionsMenu(menu)
     }
 

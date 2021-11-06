@@ -21,9 +21,12 @@ import java.util.*
 import com.qr.scanner.model.Result
 import com.qr.scanner.model.ParsedResultType
 import com.qr.scanner.result.ParsedResultHandler
+import com.qr.scanner.viewmodel.HistoryViewModel
 
 class FavoritesAdapter(
-    private var activity: Activity?
+    private var activity: Activity?,
+    private val viewModel: HistoryViewModel?
+
 ) :
     ListAdapter<Result, FavoritesAdapter.ViewHolder>(ListAdapterCallBack) {
 

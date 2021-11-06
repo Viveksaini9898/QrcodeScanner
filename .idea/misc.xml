@@ -71,9 +71,12 @@
         <entry key="..\:/Users/vivek/AndroidStudioProjects/QrScanner/app/src/main/res/menu/capture.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/vivek/AndroidStudioProjects/QrScanner/app/src/main/res/menu/encode.xml" value="0.4466666666666667" />
         <entry key="..\:/Users/vivek/AndroidStudioProjects/QrScanner/app/src/main/res/menu/history.xml" value="0.16354166666666667" />
+        <entry key="..\:/Users/vivek/AndroidStudioProjects/QrScanner/app/src/main/res/menu/history_menu.xml" value="0.12" />
         <entry key="..\:/Users/vivek/AndroidStudioProjects/QrScanner/app/src/main/res/menu/qr_menu.xml" value="0.1" />
         <entry key="..\:/Users/vivek/AndroidStudioProjects/QrScanner/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1796875" />
         <entry key="..\:/Users/vivek/AndroidStudioProjects/QrScanner/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1796875" />
+        <entry key="..\:/Users/vivek/AndroidStudioProjects/QrScanner/app/src/main/res/mipmap-mdpi/ic_launcher_round.xml" value="0.1" />
+        <entry key="..\:/Users/vivek/AndroidStudioProjects/QrScanner/app/src/main/res/mipmap-xhdpi/ic_launcher.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/vivek/AndroidStudioProjects/QrScanner/app/src/main/res/xml/preferences.xml" value="0.22" />
         <entry key="..\:/Users/vivek/AppData/Local/Android/Sdk/platforms/android-30/data/res/layout/auto_complete_list.xml" value="0.1" />
       </map>

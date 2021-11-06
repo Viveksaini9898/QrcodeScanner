@@ -22,9 +22,10 @@ import com.qr.scanner.utils.shareBitmap
 import java.lang.IllegalArgumentException
 import java.lang.NullPointerException
 import com.qr.scanner.model.Result
+import com.qr.scanner.objects.ImageSaver
 
 
-class ViewQRcodeActivity : AppCompatActivity() {
+class ViewQRcodeActivity : BaseActivity() {
 
     companion object {
         fun start(context: Context, result: Result?) {
@@ -45,6 +46,7 @@ class ViewQRcodeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_view_qr_code)
 
         if (toolbar != null) {
+            toolbar?.title = "Qr Scanner"
             setSupportActionBar(toolbar)
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
         }
@@ -76,14 +78,15 @@ class ViewQRcodeActivity : AppCompatActivity() {
                 toolbar?.title = "Text"
             }
         }
-        val image: Bitmap? = generateQr(result.toString(),640,640)
+        val image: Bitmap? = generateQr(result.text,640,640)
         qrImage?.setImageBitmap(image)
 
         saveQrCodeLayout?.setOnClickListener {
-            saveImageToGallery(applicationContext,image)
+            ImageSaver.savePngImageToPublicDirectory(this, image!!)
         }
         shareQrcodeLayout?.setOnClickListener {
-            shareBitmap(this,image)
+            shareBitmap(this,ImageSaver.saveImageToCache(this, image!!))
+
         }
     }
 

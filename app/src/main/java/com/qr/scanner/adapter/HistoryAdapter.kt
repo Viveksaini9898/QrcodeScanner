@@ -20,9 +20,11 @@ import java.util.*
 import com.qr.scanner.model.Result
 import com.qr.scanner.model.ParsedResultType
 import com.qr.scanner.result.ParsedResultHandler
+import com.qr.scanner.viewmodel.HistoryViewModel
 
 class HistoryAdapter(
-    private var activity: Activity?
+    private var activity: Activity?,
+    private val viewModel: HistoryViewModel?
 ) :
     ListAdapter<Result, HistoryAdapter.ViewHolder>(ListAdapterCallBack) {
 
@@ -128,19 +130,6 @@ class HistoryAdapter(
         return currentList?.size!!
     }
 
-    private fun updateList(list: MutableList<Result>) {
-        list?.let {
-            val newList = ArrayList<Result>(list)
-            submitList(newList)
-        }
-    }
-
-    fun removeItem(position: Int) {
-        if (position >= itemCount) return
-        val list = currentList.toMutableList()
-        if (list.removeAt(position) != null) updateList(list)
-    }
-
     override fun submitList(list: List<Result>?) {
         super.submitList(list?.let { ArrayList(it) })
     }
@@ -181,7 +170,7 @@ class HistoryAdapter(
             .setPositiveButton(
                 android.R.string.yes
             ) { _, _ ->
-              //  removeItem(position)
+              viewModel?.delete(historyList)
             }
             .setNegativeButton(
                 android.R.string.no

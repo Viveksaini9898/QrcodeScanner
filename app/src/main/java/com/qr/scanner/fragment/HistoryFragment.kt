@@ -1,21 +1,19 @@
 package com.qr.scanner.fragment
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.qr.scanner.R
 import com.qr.scanner.adapter.HistoryAdapter
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.qr.scanner.App
 import com.qr.scanner.viewmodel.HistoryViewModel
-import kotlinx.android.synthetic.main.fragment_history.*
-import kotlinx.android.synthetic.main.toolbar.*
+import kotlinx.android.synthetic.main.fragment_history.messageLayout
+import kotlinx.android.synthetic.main.fragment_history.recyclerView
+import kotlinx.android.synthetic.main.fragment_history.swipeRefreshLayout
 
 
 private const val ARG_PARAM1 = "param1"
@@ -70,10 +68,18 @@ class HistoryFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
     private fun getData() {
 
-        val adapter = HistoryAdapter(requireActivity())
-        viewModel.getAllHistory()?.observe(this) {  adapter.submitList(it) }
+        val adapter = HistoryAdapter(requireActivity(),viewModel)
+        viewModel.getAllHistory()?.observe(this) {
+            if (it?.isEmpty()!!){
+                recyclerView?.visibility = View.GONE
+                messageLayout?.visibility = View.VISIBLE
+            }else {
+                messageLayout?.visibility = View.GONE
+                recyclerView?.visibility = View.VISIBLE
+                adapter.submitList(it)
+            }
+        }
         recyclerView?.adapter = adapter
-
     }
 
 }

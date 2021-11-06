@@ -31,7 +31,7 @@ class HistoryRepository(application: Application) {
         }
     }
 
-    fun deleteAll(result: Result?) {
+    fun deleteAll() {
         subscribeOnBackground {
             historyDao.deleteAllHistory()
         }

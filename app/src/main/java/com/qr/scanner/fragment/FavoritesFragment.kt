@@ -48,9 +48,19 @@ class FavoritesFragment : Fragment(),SwipeRefreshLayout.OnRefreshListener {
 
     private fun getData() {
 
-        val adapter = FavoritesAdapter(requireActivity())
-        viewModel.getFavorite()?.observe(this) {  adapter.submitList(it) }
+        val adapter = FavoritesAdapter(requireActivity(),viewModel)
+        viewModel.getFavorite()?.observe(this) {
+            if (it?.isEmpty()!!){
+                recyclerView?.visibility = View.GONE
+                messageLayout?.visibility = View.VISIBLE
+            }else {
+                messageLayout?.visibility = View.GONE
+                recyclerView?.visibility = View.VISIBLE
+                adapter.submitList(it)
+            }
+        }
         recyclerView?.adapter = adapter
+
 
     }
 }

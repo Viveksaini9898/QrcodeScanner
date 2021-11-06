@@ -25,12 +25,12 @@ import kotlinx.android.synthetic.main.toolbar.*
 import java.lang.Exception
 
 
-class ImageScannerActivity : AppCompatActivity() {
+class ImageScannerActivity : BaseActivity() {
 
     companion object {
-        fun start(context: Context) {
+        fun start(context: Context?) {
             val intent = Intent(context, ImageScannerActivity::class.java)
-            context.startActivity(intent)
+            context?.startActivity(intent)
         }
     }
 
