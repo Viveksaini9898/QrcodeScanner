@@ -10,7 +10,7 @@
     android:clickable="true"
     app:cardCornerRadius="4dp"
     android:elevation="@dimen/dimen_8dp"
-    android:background="?selectableItemBackground"
+    android:foreground="?selectableItemBackground"
     android:focusable="true">
 
     <LinearLayout

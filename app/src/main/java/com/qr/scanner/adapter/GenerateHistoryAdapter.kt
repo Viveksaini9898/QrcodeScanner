@@ -112,13 +112,20 @@ class GenerateHistoryAdapter(
                 holder.image?.setImageResource(R.drawable.ic_event_black_24dp)
 
             }
-            ParsedResultType.GEO -> {
-                holder.name?.text = barcode.text
+            ParsedResultType.APP -> {
+                holder.name?.text = barcode?.appMarketUrl
                 holder.date?.text = getDate(historyList?.date!!)
-
-                holder.image?.setImageResource(R.drawable.ic_barcode)
-
+                if (barcode.appPackage.isNullOrEmpty()
+                        .not() && activity?.packageManager?.isAppInstalled(
+                        barcode.appPackage!!
+                    )!!
+                ) {
+                    holder.image?.setImageDrawable(activity?.appLauncherIcon(barcode.appPackage))
+                } else {
+                    holder.image?.setImageResource(R.drawable.ic_app_black_24dp)
+                }
             }
+
 
         }
 

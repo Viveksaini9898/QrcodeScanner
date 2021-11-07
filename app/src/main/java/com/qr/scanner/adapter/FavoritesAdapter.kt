@@ -120,6 +120,20 @@ class FavoritesAdapter(
                 holder.image?.setImageResource(R.drawable.ic_barcode)
 
             }
+            ParsedResultType.APP -> {
+                holder.name?.text = barcode?.appMarketUrl
+                holder.date?.text = getDate(historyList?.date!!)
+                if (barcode.appPackage.isNullOrEmpty()
+                        .not() && activity?.packageManager?.isAppInstalled(
+                        barcode.appPackage!!
+                    )!!
+                ) {
+                    holder.image?.setImageDrawable(activity?.appLauncherIcon(barcode.appPackage))
+                } else {
+                    holder.image?.setImageResource(R.drawable.ic_app_black_24dp)
+                }
+            }
+
 
         }
 

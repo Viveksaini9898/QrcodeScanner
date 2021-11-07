@@ -21,6 +21,7 @@ import com.qr.scanner.model.Result
 import com.qr.scanner.model.ParsedResultType
 import com.qr.scanner.result.ParsedResultHandler
 import com.qr.scanner.viewmodel.HistoryViewModel
+import kotlinx.android.synthetic.main.fragment_app_result.*
 
 class HistoryAdapter(
     private var activity: Activity?,
@@ -109,9 +110,22 @@ class HistoryAdapter(
             ParsedResultType.VEVENT -> {
                 holder.name?.text = barcode?.eventSummary
                 holder.date?.text = getDate(historyList?.date!!)
-
                 holder.image?.setImageResource(R.drawable.ic_event_black_24dp)
 
+            }
+            ParsedResultType.APP -> {
+                holder.name?.text = barcode?.appMarketUrl
+                holder.date?.text = getDate(historyList?.date!!)
+
+                if (barcode.appPackage.isNullOrEmpty()
+                        .not() && activity?.packageManager?.isAppInstalled(
+                        barcode.appPackage!!
+                    )!!
+                ) {
+                    holder.image?.setImageDrawable(activity?.appLauncherIcon(barcode.appPackage))
+                } else {
+                    holder.image?.setImageResource(R.drawable.ic_app_black_24dp)
+                }
             }
 
         }

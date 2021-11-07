@@ -34,7 +34,7 @@
                     android:layout_marginStart="@dimen/dimen_10dp"
                     android:layout_marginEnd="@dimen/dimen_10dp"
                     android:layout_weight="1"
-                    android:background="@drawable/button_background"
+                    android:background="@drawable/ripple_effect"
                     android:orientation="horizontal"
                     android:padding="@dimen/dimen_10dp">
 
@@ -71,7 +71,7 @@
                     android:layout_marginStart="@dimen/dimen_10dp"
                     android:layout_marginEnd="@dimen/dimen_10dp"
                     android:layout_weight="1"
-                    android:background="@drawable/button_background"
+                    android:background="@drawable/ripple_effect"
                     android:orientation="vertical"
                     android:padding="@dimen/dimen_10dp">
 
@@ -100,7 +100,7 @@
                     android:layout_marginStart="@dimen/dimen_10dp"
                     android:layout_marginEnd="@dimen/dimen_10dp"
                     android:layout_weight="1"
-                    android:background="@drawable/button_background"
+                    android:background="@drawable/ripple_effect"
                     android:orientation="vertical"
                     android:padding="@dimen/dimen_10dp">
 
@@ -138,7 +138,7 @@
                     android:layout_marginStart="@dimen/dimen_10dp"
                     android:layout_marginEnd="@dimen/dimen_10dp"
                     android:layout_weight="1"
-                    android:background="@drawable/button_background"
+                    android:background="@drawable/ripple_effect"
                     android:orientation="vertical"
                     android:padding="@dimen/dimen_10dp">
 
@@ -167,7 +167,7 @@
                     android:layout_marginStart="@dimen/dimen_10dp"
                     android:layout_marginEnd="@dimen/dimen_10dp"
                     android:layout_weight="1"
-                    android:background="@drawable/button_background"
+                    android:background="@drawable/ripple_effect"
                     android:orientation="vertical"
                     android:padding="@dimen/dimen_10dp">
 
@@ -205,7 +205,7 @@
                     android:layout_marginStart="@dimen/dimen_10dp"
                     android:layout_marginEnd="@dimen/dimen_10dp"
                     android:layout_weight="1"
-                    android:background="@drawable/button_background"
+                    android:background="@drawable/ripple_effect"
                     android:orientation="vertical"
                     android:padding="@dimen/dimen_10dp">
 
@@ -234,7 +234,7 @@
                     android:layout_marginStart="@dimen/dimen_10dp"
                     android:layout_marginEnd="@dimen/dimen_10dp"
                     android:layout_weight="1"
-                    android:background="@drawable/button_background"
+                    android:background="@drawable/ripple_effect"
                     android:orientation="vertical"
                     android:padding="@dimen/dimen_10dp">
 
@@ -272,7 +272,7 @@
                     android:layout_marginStart="@dimen/dimen_10dp"
                     android:layout_marginEnd="@dimen/dimen_10dp"
                     android:layout_weight="1"
-                    android:background="@drawable/button_background"
+                    android:background="@drawable/ripple_effect"
                     android:orientation="vertical"
                     android:padding="@dimen/dimen_10dp">
 
@@ -301,7 +301,74 @@
                     android:layout_marginStart="@dimen/dimen_10dp"
                     android:layout_marginEnd="@dimen/dimen_10dp"
                     android:layout_weight="1"
-                    android:background="@drawable/button_background"
+                    android:background="@drawable/ripple_effect"
+                    android:orientation="vertical"
+                    android:padding="@dimen/dimen_10dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        app:srcCompat="@drawable/ic_sms_black_24dp"
+                        app:tint="@color/app_default" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="@dimen/dimen_5dp"
+                        android:autoLink="email"
+                        android:gravity="center"
+                        android:text="@string/sms"
+                        android:textSize="@dimen/dimen_18dp" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/dimen_10dp">
+
+                <LinearLayout
+                    android:id="@+id/appLayout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:layout_marginEnd="@dimen/dimen_10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/ripple_effect"
+                    android:orientation="vertical"
+                    android:padding="@dimen/dimen_10dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        app:srcCompat="@drawable/ic_app_black_24dp"
+                        app:tint="@color/app_default" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="@dimen/dimen_5dp"
+                        android:autoLink="email"
+                        android:gravity="center"
+                        android:text="@string/app"
+                        android:textSize="@dimen/dimen_18dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dimen_10dp"
+                    android:layout_marginEnd="@dimen/dimen_10dp"
+                    android:layout_weight="1"
+                    android:visibility="invisible"
+                    android:background="@drawable/ripple_effect"
                     android:orientation="vertical"
                     android:padding="@dimen/dimen_10dp">
 

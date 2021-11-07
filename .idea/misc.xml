@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/vivek/.gradle/caches/transforms-3/61acccfaa5da4b0e583a74dfb4979cab/transformed/appcompat-1.3.1/res/drawable/abc_item_background_holo_dark.xml" value="0.1" />
+        <entry key="..\:/Users/vivek/.gradle/caches/transforms-3/61acccfaa5da4b0e583a74dfb4979cab/transformed/appcompat-1.3.1/res/drawable/abc_item_background_holo_light.xml" value="0.1" />
         <entry key="..\:/Users/vivek/AndroidStudioProjects/QrScanner/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1796875" />
         <entry key="..\:/Users/vivek/AndroidStudioProjects/QrScanner/app/src/main/res/drawable/big_background.xml" value="0.1" />
         <entry key="..\:/Users/vivek/AndroidStudioProjects/QrScanner/app/src/main/res/drawable/button_background.xml" value="0.1" />
@@ -20,6 +22,7 @@
         <entry key="..\:/Users/vivek/AndroidStudioProjects/QrScanner/app/src/main/res/drawable/ic_minus.xml" value="0.14537037037037037" />
         <entry key="..\:/Users/vivek/AndroidStudioProjects/QrScanner/app/src/main/res/drawable/ic_time.xml" value="0.1" />
         <entry key="..\:/Users/vivek/AndroidStudioProjects/QrScanner/app/src/main/res/drawable/ic_wifi_black_24dp.xml" value="0.125" />
+        <entry key="..\:/Users/vivek/AndroidStudioProjects/QrScanner/app/src/main/res/drawable/ripple_effect.xml" value="0.1" />
         <entry key="..\:/Users/vivek/AndroidStudioProjects/QrScanner/app/src/main/res/layout/activity_image_scanner.xml" value="0.14666666666666667" />
         <entry key="..\:/Users/vivek/AndroidStudioProjects/QrScanner/app/src/main/res/layout/activity_main.xml" value="0.33402489626556015" />
         <entry key="..\:/Users/vivek/AndroidStudioProjects/QrScanner/app/src/main/res/layout/activity_product_result.xml" value="0.3333333333333333" />
@@ -33,6 +36,8 @@
         <entry key="..\:/Users/vivek/AndroidStudioProjects/QrScanner/app/src/main/res/layout/capture.xml" value="0.12" />
         <entry key="..\:/Users/vivek/AndroidStudioProjects/QrScanner/app/src/main/res/layout/custom_dialog.xml" value="0.1" />
         <entry key="..\:/Users/vivek/AndroidStudioProjects/QrScanner/app/src/main/res/layout/encode.xml" value="0.1" />
+        <entry key="..\:/Users/vivek/AndroidStudioProjects/QrScanner/app/src/main/res/layout/fragment_app_generate.xml" value="0.1" />
+        <entry key="..\:/Users/vivek/AndroidStudioProjects/QrScanner/app/src/main/res/layout/fragment_app_result.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/vivek/AndroidStudioProjects/QrScanner/app/src/main/res/layout/fragment_calendar_result.xml" value="0.33634719710669075" />
         <entry key="..\:/Users/vivek/AndroidStudioProjects/QrScanner/app/src/main/res/layout/fragment_contact_generate.xml" value="0.12302839116719243" />
         <entry key="..\:/Users/vivek/AndroidStudioProjects/QrScanner/app/src/main/res/layout/fragment_contact_result.xml" value="0.29017160686427457" />
@@ -59,7 +64,8 @@
         <entry key="..\:/Users/vivek/AndroidStudioProjects/QrScanner/app/src/main/res/layout/fragment_view_pager.xml" value="0.1" />
         <entry key="..\:/Users/vivek/AndroidStudioProjects/QrScanner/app/src/main/res/layout/fragment_wifi_generate.xml" value="0.22" />
         <entry key="..\:/Users/vivek/AndroidStudioProjects/QrScanner/app/src/main/res/layout/fragment_wifi_result.xml" value="0.16666666666666666" />
-        <entry key="..\:/Users/vivek/AndroidStudioProjects/QrScanner/app/src/main/res/layout/history_list_item.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/vivek/AndroidStudioProjects/QrScanner/app/src/main/res/layout/history_list_item.xml" value="0.22" />
+        <entry key="..\:/Users/vivek/AndroidStudioProjects/QrScanner/app/src/main/res/layout/item_app.xml" value="0.1" />
         <entry key="..\:/Users/vivek/AndroidStudioProjects/QrScanner/app/src/main/res/layout/item_spinner.xml" value="0.1" />
         <entry key="..\:/Users/vivek/AndroidStudioProjects/QrScanner/app/src/main/res/layout/item_spinner_dropdown.xml" value="0.1" />
         <entry key="..\:/Users/vivek/AndroidStudioProjects/QrScanner/app/src/main/res/layout/layout_date_time_picker_button.xml" value="0.1" />

@@ -2,8 +2,10 @@ package com.qr.scanner.utils
 
 import android.app.Activity
 import android.content.*
+import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.net.wifi.WifiManager
 import android.os.Environment
@@ -311,3 +313,19 @@ fun searchMap(context: Context?,address: String?) {
 
 val Context.wifiManager: WifiManager?
     get() = applicationContext.getSystemService(Context.WIFI_SERVICE) as? WifiManager
+
+fun PackageManager.isAppInstalled(packageName: String): Boolean = try {
+    getApplicationInfo(packageName, PackageManager.GET_META_DATA)
+    true
+} catch (e: Exception) {
+    false
+}
+
+fun Context.appLauncherIcon(packageName: String?): Drawable? {
+    return try {
+        this.packageManager?.getApplicationIcon(packageName!!)
+    } catch (e: PackageManager.NameNotFoundException) {
+        e.printStackTrace()
+        null
+    }
+}

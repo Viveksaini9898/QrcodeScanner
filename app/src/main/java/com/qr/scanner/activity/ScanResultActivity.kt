@@ -83,6 +83,11 @@ class ScanResultActivity : BaseActivity() {
                 toolbar?.title = "Website"
 
             }
+            ParsedResultType.BOOKMARK -> {
+                UrlResultFragment.newInstance(result).loadFragment(this, R.id.container)
+                toolbar?.title = "Bookmark"
+
+            }
             ParsedResultType.EMAIL -> {
                 EmailResultFragment.newInstance(result).loadFragment(this, R.id.container)
                 toolbar?.title = "Email"
@@ -94,6 +99,10 @@ class ScanResultActivity : BaseActivity() {
             ParsedResultType.VEVENT -> {
                 CalendarResultFragment.newInstance(result).loadFragment(this, R.id.container)
                 toolbar?.title = "Event"
+            }
+            ParsedResultType.APP -> {
+                AppResultFragment.newInstance(result).loadFragment(this, R.id.container)
+                toolbar?.title = "App"
             }
         }
 

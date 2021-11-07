@@ -59,6 +59,10 @@ class QrGenerateFragment : Fragment() {
             loadActivity("sms")
         }
 
+        appLayout?.setOnClickListener {
+            loadActivity("app")
+        }
+
         copyLayout?.setOnClickListener {
 
         }

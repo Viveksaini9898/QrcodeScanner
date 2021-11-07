@@ -215,6 +215,9 @@
     <string name="no_favorites_available">No favorites available</string>
     <string name="no_history_available">No history available</string>
     <string name="no_generate_history_available">No generate history available</string>
+    <string name="app">App</string>
+    <string name="open_app">Open app</string>
+    <string name="market">Market</string>
 
     <plurals name="delete_alert_title">
         <item quantity="zero">Delete item?</item>

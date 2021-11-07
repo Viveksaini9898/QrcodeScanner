@@ -60,6 +60,10 @@ class QrGenerateActivity : BaseActivity() {
                 SMSGenerateFragment().loadFragment(this, R.id.container)
                 toolbar?.title = "Sms"
             }
+            "app" -> {
+                AppGenerateFragment().loadFragment(this, R.id.container)
+                toolbar?.title = "App"
+            }
 
         }
     }
