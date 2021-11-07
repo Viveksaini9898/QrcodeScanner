@@ -6,6 +6,7 @@ import androidx.room.*
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.qr.scanner.model.Result
+import io.reactivex.Single
 
 @Dao
 interface HistoryDao {
@@ -48,5 +49,25 @@ interface HistoryDao {
 
     @Query("SELECT * FROM results WHERE isGenerated = 1 ORDER BY date DESC")
     fun getGenerate(): LiveData<List<Result>>
+
+    @Query("SELECT * FROM results WHERE format = :format AND text = :text LIMIT 1")
+    fun find(format: String, text: String): List<Result>
+
+
+    fun insert(result: Result, doNotSaveDuplicates: Boolean) {
+        return if (doNotSaveDuplicates) {
+            saveIfNotPresent(result)
+        } else {
+            insert(result)
+        }
+    }
+
+    fun saveIfNotPresent(result: Result){
+        if(find(result.format.name, result.text).isEmpty()){
+            insert(result)
+        }else {
+            find(result.format.name, result.text)[0].id
+        }
+    }
 
 }

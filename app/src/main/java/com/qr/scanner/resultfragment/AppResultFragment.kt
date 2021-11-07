@@ -22,7 +22,7 @@ import com.qr.scanner.utils.*
 
 class AppResultFragment : Fragment() {
 
-    private val userPreferences by lazy {
+    private val userPreferences by unsafeLazy {
         UserPreferences(requireContext())
     }
     private var result: Result? = null

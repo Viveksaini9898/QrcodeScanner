@@ -42,6 +42,9 @@
         <activity
             android:name=".activity.ViewBarcodeActivity"
             android:exported="true" />
+        <activity
+            android:name=".activity.SupportedFormatsActivity"
+            android:exported="true" />
 
         <activity
             android:name=".activity.ImageScannerActivity"

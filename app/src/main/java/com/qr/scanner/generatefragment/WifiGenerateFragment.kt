@@ -18,9 +18,11 @@ import com.qr.scanner.constant.*
 import com.qr.scanner.extension.appendIfNotNullOrBlank
 import com.qr.scanner.extension.isNotBlank
 import com.qr.scanner.extension.textString
+import com.qr.scanner.extension.unsafeLazy
 import com.qr.scanner.model.Parsers
 import com.qr.scanner.model.VEvent
 import com.qr.scanner.model.Wifi
+import com.qr.scanner.preference.UserPreferences
 import com.qr.scanner.utils.viewQrCodeActivity
 import com.qr.scanner.viewmodel.HistoryViewModel
 import kotlinx.android.synthetic.main.fragment_event_generate.*
@@ -31,6 +33,10 @@ class WifiGenerateFragment : Fragment() {
 
     private val viewModel by lazy {
         ViewModelProvider(this).get(HistoryViewModel::class.java)
+    }
+
+    private val userPreferences by unsafeLazy {
+        UserPreferences(requireContext())
     }
 
     override fun onCreateView(
@@ -67,7 +73,7 @@ class WifiGenerateFragment : Fragment() {
             date = System.currentTimeMillis(),
             isGenerated = true
         )
-        viewModel?.insert(result)
+        viewModel.insert(result,userPreferences?.doNotSaveDuplicates)
         ViewQRcodeActivity.start(requireContext(), result)
 
     }

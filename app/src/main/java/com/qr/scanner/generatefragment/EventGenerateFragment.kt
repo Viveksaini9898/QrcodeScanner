@@ -19,6 +19,7 @@ import com.qr.scanner.extension.unsafeLazy
 import com.qr.scanner.model.Parsers
 import com.qr.scanner.model.Sms
 import com.qr.scanner.model.VEvent
+import com.qr.scanner.preference.UserPreferences
 import com.qr.scanner.utils.viewQrCodeActivity
 import com.qr.scanner.viewmodel.HistoryViewModel
 import kotlinx.android.synthetic.main.fragment_event_generate.*
@@ -31,6 +32,9 @@ class EventGenerateFragment : Fragment() {
 
     private val viewModel by lazy {
         ViewModelProvider(this).get(HistoryViewModel::class.java)
+    }
+    private val userPreferences by unsafeLazy {
+        UserPreferences(requireContext())
     }
 
     private val BARCODE_TEXT_DATE_FORMATTER by unsafeLazy {
@@ -71,7 +75,7 @@ class EventGenerateFragment : Fragment() {
             date = System.currentTimeMillis(),
             isGenerated = true
         )
-        viewModel?.insert(result)
+        viewModel.insert(result,userPreferences?.doNotSaveDuplicates)
         ViewQRcodeActivity.start(requireContext(), result)
 
     }

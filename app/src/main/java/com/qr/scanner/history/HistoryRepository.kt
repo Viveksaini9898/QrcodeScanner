@@ -25,6 +25,12 @@ class HistoryRepository(application: Application) {
         }
     }
 
+    fun insert(result: Result?,doNotSaveDuplicates:Boolean) {
+        subscribeOnBackground {
+            historyDao.insert(result!!,doNotSaveDuplicates)
+        }
+    }
+
     fun delete(result: Result?) {
         subscribeOnBackground {
             historyDao.delete(result!!)

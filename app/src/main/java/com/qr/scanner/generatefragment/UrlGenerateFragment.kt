@@ -13,9 +13,11 @@ import com.qr.scanner.R
 import com.qr.scanner.activity.ViewQRcodeActivity
 import com.qr.scanner.extension.isNotBlank
 import com.qr.scanner.extension.textString
+import com.qr.scanner.extension.unsafeLazy
 import com.qr.scanner.model.Other
 import com.qr.scanner.model.Parsers
 import com.qr.scanner.model.Url
+import com.qr.scanner.preference.UserPreferences
 import com.qr.scanner.utils.viewQrCodeActivity
 import com.qr.scanner.viewmodel.HistoryViewModel
 import kotlinx.android.synthetic.main.fragment_url_generate.edit_text
@@ -25,6 +27,9 @@ class UrlGenerateFragment : Fragment() {
 
     private val viewModel by lazy {
         ViewModelProvider(this).get(HistoryViewModel::class.java)
+    }
+    private val userPreferences by unsafeLazy {
+        UserPreferences(requireContext())
     }
 
     override fun onCreateView(
@@ -59,7 +64,7 @@ class UrlGenerateFragment : Fragment() {
             date = System.currentTimeMillis(),
             isGenerated = true
         )
-        viewModel?.insert(result)
+        viewModel.insert(result,userPreferences?.doNotSaveDuplicates)
         ViewQRcodeActivity.start(requireContext(), result)
 
     }

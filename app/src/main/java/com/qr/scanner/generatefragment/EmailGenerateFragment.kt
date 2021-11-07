@@ -13,8 +13,10 @@ import kotlinx.android.synthetic.main.fragment_email_generate.*
 import com.qr.scanner.activity.ViewQRcodeActivity
 
 import com.qr.scanner.extension.textString
+import com.qr.scanner.extension.unsafeLazy
 import com.qr.scanner.model.Email
 import com.qr.scanner.model.Parsers
+import com.qr.scanner.preference.UserPreferences
 
 import com.qr.scanner.viewmodel.HistoryViewModel
 
@@ -24,6 +26,9 @@ class EmailGenerateFragment : Fragment() {
 
     private val viewModel by lazy {
         ViewModelProvider(this).get(HistoryViewModel::class.java)
+    }
+    private val userPreferences by unsafeLazy {
+        UserPreferences(requireContext())
     }
 
     override fun onCreateView(
@@ -53,7 +58,7 @@ class EmailGenerateFragment : Fragment() {
             date = System.currentTimeMillis(),
             isGenerated = true
         )
-        viewModel?.insert(result)
+        viewModel.insert(result,userPreferences?.doNotSaveDuplicates)
         ViewQRcodeActivity.start(requireContext(), result)
 
     }

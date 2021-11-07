@@ -17,6 +17,10 @@ class HistoryViewModel(application: Application) : AndroidViewModel(application)
         repository.insert(result)
     }
 
+    fun insert(result: Result?,doNotSaveDuplicates:Boolean) {
+        repository.insert(result,doNotSaveDuplicates)
+    }
+
     fun update(result: Result?) {
         repository.update(result)
     }

@@ -135,7 +135,7 @@
     <string name="auto_focus_off">Auto Focus [OFF]</string>
     <string name="formats">Formats</string>
     <string name="choose_formats">Choose Formats</string>
-    <string name="select_camera">Select a Camera</string>
+    <string name="select_camera">Select Camera</string>
     <string name="scan">Scan</string>
 
     <integer name="viewfinder_border_width">4</integer>
@@ -218,6 +218,11 @@
     <string name="app">App</string>
     <string name="open_app">Open app</string>
     <string name="market">Market</string>
+    <string name="do_not_save_duplicates">Do not save duplicates</string>
+    <string name="camera">Camera</string>
+    <string name="back">Back</string>
+    <string name="front">Front</string>
+    <string name="supported_formats">Supported formats</string>
 
     <plurals name="delete_alert_title">
         <item quantity="zero">Delete item?</item>
@@ -230,5 +235,20 @@
         <item quantity="one">Are you sure you want to delete the item?</item>
         <item quantity="other">Are you sure you want to delete %1$d items?</item>
     </plurals>
+
+    <!--Barcode formats-->
+    <string name="barcode_format_qr_code">QR Code</string>
+    <string name="barcode_format_aztec" translatable="false">Aztec</string>
+    <string name="barcode_format_codabar" translatable="false">Codabar</string>
+    <string name="barcode_format_code_39" translatable="false">Code 39</string>
+    <string name="barcode_format_code_93" translatable="false">Code 93</string>
+    <string name="barcode_format_code_128" translatable="false">Code 128</string>
+    <string name="barcode_format_data_matrix" translatable="false">Data Matrix</string>
+    <string name="barcode_format_ean_8"  translatable="false">EAN-8</string>
+    <string name="barcode_format_ean_13" translatable="false">EAN-13</string>
+    <string name="barcode_format_itf_14" translatable="false">ITF</string>
+    <string name="barcode_format_pdf_417" translatable="false">PDF417</string>
+    <string name="barcode_format_upc_a" translatable="false">UPC-A</string>
+    <string name="barcode_format_upc_e" translatable="false">UPC-E</string>
 
 </resources>

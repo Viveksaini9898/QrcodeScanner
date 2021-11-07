@@ -20,6 +20,7 @@ import com.qr.scanner.extension.unsafeLazy
 import com.qr.scanner.model.App
 import com.qr.scanner.model.Other
 import com.qr.scanner.model.Parsers
+import com.qr.scanner.preference.UserPreferences
 import com.qr.scanner.viewmodel.HistoryViewModel
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -34,6 +35,9 @@ class AppGenerateFragment : Fragment(),AppAdapter.Listener {
 
     private val viewModel by lazy {
         ViewModelProvider(this).get(HistoryViewModel::class.java)
+    }
+    private val userPreferences by unsafeLazy {
+        UserPreferences(requireContext())
     }
 
     override fun onCreateView(
@@ -107,7 +111,7 @@ class AppGenerateFragment : Fragment(),AppAdapter.Listener {
             date = System.currentTimeMillis(),
             isGenerated = true
         )
-        viewModel?.insert(result)
+        viewModel.insert(result,userPreferences?.doNotSaveDuplicates)
         ViewQRcodeActivity.start(requireContext(), result)
 
     }

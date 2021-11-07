@@ -15,9 +15,11 @@ import com.qr.scanner.constant.SEPARATOR
 import com.qr.scanner.constant.SMS_PREFIX
 import com.qr.scanner.extension.isNotBlank
 import com.qr.scanner.extension.textString
+import com.qr.scanner.extension.unsafeLazy
 import com.qr.scanner.model.Other
 import com.qr.scanner.model.Parsers
 import com.qr.scanner.model.Sms
+import com.qr.scanner.preference.UserPreferences
 import com.qr.scanner.utils.viewQrCodeActivity
 import com.qr.scanner.viewmodel.HistoryViewModel
 import kotlinx.android.synthetic.main.fragment_s_m_s_generate.*
@@ -30,6 +32,10 @@ class SMSGenerateFragment : Fragment() {
 
     private val viewModel by lazy {
         ViewModelProvider(this).get(HistoryViewModel::class.java)
+    }
+
+    private val userPreferences by unsafeLazy {
+        UserPreferences(requireContext())
     }
 
     override fun onCreateView(
@@ -59,7 +65,7 @@ class SMSGenerateFragment : Fragment() {
             date = System.currentTimeMillis(),
             isGenerated = true
         )
-        viewModel?.insert(result)
+        viewModel.insert(result,userPreferences?.doNotSaveDuplicates)
         ViewQRcodeActivity.start(requireContext(), result)
 
     }

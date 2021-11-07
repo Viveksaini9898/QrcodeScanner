@@ -26,7 +26,6 @@ object BarcodeParser {
         }
 
         return App.parse(text)
-            ?: Youtube.parse(text)
             ?: GoogleMaps.parse(text)
             ?: Url.parse(text)
             ?: Phone.parse(text)

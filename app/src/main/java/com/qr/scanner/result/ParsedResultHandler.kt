@@ -192,7 +192,7 @@ class ParsedResultHandler(result: Result?) {
     }
 
     private fun parseYoutube() {
-        youtubeUrl = text
+        url = text
     }
 
 

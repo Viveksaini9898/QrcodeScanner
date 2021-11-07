@@ -77,6 +77,9 @@ class ViewQRcodeActivity : BaseActivity() {
             ParsedResultType.OTHER -> {
                 toolbar?.title = "Text"
             }
+            ParsedResultType.APP -> {
+                toolbar?.title = "App"
+            }
         }
         val image: Bitmap? = generateQr(result.text,640,640)
         qrImage?.setImageBitmap(image)

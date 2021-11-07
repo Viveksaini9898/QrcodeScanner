@@ -25,6 +25,7 @@ import com.qr.scanner.objects.BarcodeParser
 import com.qr.scanner.objects.PermissionsHelper.areAllPermissionsGranted
 import com.qr.scanner.objects.PermissionsHelper.requestNotGrantedPermissions
 import com.qr.scanner.objects.ScannerCameraHelper
+import com.qr.scanner.objects.SupportedBarcodeFormats
 import com.qr.scanner.preference.UserPreferences
 import com.qr.scanner.viewmodel.HistoryViewModel
 import kotlinx.android.synthetic.main.fragment_scan_barcode_from_camera.*
@@ -136,7 +137,7 @@ class ScannerFragment : Fragment() {
             } else {
                 AutoFocusMode.CONTINUOUS
             }
-           // formats = SupportedBarcodeFormats.FORMATS.filter(settings::isFormatSelected)
+           formats = SupportedBarcodeFormats.FORMATS.filter(userPreferences::isFormatSelected)
             scanMode = ScanMode.SINGLE
             isAutoFocusEnabled = true
             isFlashEnabled = userPreferences?.flash!!
@@ -147,7 +148,7 @@ class ScannerFragment : Fragment() {
     }
 
     private fun initZoomSeekBar() {
-        ScannerCameraHelper.getCameraParameters(true)?.apply {
+        ScannerCameraHelper.getCameraParameters(userPreferences?.backCamera)?.apply {
             this@ScannerFragment.maxZoom = maxZoom
             seek_bar_zoom.max = maxZoom
             seek_bar_zoom.progress = zoom
@@ -225,7 +226,7 @@ class ScannerFragment : Fragment() {
 
         val result = BarcodeParser.parseResult(result)
 
-        viewModel.insert(result)
+        viewModel.insert(result,userPreferences?.doNotSaveDuplicates)
         ScanResultActivity.start(requireContext(),result)
 
     }
@@ -237,18 +238,6 @@ class ScannerFragment : Fragment() {
     }*/
 
 
-   /* private fun restartPreviewWithDelay(showMessage: Boolean) {
-        Completable
-            .timer(CONTINUOUS_SCANNING_PREVIEW_DELAY, TimeUnit.MILLISECONDS)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                if (showMessage) {
-                    showToast(R.string.fragment_scan_barcode_from_camera_barcode_saved)
-                }
-                restartPreview()
-            }
-            .addTo(disposable)
-    }*/
 
     private fun restartPreview() {
         requireActivity().runOnUiThread {
