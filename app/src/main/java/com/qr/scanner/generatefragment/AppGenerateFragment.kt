@@ -13,21 +13,17 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.zxing.BarcodeFormat
 import com.qr.scanner.R
-import com.qr.scanner.activity.ViewQRcodeActivity
+import com.qr.scanner.activity.ViewQrCodeActivity
 import com.qr.scanner.adapter.AppAdapter
-import com.qr.scanner.extension.textString
 import com.qr.scanner.extension.unsafeLazy
 import com.qr.scanner.model.App
-import com.qr.scanner.model.Other
 import com.qr.scanner.model.Parsers
 import com.qr.scanner.preference.UserPreferences
 import com.qr.scanner.viewmodel.HistoryViewModel
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_app_generate.*
-import kotlinx.android.synthetic.main.fragment_text_generate.*
 
 class AppGenerateFragment : Fragment(),AppAdapter.Listener {
 
@@ -112,7 +108,7 @@ class AppGenerateFragment : Fragment(),AppAdapter.Listener {
             isGenerated = true
         )
         viewModel.insert(result,userPreferences?.doNotSaveDuplicates)
-        ViewQRcodeActivity.start(requireContext(), result)
+        ViewQrCodeActivity.start(requireContext(), result)
 
     }
 

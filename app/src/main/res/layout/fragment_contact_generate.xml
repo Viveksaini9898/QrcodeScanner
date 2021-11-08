@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="@dimen/dimen_10dp"
-    android:paddingBottom="@dimen/dimen_16dp">
+    android:scrollbars="none"
+
+   >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:paddingTop="@dimen/dimen_10dp"
+        android:paddingBottom="@dimen/dimen_16dp"
         >
 
         <com.google.android.material.textfield.TextInputLayout
@@ -178,26 +181,19 @@
         </com.google.android.material.textfield.TextInputLayout>
 
 
-        <RelativeLayout
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/generateQrcode"
             android:layout_width="@dimen/dimen_200dp"
             android:layout_height="@dimen/dimen_40dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/dimen_70dp"
             android:layout_marginBottom="@dimen/dimen_30dp"
+            android:elevation="@dimen/dimen_8dp"
+            android:text="@string/generate_qrcode"
+            android:textColor="@color/black"
             android:background="@drawable/circle_button_background"
-            android:elevation="@dimen/dimen_8dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:gravity="center"
-                android:text="@string/generate_qrcode"
-                android:textColor="@color/black"
-                android:textSize="@dimen/dimen_18dp"
-                android:textStyle="bold" />
-
-        </RelativeLayout>
+            android:textStyle="bold"
+            android:clickable="false"
+            />
     </LinearLayout>
-</ScrollView>
+</androidx.core.widget.NestedScrollView>

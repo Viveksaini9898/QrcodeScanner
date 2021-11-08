@@ -52,9 +52,9 @@ class QrGenerateActivity : BaseActivity() {
                 WifiGenerateFragment().loadFragment(this, R.id.container)
                 toolbar?.title = "Wifi"
             }
-            "call" -> {
+            "phone" -> {
                 PhoneGenerateFragment().loadFragment(this, R.id.container)
-                toolbar?.title = "Call"
+                toolbar?.title = "Phone"
             }
             "sms" -> {
                 SMSGenerateFragment().loadFragment(this, R.id.container)

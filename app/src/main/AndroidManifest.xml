@@ -34,11 +34,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:screenOrientation="portrait"
         android:supportsRtl="true"
-        android:theme="@style/Theme.QrScanner">
+        android:theme="@style/Theme.QrScanner"
+        >
 
         <activity
             android:name=".activity.QrGenerateActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize"
+            />
         <activity
             android:name=".activity.ViewBarcodeActivity"
             android:exported="true" />
@@ -50,7 +53,7 @@
             android:name=".activity.ImageScannerActivity"
             android:exported="true" />
         <activity
-            android:name=".activity.ViewQRcodeActivity"
+            android:name=".activity.ViewQrCodeActivity"
             android:exported="true" />
         <activity
             android:name=".activity.ScanResultActivity"

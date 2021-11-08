@@ -53,7 +53,7 @@ class QrGenerateFragment : Fragment() {
             loadActivity("wifi")
         }
         callLayout?.setOnClickListener {
-            loadActivity("call")
+            loadActivity("phone")
         }
         smsLayout?.setOnClickListener {
             loadActivity("sms")

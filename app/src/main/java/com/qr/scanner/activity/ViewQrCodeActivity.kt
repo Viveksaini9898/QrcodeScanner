@@ -3,7 +3,6 @@ package com.qr.scanner.activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import com.google.zxing.BarcodeFormat
@@ -17,7 +16,6 @@ import kotlinx.android.synthetic.main.activity_view_qr_code.*
 import com.qr.scanner.constant.PARSE_RESULT
 import com.qr.scanner.extension.unsafeLazy
 import com.qr.scanner.model.ParsedResultType
-import com.qr.scanner.utils.saveImageToGallery
 import com.qr.scanner.utils.shareBitmap
 import java.lang.IllegalArgumentException
 import java.lang.NullPointerException
@@ -25,11 +23,11 @@ import com.qr.scanner.model.Result
 import com.qr.scanner.objects.ImageSaver
 
 
-class ViewQRcodeActivity : BaseActivity() {
+class ViewQrCodeActivity : BaseActivity() {
 
     companion object {
         fun start(context: Context, result: Result?) {
-            val intent = Intent(context, ViewQRcodeActivity::class.java).apply {
+            val intent = Intent(context, ViewQrCodeActivity::class.java).apply {
                 putExtra(PARSE_RESULT, result)
             }
             context.startActivity(intent)

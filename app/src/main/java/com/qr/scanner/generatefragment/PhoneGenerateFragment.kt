@@ -10,21 +10,16 @@ import androidx.lifecycle.ViewModelProvider
 
 
 import com.qr.scanner.R
-import com.qr.scanner.activity.ViewQRcodeActivity
-import com.qr.scanner.constant.PREFIX
+import com.qr.scanner.activity.ViewQrCodeActivity
 import com.qr.scanner.extension.isNotBlank
 import com.qr.scanner.extension.textString
 import com.qr.scanner.extension.unsafeLazy
-import com.qr.scanner.model.Other
 import com.qr.scanner.model.Parsers
 import com.qr.scanner.model.Phone
 import com.qr.scanner.preference.UserPreferences
-import com.qr.scanner.utils.viewQrCodeActivity
 import com.qr.scanner.viewmodel.HistoryViewModel
-import kotlinx.android.synthetic.main.fragment_phone_generate.*
 import kotlinx.android.synthetic.main.fragment_phone_generate.edit_text
 import kotlinx.android.synthetic.main.fragment_phone_generate.generateQrcode
-import kotlinx.android.synthetic.main.fragment_text_generate.*
 
 
 class PhoneGenerateFragment : Fragment() {
@@ -45,6 +40,8 @@ class PhoneGenerateFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        toggleCreateBarcodeButton()
         handleTextChanged()
         initEditText()
 
@@ -68,7 +65,7 @@ class PhoneGenerateFragment : Fragment() {
             isGenerated = true
         )
         viewModel.insert(result,userPreferences?.doNotSaveDuplicates)
-        ViewQRcodeActivity.start(requireContext(), result)
+        ViewQrCodeActivity.start(requireContext(), result)
 
     }
 
@@ -83,15 +80,22 @@ class PhoneGenerateFragment : Fragment() {
 
     private fun handleTextChanged() {
         edit_text.addTextChangedListener {
-            if (edit_text.isNotBlank()) {
-                generateQrcode?.background = resources?.getDrawable(R.drawable.button_background_1)
-            } else {
-                generateQrcode?.background =
-                    resources?.getDrawable(R.drawable.circle_button_background)
-
-            }
+           toggleCreateBarcodeButton()
         }
     }
 
+    private fun toggleCreateBarcodeButton(){
+        if (edit_text.isNotBlank()) {
+            generateQrcode?.isEnabled = true
+            generateQrcode?.isClickable = true
+            generateQrcode?.background = resources?.getDrawable(R.drawable.button_background_1)
+        } else {
+            generateQrcode?.isEnabled = false
+            generateQrcode?.isClickable = false
+            generateQrcode?.background =
+                resources?.getDrawable(R.drawable.circle_button_background)
+
+        }
+    }
 
 }

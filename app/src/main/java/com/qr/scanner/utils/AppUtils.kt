@@ -1,6 +1,5 @@
 package com.qr.scanner.utils
 
-import android.app.Activity
 import android.content.*
 import android.content.pm.PackageManager
 import android.database.Cursor
@@ -17,8 +16,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import com.qr.scanner.activity.ViewQRcodeActivity
-import androidx.core.content.FileProvider
+import com.qr.scanner.activity.ViewQrCodeActivity
 import com.qr.scanner.R
 import com.qr.scanner.constant.RESULT
 import com.qr.scanner.extension.Toast.toast
@@ -26,7 +24,6 @@ import com.qr.scanner.extension.toEmailType
 import com.qr.scanner.extension.toPhoneType
 import com.qr.scanner.result.ParsedResultHandler
 import java.io.File
-import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
 import java.lang.Exception
@@ -120,7 +117,7 @@ fun rawLaunchIntent(context: Context?, intent: Intent?) {
 
 
 fun viewQrCodeActivity(context: Context?, result: com.qr.scanner.model.Result) {
-    val intent = Intent(context, ViewQRcodeActivity::class.java)
+    val intent = Intent(context, ViewQrCodeActivity::class.java)
     intent.putExtra(RESULT, result)
     context?.startActivity(intent)
 }

@@ -9,7 +9,7 @@
 
     <include layout="@layout/toolbar" />
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="none">
@@ -290,7 +290,7 @@
                         android:layout_marginTop="@dimen/dimen_5dp"
                         android:autoLink="email"
                         android:gravity="center"
-                        android:text="@string/call"
+                        android:text="@string/phone"
                         android:textSize="@dimen/dimen_18dp" />
                 </LinearLayout>
 
@@ -393,5 +393,5 @@
 
             </LinearLayout>
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 </LinearLayout>

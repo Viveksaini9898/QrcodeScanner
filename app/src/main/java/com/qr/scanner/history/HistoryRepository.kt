@@ -1,6 +1,9 @@
 package com.qr.scanner.history
 
 import android.app.Application
+import android.content.Context
+import android.content.Intent
+import android.content.pm.ResolveInfo
 import androidx.lifecycle.LiveData
 import com.qr.scanner.utils.subscribeOnBackground
 import com.qr.scanner.model.Result
@@ -60,5 +63,6 @@ class HistoryRepository(application: Application) {
             historyDao.update(result!!)
         }
     }
+
 
 }

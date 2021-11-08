@@ -7,16 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.qr.scanner.R
-import com.qr.scanner.activity.ViewQRcodeActivity
+import com.qr.scanner.activity.ViewQrCodeActivity
 import com.qr.scanner.constant.PARSE_RESULT
 import com.qr.scanner.extension.unsafeLazy
 import com.qr.scanner.model.Result
 import com.qr.scanner.preference.UserPreferences
 import com.qr.scanner.result.ParsedResultHandler
 import kotlinx.android.synthetic.main.fragment_app_result.*
-import android.content.pm.PackageManager
 
-import android.graphics.drawable.Drawable
 import com.qr.scanner.utils.*
 
 
@@ -73,7 +71,7 @@ class AppResultFragment : Fragment() {
         }
 
         viewQrCode?.setOnClickListener {
-            ViewQRcodeActivity.start(requireContext(), result!!)
+            ViewQrCodeActivity.start(requireContext(), result!!)
         }
         shareLayout?.setOnClickListener {
             shareContent(requireContext(), barcode.appMarketUrl)

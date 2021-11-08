@@ -13,19 +13,14 @@ import androidx.lifecycle.ViewModelProvider
 
 
 import com.qr.scanner.R
-import com.qr.scanner.activity.ViewQRcodeActivity
-import com.qr.scanner.constant.*
-import com.qr.scanner.extension.appendIfNotNullOrBlank
+import com.qr.scanner.activity.ViewQrCodeActivity
 import com.qr.scanner.extension.isNotBlank
 import com.qr.scanner.extension.textString
 import com.qr.scanner.extension.unsafeLazy
 import com.qr.scanner.model.Parsers
-import com.qr.scanner.model.VEvent
 import com.qr.scanner.model.Wifi
 import com.qr.scanner.preference.UserPreferences
-import com.qr.scanner.utils.viewQrCodeActivity
 import com.qr.scanner.viewmodel.HistoryViewModel
-import kotlinx.android.synthetic.main.fragment_event_generate.*
 import kotlinx.android.synthetic.main.fragment_wifi_generate.*
 import kotlinx.android.synthetic.main.fragment_wifi_generate.generateQrcode
 
@@ -50,6 +45,7 @@ class WifiGenerateFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        toggleCreateBarcodeButton()
         initEncryptionTypesSpinner()
         initNetworkNameEditText()
         handleTextChanged()
@@ -74,7 +70,7 @@ class WifiGenerateFragment : Fragment() {
             isGenerated = true
         )
         viewModel.insert(result,userPreferences?.doNotSaveDuplicates)
-        ViewQRcodeActivity.start(requireContext(), result)
+        ViewQrCodeActivity.start(requireContext(), result)
 
     }
 
@@ -129,8 +125,12 @@ class WifiGenerateFragment : Fragment() {
 
     private fun toggleCreateBarcodeButton() {
         if (edit_text_network_name.isNotBlank()) {
+            generateQrcode?.isEnabled = true
+            generateQrcode?.isClickable = true
             generateQrcode?.background = resources?.getDrawable(R.drawable.button_background_1)
         } else {
+            generateQrcode?.isEnabled = false
+            generateQrcode?.isClickable = false
             generateQrcode?.background = resources?.getDrawable(R.drawable.circle_button_background)
         }
     }

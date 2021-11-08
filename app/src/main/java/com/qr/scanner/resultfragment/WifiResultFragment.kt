@@ -1,18 +1,13 @@
 package com.qr.scanner.resultfragment
 
-import android.annotation.SuppressLint
-import android.content.Context
-import android.net.wifi.WifiManager
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.qr.scanner.R
-import com.qr.scanner.activity.ViewQRcodeActivity
+import com.qr.scanner.activity.ViewQrCodeActivity
 import com.qr.scanner.constant.PARSE_RESULT
-import com.qr.scanner.extension.Toast.toast
 import com.qr.scanner.extension.orFalse
 import com.qr.scanner.extension.unsafeLazy
 import com.qr.scanner.objects.WifiConnector
@@ -21,9 +16,7 @@ import com.qr.scanner.result.ParsedResultHandler
 import com.qr.scanner.utils.copyContent
 import com.qr.scanner.utils.shareContent
 import com.qr.scanner.utils.subscribeOnBackground
-import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_wifi_result.*
-import kotlinx.android.synthetic.main.fragment_wifi_result.view.*
 import com.qr.scanner.model.Result
 
 
@@ -115,7 +108,7 @@ class WifiResultFragment : Fragment() {
         }
 
         viewQrcode?.setOnClickListener {
-            ViewQRcodeActivity.start(requireContext(), result!!)
+            ViewQrCodeActivity.start(requireContext(), result!!)
 
         }
         shareLayout?.setOnClickListener {
