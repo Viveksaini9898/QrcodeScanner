@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.navigation.NavigationBarView
 import com.qr.scanner.R
 import com.qr.scanner.fragment.*
 import com.qr.scanner.utils.createDir
@@ -16,7 +17,7 @@ import kotlinx.android.synthetic.main.toolbar.*
 import com.qr.scanner.utils.loadFragment
 
 
-class MainActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
+class MainActivity : BaseActivity(), NavigationBarView.OnItemSelectedListener {
     private val MY_CAMERA_REQUEST_CODE: Int = 1000
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,7 +33,7 @@ class MainActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelect
         }
         createDir()
 
-        bottomBar?.setOnNavigationItemSelectedListener(this@MainActivity)
+        bottomBar?.setOnItemSelectedListener(this@MainActivity)
 
     }
 
